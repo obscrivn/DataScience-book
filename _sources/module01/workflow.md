@@ -116,7 +116,7 @@ Dashed arrows in Figure 1 are the "U-turns" that drive accuracy.
 
 As you move toward your data Science Project, your success will depend less on your ability to write a perfect algorithm and more on your ability to navigate the non-linear map.
 
-Student's Checklist for Success
+Your Checklist for Success:
 
 * [ ] **Domain problem**: Do I understand the real-world question and why it matters?
 * [ ] **Data**: Does the available data actually represent the problem I want to study?
@@ -127,7 +127,7 @@ Student's Checklist for Success
 * [ ] **Operations**: If this becomes a deployed system, how will it be monitored?
 
 ```{note} Advice
-Data science is a "team sport" that requires extreme agility. Whether you are using statistical tests in the investigate phase or deploying an MVM to an API, keep your stakeholders close and your feedback loops tight. Good luck—the journey is complex, but the discovery is worth the effort.
+Data science is a "team sport" that requires extreme agility. Whether you are using statistical tests in the investigate phase or deploying an MVM to an API, keep your stakeholders close and your feedback loops tight.
 ```
 
 # References
