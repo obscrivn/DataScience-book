@@ -1,0 +1,34 @@
+delivery_id,route_type,distance_km,weather,packages,delivery_minutes,source_note
+W2-001,urban,4.2,clear,3,32,scanner record
+W2-002,urban,3.1,clear,1,28,scanner record
+W2-003,urban,5.0,rain,4,35,scanner record
+W2-004,suburban,8.4,clear,2,41,scanner record
+W2-005,urban,3.8,clear,5,30,scanner record
+W2-006,suburban,7.1,rain,2,38,scanner record
+W2-007,suburban,9.6,clear,6,45,scanner record
+W2-008,urban,5.9,clear,3,36,scanner record
+W2-009,urban,2.7,clear,2,29,scanner record
+W2-010,urban,4.5,rain,4,33,scanner record
+W2-011,suburban,7.8,clear,5,40,scanner record
+W2-012,urban,6.2,clear,1,37,scanner record
+W2-013,suburban,8.9,rain,3,42,scanner record
+W2-014,urban,3.6,clear,2,31,scanner record
+W2-015,urban,5.1,clear,4,34,scanner record
+W2-016,suburban,7.4,clear,3,39,scanner record
+W2-017,suburban,10.2,rain,5,44,scanner record
+W2-018,urban,2.4,clear,1,27,scanner record
+W2-019,suburban,11.5,clear,7,46,scanner record
+W2-020,suburban,9.1,rain,4,43,scanner record
+W2-021,urban,2.1,clear,2,25,scanner record
+W2-022,rural,15.8,clear,5,48,scanner record
+W2-023,rural,18.2,rain,4,52,scanner record
+W2-024,rural,16.7,clear,3,50,scanner record
+W2-025,rural,20.1,rain,6,55,scanner record
+W2-026,rural,23.4,clear,5,60,scanner record
+W2-027,rural,27.8,rain,7,65,scanner record
+W2-028,rural,30.6,snow,4,70,scanner record
+W2-029,rural,31.9,rain,8,74,scanner record
+W2-030,rural,34.2,snow,6,78,scanner record
+W2-031,rural,68.4,snow,9,165,verified regional route
+W2-032,urban,5.6,clear,2,240,manual entry - verify units
+W2-033,suburban,14.8,clear,3,4,GPS auto-import
