@@ -1,0 +1,847 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>02 Data Quality &#8212; Lecture Notes Applied Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'module02/data';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Coding Practice: Handling Missing Data" href="missing_values.html" />
+    <link rel="prev" title="01 Data Science Lifecycle" href="../module01/workflow.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/bannerADS.png" class="logo__image only-light" alt="Lecture Notes Applied Data Science - Home"/>
+    <img src="../_static/bannerADS.png" class="logo__image only-dark pst-js-only" alt="Lecture Notes Applied Data Science - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../welcome.html">
+                    Applied Data Science
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../module01/workflow.html">01 Data Science Lifecycle</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">02 Data Quality</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule02/data.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/module02/data.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>02 Data Quality</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">02 Data Quality</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-is-never-just-data">2.1 Data Is Never Just Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-makes-data-messy">2.2 What Makes Data “Messy”?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-context-matters">Why context matters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#measurement-context">Measurement context</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-problemns">Common Problemns</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-data-not-all-missingness-is-the-same">2.3 Missing Data: Not All Missingness Is the Same</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mcar-missing-completely-at-random">MCAR: Missing Completely at Random</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mar-missing-at-random">MAR: Missing at Random</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mnar-missing-not-at-random">MNAR: Missing Not at Random</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-mcar-mar-and-mnar">Comparing MCAR, MAR, and MNAR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missingness-is-rarely-known-with-certainty">Missingness Is Rarely Known With Certainty</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values-can-be-informative">Missing Values Can Be Informative</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="data-quality">
+<h1>02 Data Quality<a class="headerlink" href="#data-quality" title="Link to this heading">#</a></h1>
+<blockquote>
+<div><p>We should be suspicious of any dataset (large or small) which appears perfect.</p>
+</div></blockquote>
+<p>— David J. Hand</p>
+<section id="big-idea">
+<h2>Big Idea<a class="headerlink" href="#big-idea" title="Link to this heading">#</a></h2>
+<p>Data cleaning is not just about fixing errors. It is about understanding what the data represents, how it was collected, what may be missing, and which decisions are justified before analysis begins.</p>
+<p>A dataset may contain missing values, inconsistent categories, incorrect types, impossible measurements, duplicate records, or observations that are unusual but still valid. Some problems are easy to detect. Others require knowledge of the domain, the data-collection process, and the intended analysis.</p>
+<p><strong>This makes data preparation one of the most important stages of the data science lifecycle.</strong></p>
+<p>Data preparation can be divided into two related activities:</p>
+<ul class="simple">
+<li><p><strong>Data cleaning</strong>: modifying raw data so that values are correctly formatted, interpretable, and unambiguous</p></li>
+<li><p><strong>Preprocessing</strong>: modifying clean data to meet the requirements of a particular statistical or machine learning method.</p></li>
+</ul>
+</section>
+<section id="data-is-never-just-data">
+<h2>2.1 Data Is Never Just Data<a class="headerlink" href="#data-is-never-just-data" title="Link to this heading">#</a></h2>
+<p>A value in a dataset does not exist independently of the process that produced it.</p>
+<p>Before changing a dataset, a data scientist should understand:</p>
+<ul class="simple">
+<li><p>where the data came from,</p></li>
+<li><p>how observations were collected,</p></li>
+<li><p>what each variable represents,</p></li>
+<li><p>what units were used,</p></li>
+<li><p>which values are theoretically possible,</p></li>
+<li><p>whether any special codes were used during data collection</p></li>
+</ul>
+<p>This information is part of <strong>the data provenance</strong>.</p>
+</section>
+<section id="what-makes-data-messy">
+<h2>2.2 What Makes Data “Messy”?<a class="headerlink" href="#what-makes-data-messy" title="Link to this heading">#</a></h2>
+<section id="why-context-matters">
+<h3>Why context matters<a class="headerlink" href="#why-context-matters" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Consider the following values:</p>
+<blockquote>
+<div><p>a house sale month recorded as 13
+a body temperature recorded as 1045
+an organ donor count recorded as -10</p>
+</div></blockquote>
+<p>These values are easy to flag because they violate obvious constraints.</p>
+<blockquote>
+<div><p>Suppose the correct sale date of a house is March 15, but it is entered as May 15.</p>
+</div></blockquote>
+<p>A value can be <strong>syntactically valid</strong> and still be incorrect.</p>
+</div>
+</section>
+<section id="measurement-context">
+<h3>Measurement context<a class="headerlink" href="#measurement-context" title="Link to this heading">#</a></h3>
+<p>Some values can also be misinterpreted because of units or scaling.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Consider:</p>
+<blockquote>
+<div><p>population = 100</p>
+</div></blockquote>
+<p>Does it mean:</p>
+<ul class="simple">
+<li><p>100 people,</p></li>
+<li><p>100 thousand people,</p></li>
+<li><p>100 million people,</p></li>
+<li><p>or an index value.</p></li>
+</ul>
+</div>
+<p><strong>Without metadata or documentation, the number alone is ambiguous.</strong></p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Data quality depends not only on whether a value is valid, but also on whether it is plausible given the surrounding context.</p>
+</div>
+</section>
+<section id="common-problemns">
+<h3>Common Problemns<a class="headerlink" href="#common-problemns" title="Link to this heading">#</a></h3>
+<p><strong>Invalid values</strong></p>
+<blockquote>
+<div><p>Values that violate known constraints.</p>
+</div></blockquote>
+<p><strong>Improperly encoded missing values</strong></p>
+<blockquote>
+<div><p>Missing values are often represented using special codes: 999, -999, unknown, N/A, ?, declined</p>
+</div></blockquote>
+<p>These values should usually be converted into an explicit missing-value representation <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.</p>
+<p><strong>Inconsistent categories</strong></p>
+<blockquote>
+<div><p>The same category may appear in multiple forms: Yes, Y, 1</p>
+</div></blockquote>
+<p><strong>Incomplete observational units</strong></p>
+<p>Sometimes the problem is not a missing value inside an existing row.</p>
+<p>The entire row may be missing.</p>
+</section>
+</section>
+<section id="missing-data-not-all-missingness-is-the-same">
+<h2>2.3 Missing Data: Not All Missingness Is the Same<a class="headerlink" href="#missing-data-not-all-missingness-is-the-same" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p>Missing data occurs when valid information is unavailable for one or more observations.</p>
+</div></blockquote>
+<figure class="align-default" id="missing-data">
+<img alt="../_images/missing_data.png" src="../_images/missing_data.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Three types of Missing Data.</span><a class="headerlink" href="#missing-data" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Missing data is not always produced by the same process.</p>
+<p>Understanding why values are missing matters because the mechanism behind the missingness can affect:</p>
+<ul class="simple">
+<li><p>bias,</p></li>
+<li><p>statistical inference,</p></li>
+<li><p>model performance,</p></li>
+<li><p>and the choice of an appropriate missing-data strategy.</p></li>
+</ul>
+<p>Rubin’s missing-data taxonomy distinguishes three common mechanisms:</p>
+<ul class="simple">
+<li><p><strong>Missing Completely at Random, or MCAR</strong></p></li>
+<li><p><strong>Missing at Random, or MAR</strong></p></li>
+<li><p><strong>Missing Not at Random, or MNAR</strong></p></li>
+</ul>
+<hr class="docutils" />
+<section id="mcar-missing-completely-at-random">
+<h3>MCAR: Missing Completely at Random<a class="headerlink" href="#mcar-missing-completely-at-random" title="Link to this heading">#</a></h3>
+<p>Data is <strong>Missing Completely at Random (MCAR)</strong> when the probability of a value being missing is unrelated to both observed and unobserved information.</p>
+<p>An example might be a small number of records lost because of a random technical failure during data transfer.</p>
+</section>
+<hr class="docutils" />
+<section id="mar-missing-at-random">
+<h3>MAR: Missing at Random<a class="headerlink" href="#mar-missing-at-random" title="Link to this heading">#</a></h3>
+<p>Data is <strong>Missing at Random (MAR)</strong> when the probability of missingness depends on information that has already been observed.</p>
+<p>Suppose some survey respondents are more likely than others to skip an income question.</p>
+</section>
+<hr class="docutils" />
+<section id="mnar-missing-not-at-random">
+<h3>MNAR: Missing Not at Random<a class="headerlink" href="#mnar-missing-not-at-random" title="Link to this heading">#</a></h3>
+<p>Data is <strong>Missing Not at Random (MNAR)</strong> when the probability of missingness depends directly on the missing value itself or on information that has not been observed.</p>
+<p>People with particularly high or low income, strong opinions, or sensitive experiences may be more likely to avoid answering related questions.</p>
+<p>MNAR is especially challenging because the information needed to explain the missingness may itself be unavailable.</p>
+</section>
+<hr class="docutils" />
+<section id="comparing-mcar-mar-and-mnar">
+<h3>Comparing MCAR, MAR, and MNAR<a class="headerlink" href="#comparing-mcar-mar-and-mnar" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Missingness Type</p></th>
+<th class="head"><p>What influences whether the value is missing?</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MCAR</p></td>
+<td><p>Something unrelated to the observed or missing values</p></td>
+<td><p>A scale battery fails randomly</p></td>
+</tr>
+<tr class="row-odd"><td><p>MAR</p></td>
+<td><p>Information that has already been observed</p></td>
+<td><p>A scale fails more often on soft surfaces</p></td>
+</tr>
+<tr class="row-even"><td><p>MNAR</p></td>
+<td><p>The missing value itself or unobserved information</p></td>
+<td><p>A scale fails for very heavy objects</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A useful way to think about the three mechanisms is:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>MCAR → missingness is unrelated to the data
+
+MAR → missingness is related to observed data
+
+MNAR → missingness is related to unobserved data
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="missingness-is-rarely-known-with-certainty">
+<h3>Missingness Is Rarely Known With Certainty<a class="headerlink" href="#missingness-is-rarely-known-with-certainty" title="Link to this heading">#</a></h3>
+<p>In real-world projects, analysts usually cannot prove that data is MCAR, MAR, or MNAR simply by examining the dataset.</p>
+<p>Instead, they use:</p>
+<ul class="simple">
+<li><p>domain knowledge,</p></li>
+<li><p>knowledge of the data-collection process,</p></li>
+<li><p>documentation and codebooks,</p></li>
+<li><p>observed patterns of missingness,</p></li>
+<li><p>and relationships between missingness and other variables.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Suppose customer ratings are frequently missing for cancelled food-delivery orders.</p>
+<p>That pattern may suggest that the missing ratings are related to the observed variable:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>order_status
+</pre></div>
+</div>
+<p>This would lead the analyst to investigate whether the missingness is systematic rather than completely random.</p>
+</div>
+<p>The main goal is not to assign a label mechanically.</p>
+<p><strong>The goal is to understand whether missingness may carry information and whether it could influence downstream conclusions.</strong></p>
+</section>
+<hr class="docutils" />
+<section id="missing-values-can-be-informative">
+<h3>Missing Values Can Be Informative<a class="headerlink" href="#missing-values-can-be-informative" title="Link to this heading">#</a></h3>
+<p>A missing value is not always simply an absence of information.</p>
+<p>Sometimes the fact that a value is missing can itself tell us something about the data-generating process.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rating = NaN
+order_status = Cancelled
+</pre></div>
+</div>
+<p>A missing rating may make sense because the customer never received the order.</p>
+<p>Similarly:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>income = NaN
+</pre></div>
+</div>
+<p>may mean:</p>
+<ul class="simple">
+<li><p>the question was skipped,</p></li>
+<li><p>the respondent refused to answer,</p></li>
+<li><p>the value was not collected,</p></li>
+<li><p>or the value was not applicable.</p></li>
+</ul>
+<p>These situations should not automatically be treated as equivalent.</p>
+<p>Understanding the meaning of missingness is part of understanding the data itself.</p>
+</section>
+<hr class="docutils" />
+<section id="key-takeaways">
+<h3>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Missing data can occur at the item, scale, or observational-unit level.</p></li>
+<li><p>A missing row is different from a missing value inside an existing row.</p></li>
+<li><p>MCAR means missingness is unrelated to observed and unobserved values.</p></li>
+<li><p>MAR means missingness is related to information that has already been observed.</p></li>
+<li><p>MNAR means missingness is related to the missing value itself or other unobserved information.</p></li>
+<li><p>The true missingness mechanism is often uncertain.</p></li>
+<li><p>Domain knowledge and information about data collection are essential when interpreting missingness.</p></li>
+<li><p>Missingness can sometimes contain useful information rather than simply representing an error.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="references">
+<h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<p>This module draws on selected research articles, open educational resources, and professional documentation.</p>
+<ul class="simple">
+<li><p>Rubin, D. B. (1976). Inference and missing data. <em>Biometrika, 63</em>(3), 581–592.</p></li>
+<li><p>van Buuren, S. <em>Flexible Imputation of Missing Data</em>.<br />
+<a class="reference external" href="https://stefvanbuuren.name/fimd/">https://stefvanbuuren.name/fimd/</a></p></li>
+<li><p>Barter, R., &amp; Yu, B. <em>Veridical Data Science</em>. Chapter 4: Data Cleaning.<br />
+<a class="reference external" href="https://vdsbook.com/04-data_cleaning">https://vdsbook.com/04-data_cleaning</a></p></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./module02"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../module01/workflow.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">01 Data Science Lifecycle</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="missing_values.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Coding Practice: Handling Missing Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">02 Data Quality</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-is-never-just-data">2.1 Data Is Never Just Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-makes-data-messy">2.2 What Makes Data “Messy”?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-context-matters">Why context matters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#measurement-context">Measurement context</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-problemns">Common Problemns</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-data-not-all-missingness-is-the-same">2.3 Missing Data: Not All Missingness Is the Same</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mcar-missing-completely-at-random">MCAR: Missing Completely at Random</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mar-missing-at-random">MAR: Missing at Random</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mnar-missing-not-at-random">MNAR: Missing Not at Random</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-mcar-mar-and-mnar">Comparing MCAR, MAR, and MNAR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missingness-is-rarely-known-with-certainty">Missingness Is Rarely Known With Certainty</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values-can-be-informative">Missing Values Can Be Informative</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Olga Scrivner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, Olga Scrivner.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
