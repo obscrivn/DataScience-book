@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>01 Data Science Lifecycle &#8212; Lecture Notes Applied Data Science</title>
+    <title>03 Data Visualization &#8212; Lecture Notes Applied Data Science</title>
   
   
   
@@ -60,12 +60,12 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'module01/workflow';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'module03/visualization';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="02 Data Quality" href="../module02/data.html" />
-    <link rel="prev" title="Applied Data Science" href="../welcome.html" />
+    <link rel="next" title="Coding Practice: Choosing and Checking Visualizations" href="week3_visualization_practice.html" />
+    <link rel="prev" title="Week 2 Outliers and Data Quality - Solution" href="../module02/week2_outlier_practice_solution.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -220,11 +220,11 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">01 Data Science Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module01/workflow.html">01 Data Science Lifecycle</a></li>
 
 <li class="toctree-l1"><a class="reference internal" href="../module02/data.html">02 Data Quality</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="../module03/visualization.html">03 Data Visualization</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">03 Data Visualization</a></li>
 
 </ul>
 
@@ -302,7 +302,7 @@
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule01/workflow.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule03/visualization.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -332,7 +332,7 @@
       
       
       
-      <li><a href="../_sources/module01/workflow.md" target="_blank"
+      <li><a href="../_sources/module03/visualization.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -408,7 +408,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>01 Data Science Lifecycle</h1>
+    <h1>03 Data Visualization</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -418,14 +418,22 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">01 Data Science Lifecycle</a><ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-reality-of-data-science">1.1 The Reality of Data Science</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-genesis-of-a-project-entry-points-and-ideation">1.2 The Genesis of a Project: Entry Points and Ideation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-vs-lifecycle">1.3 Workflow vs. Lifecycle</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-stages-of-the-modern-lifecycle">1.4 The Stages of the Modern Lifecycle</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-power-of-the-minimal-viable-model-mvm">1.5 The Power of the Minimal Viable Model (MVM)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feedback-loops-embracing-the-u-turn">1.6 Feedback Loops: Embracing the “U-Turn”</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">1.7 Key Takeaways</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">03 Data Visualization</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-visualization-matters">3.1 Why Visualization Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-chart-that-fits-the-question">3.2 Choosing a Chart That Fits the Question</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-to-read-a-visual-not-just-produce-one">3.3 Learning to Read a Visual, Not Just Produce One</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#misleading-visualizations-and-accessibility">3.4 Misleading Visualizations and Accessibility</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-problems">Common problems</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-vs-explanatory-visualization">3.5 Exploratory vs. Explanatory Visualization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-visualization">Exploratory visualization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explanatory-visualization">Explanatory visualization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-generated-visualizations-useful-but-not-authoritative">3.6 AI-Generated Visualizations: Useful, but Not Authoritative</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
@@ -441,179 +449,155 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="data-science-lifecycle">
-<h1>01 Data Science Lifecycle<a class="headerlink" href="#data-science-lifecycle" title="Link to this heading">#</a></h1>
-<section id="the-reality-of-data-science">
-<h2>1.1 The Reality of Data Science<a class="headerlink" href="#the-reality-of-data-science" title="Link to this heading">#</a></h2>
-<p>Data science is fundamentally iterative rather than strictly linear. It is a process of discovery where new information frequently necessitates a return to previous steps to refine hypotheses or improve data quality.</p>
-<p>Every Data Science project can be represented as a series of the following stages (Yu &amp; Barter, 2024):</p>
-<ol class="arabic simple">
-<li><p>Domain problem formulation and data collection</p></li>
-<li><p>Data cleaning, preprocessing, and EDA</p></li>
-<li><p>Exploration of intrinsic data structures</p></li>
-<li><p>Predictive and/or inferential analysis</p></li>
-<li><p>Evaluation of results</p></li>
-<li><p>Communication of results</p></li>
-</ol>
-<figure class="align-default" id="dslc">
-<img alt="../_images/m01_lifecycles.png" src="../_images/m01_lifecycles.png" />
+  <section class="tex2jax_ignore mathjax_ignore" id="data-visualization">
+<h1>03 Data Visualization<a class="headerlink" href="#data-visualization" title="Link to this heading">#</a></h1>
+<blockquote>
+<div><p>“Since our eyes and brains are not wired to detect patterns in large data tables filled with text and numbers, communication about data and data-driven results rarely comes in the form of raw data or code output.(Chapter 5)”</p>
+</div></blockquote>
+<section id="big-idea">
+<h2>Big Idea<a class="headerlink" href="#big-idea" title="Link to this heading">#</a></h2>
+<p>Visualization is a core part of data science. Visual exploration appears early in datascience lifecycle during cleaning and remains essential during exploratory data analysis (EDA), model assessment, and communication to stakeholders.</p>
+<figure class="align-default" id="id1">
+<img alt="../_images/viz.png" src="../_images/viz.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Data Science Life Cycle (DSLC), adapted from Yu and Barter (2024). The lifecycle emphasizes the iterative and non-linear nature of data science and the role of human judgment, domain knowledge, and trustworthy results.</span><a class="headerlink" href="#dslc" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Lifecycle: From Data To Insight.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
-<section id="the-genesis-of-a-project-entry-points-and-ideation">
-<h2>1.2 The Genesis of a Project: Entry Points and Ideation<a class="headerlink" href="#the-genesis-of-a-project-entry-points-and-ideation" title="Link to this heading">#</a></h2>
-<p>To navigate the DSLC effectively, a data science practitioner must first understand that a project is not born in a code editor; it is born from an entry point into a problem space.</p>
-<p>A data science project typically originates from one of two primary motivations. Identifying your <strong>Entry Point</strong> is the first step in orienting yourself on the map. Once established, you enter the <strong>Ideate phase</strong>, the most critical moment for defining the <strong>Why</strong> behind your work.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Entry Point</p></th>
-<th class="head"><p>Primary Motivation</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Question-driven</p></td>
-<td><p>You have a specific business problem and must find data to answer it.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Curiosity-driven</p></td>
-<td><p>You have an interesting dataset and want to explore what questions it might solve.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<section id="why-visualization-matters">
+<h2>3.1 Why Visualization Matters<a class="headerlink" href="#why-visualization-matters" title="Link to this heading">#</a></h2>
+<p>The important patterns are often not visible in text form. A histogram, scatterplot, heatmap, or boxplot can reveal shape, spread, clustering, outliers, and relationships far more quickly than a spreadsheet.</p>
+<p>This is why visualization is central to EDA. During exploration, a chart is used as a diagnostic device: it helps us ask, “What seems unusual here? What is changing? Which patterns are strong and which might be noise?”</p>
+<p>The same visual reasoning matters later when we communicate results. A chart can support a decision, but it can also hide important nuance if the scales are misleading, the encodings are poor, or the audience is not considered.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Case study
-Read a Case Study: ACME, Inc. (The Dynamite Division)
-<a class="reference external" href="https://www.datascience-pm.com/data-science-life-cycle/">DataScience PM</a></p>
-<p>As you read, focus on:</p>
-<ul class="simple">
-<li><p><strong>How the original business problem is reframed</strong> into a more specific data science question.</p></li>
-<li><p><strong>What role domain knowledge plays</strong> before any modeling begins.</p></li>
-<li><p><strong>How the team moves between lifecycle stages</strong> instead of following a perfectly linear process.</p></li>
-<li><p><strong>What decisions are made about the data</strong> before selecting an analytical approach.</p></li>
-<li><p><strong>Where iteration occurs</strong> and what causes the team to revisit an earlier stage.</p></li>
-<li><p><strong>What makes the final problem actionable</strong> for the organization.</p></li>
-</ul>
-<p>Think about this question: <strong>At what point does the project become a data science problem rather than just a business request?</strong></p>
+<p>A good chart should help a reader answer a question. A weak chart often only recreates the data in a more colorful form.</p>
 </div>
 </section>
-<section id="workflow-vs-lifecycle">
-<h2>1.3 Workflow vs. Lifecycle<a class="headerlink" href="#workflow-vs-lifecycle" title="Link to this heading">#</a></h2>
+<section id="choosing-a-chart-that-fits-the-question">
+<h2>3.2 Choosing a Chart That Fits the Question<a class="headerlink" href="#choosing-a-chart-that-fits-the-question" title="Link to this heading">#</a></h2>
+<p>The right visualization <strong>depends on the type of variable</strong> being examined and the kind of question you are trying to answer. This is one of the most important skills in data analysis: the graph should fit the data and the claim.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Term</p></th>
-<th class="head"><p>Meaning</p></th>
+<tr class="row-odd"><th class="head"><p>Data and question</p></th>
+<th class="head"><p>Common choice</p></th>
+<th class="head"><p>What the chart is good for</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Workflow</strong></p></td>
-<td><p>Technical sequence of working with data</p></td>
+<tr class="row-even"><td><p>One numeric variable</p></td>
+<td><p>Histogram or boxplot</p></td>
+<td><p>Distribution, skewness, spread, outliers</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Lifecycle</strong></p></td>
-<td><p>End-to-end journey of a data science project</p></td>
+<tr class="row-odd"><td><p>Two numeric variables</p></td>
+<td><p>Scatterplot</p></td>
+<td><p>Relationship, trend, clustering</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Process</strong></p></td>
-<td><p>Lifecycle plus people, collaboration, management, and operational practices</p></td>
+<tr class="row-even"><td><p>One numeric and one categorical variable</p></td>
+<td><p>Side-by-side boxplots or grouped bar chart</p></td>
+<td><p>Differences across groups</p></td>
+</tr>
+<tr class="row-odd"><td><p>Many numeric variables</p></td>
+<td><p>Heatmap or correlation matrix</p></td>
+<td><p>Patterns among variables</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>In professional practice, we distinguish between a technical Workflow and a Comprehensive Process.</p>
-<ul class="simple">
-<li><p><strong>Data Analysis Workflow</strong> = “Technical Route”. Its main focus is on the mechanics of data handling—collecting, storing, and preparing data for modeling.</p></li>
-<li><p><strong>Comprehensive Data Science Process</strong> = “Full Map”. It combines the Project Life Cycle (the business-end-to-operations-end steps) with a Collaboration Framework (the team coordination protocols, such as Data Driven Scrum).</p></li>
-</ul>
-<p>The LSE model serves as a detailed guide for data handling, while the Data Science PM process framework broadens the lifecycle to include validation, deployment, operations, and team coordination (see <a class="reference external" href="https://www.datascience-pm.com/data-science-process/">DataScience PM</a>).</p>
-<figure class="align-default" id="lse-model">
-<img alt="../_images/m01_lse_model.png" src="../_images/m01_lse_model.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">This LSE workflow represents the typical stages you will move through when conducting any data analysis project</span><a class="headerlink" href="#lse-model" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
+<p>A <strong>histogram</strong> helps us see whether a distribution is symmetric, skewed, flat, or sharply peaked. A <strong>boxplot</strong> makes it easier to compare the center and spread of a variable across groups. A <strong>scatterplot</strong> shows the relationship between two numeric variables and can reveal whether the relationship is linear, nonlinear, tight, or weak. A <strong>heatmap</strong> helps summarize many pairwise relationships at once.</p>
+<p>These are different ways of asking a question and different ways of revealing evidence. A boxplot may be better than a bar chart when the goal is to show variation across groups. A scatterplot may be better than a line chart when the goal is to show the raw relationship between two variables rather than a time trend.</p>
 </section>
-<section id="the-stages-of-the-modern-lifecycle">
-<h2>1.4 The Stages of the Modern Lifecycle<a class="headerlink" href="#the-stages-of-the-modern-lifecycle" title="Link to this heading">#</a></h2>
-<p>By synthesizing workflows and frameworks, we can define the six essential stages of a project:</p>
-<ol class="arabic simple">
-<li><p>Problem Formulation (Ideate): Identify the problem type. Crucially, ask: “Is this best solved by machine learning or a simpler non-ML solution?”</p></li>
-<li><p>Data Acquisition &amp; Storage: Determine if data is internal, needs capturing (COLLECT), or must be purchased. Raw data is moved to a target location (STORE) in formats like .json or .csv.</p></li>
-<li><p>Preparation &amp; Exploration (EDA): This involves cleaning (handling missing values) and descriptive statistics. A unique bridge here is the Investigate Hypotheses stage, where you use statistical tests to validate patterns before committing to complex algorithms.</p></li>
-<li><p>Modeling &amp; Evaluation:</p></li>
-</ol>
+<section id="learning-to-read-a-visual-not-just-produce-one">
+<h2>3.3 Learning to Read a Visual, Not Just Produce One<a class="headerlink" href="#learning-to-read-a-visual-not-just-produce-one" title="Link to this heading">#</a></h2>
+<p>The goal of EDA is not to create the most elaborate chart. The goal is to look critically at a graph and decide what it is telling us.</p>
+<p>Here are a few questions to ask when reading a visualization:</p>
 <ul class="simple">
-<li><p>“Lab” Validation: Testing on historical “test sets” in a controlled environment.</p></li>
-<li><p>“In the Wild” Validation: Testing on live, real-world data (e.g., A/B testing).</p></li>
+<li><p>What variable or relationship is being shown?</p></li>
+<li><p>What is the main claim the chart is trying to support?</p></li>
+<li><p>Is the scale honest and comparable?</p></li>
+<li><p>Are there outliers or unusual patterns that matter?</p></li>
+<li><p>Does the plot show the whole story, or does it hide important context?</p></li>
 </ul>
-<ol class="arabic simple" start="5">
-<li><p>Communication &amp; Deployment: Insights are delivered via dashboards. For production, models are integrated via an API.</p></li>
-<li><p>Monitoring &amp; Operations (Data Science Ops): Active maintenance to mitigate model drift (performance degradation as the real world changes) and software security patching.</p></li>
-</ol>
-<p>Practical Output Examples</p>
-<p>A data scientist produces concrete artifacts at every stage:</p>
-<ul class="simple">
-<li><p>COLLECT: API response code (e.g., requests.get(url).json()).</p></li>
-<li><p>STORE: Raw files (e.g., weather.json).</p></li>
-<li><p>PREPARE: Cleaned tables (e.g., df.dropna()).</p></li>
-<li><p>INVESTIGATE: Statistical tests (e.g., scipy.stats.ttest_ind()).</p></li>
-<li><p>MODEL: Trained models (e.g., RandomForestRegressor.fit()).</p></li>
-<li><p>COMMUNICATE/DEPLOY: Tableau dashboards, APIs, or Markdown narratives.</p></li>
-</ul>
+<p>For example, if a graph compares donation rates across countries, a viewer should ask whether the comparison is based on raw counts or rates adjusted for population. Without that context, a chart may look simple but produce a misleading conclusion. The same issue appears in many domains: counts can be large because a group is large, not because it is especially high relative to its size.</p>
 </section>
-<section id="the-power-of-the-minimal-viable-model-mvm">
-<h2>1.5 The Power of the Minimal Viable Model (MVM)<a class="headerlink" href="#the-power-of-the-minimal-viable-model-mvm" title="Link to this heading">#</a></h2>
-<p>The idea of a Minimal Viable Model (MVM) adapts the lean principle of building the smallest useful version needed to test an assumption and learn from evidence. We do not aim for perfection; we aim for a “sufficient” model that proves the hypothesis.</p>
-<p>The Five Outcome Decisions: a team makes one of five strategic moves:</p>
+<section id="misleading-visualizations-and-accessibility">
+<h2>3.4 Misleading Visualizations and Accessibility<a class="headerlink" href="#misleading-visualizations-and-accessibility" title="Link to this heading">#</a></h2>
+<p>A chart that is technically valid can still be poor for interpretation. Visuals become misleading when they hide context, distort scale, or choose encodings that make the story harder to see.</p>
+<section id="common-problems">
+<h3>Common problems<a class="headerlink" href="#common-problems" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Shift Focus: The data reveals a different problem (loop to Problem Definition).</p></li>
-<li><p>Add/Clean Data: The model needs better inputs (loop to Data Investigation).</p></li>
-<li><p>Experiment with Algorithms: The data is good, but the math needs work (restart MVM phase).</p></li>
-<li><p>Deploy and Enhance: The model is successful; proceed to production.</p></li>
-<li><p>Cancel Project: The value isn’t there; cut losses and pivot.</p></li>
+<li><p><strong>Mismatched axes</strong>: two side-by-side charts appear to show similar trends when their scales are not comparable.</p></li>
+<li><p><strong>Overplotting</strong>: too many points overlap and create a dense, unreadable block.</p></li>
+<li><p><strong>Distorted axis ranges</strong>: a truncated y-axis can make a small change look dramatic.</p></li>
+<li><p><strong>Poor color choices</strong>: a chart may look colorful but still be difficult for some readers to interpret.</p></li>
+<li><p><strong>Overuse of decoration</strong>: unnecessary flourishes can distract from the message.</p></li>
+</ul>
+<p>Accessibility is part of visual quality, not an optional add-on. <strong>A chart that relies on red and green alone may be difficult for readers with color-vision differences</strong>. A design that shows weak contrast or tiny labels may be hard to read for many audiences.</p>
+</section>
+</section>
+<section id="exploratory-vs-explanatory-visualization">
+<h2>3.5 Exploratory vs. Explanatory Visualization<a class="headerlink" href="#exploratory-vs-explanatory-visualization" title="Link to this heading">#</a></h2>
+<p>The same data can be visualized in more than one way, depending on the purpose.</p>
+<section id="exploratory-visualization">
+<h3>Exploratory visualization<a class="headerlink" href="#exploratory-visualization" title="Link to this heading">#</a></h3>
+<p><strong>Exploratory visualizations</strong> are used while a data analyst is investigating. They are often <strong>rough, iterative, and designed to support question generation</strong>. The goal is not necessarily to make a beautiful figure; the goal is to help the analyst discover patterns, anomalies, and unexpected structure.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>a histogram to inspect distribution shape</p></li>
+<li><p>a scatterplot to look for a relationship</p></li>
+<li><p>a matrix of pairwise plots to compare many variables</p></li>
 </ul>
 </section>
-<section id="feedback-loops-embracing-the-u-turn">
-<h2>1.6 Feedback Loops: Embracing the “U-Turn”<a class="headerlink" href="#feedback-loops-embracing-the-u-turn" title="Link to this heading">#</a></h2>
-<p>Dashed arrows in Figure 1 are the “U-turns” that drive accuracy.</p>
+<section id="explanatory-visualization">
+<h3>Explanatory visualization<a class="headerlink" href="#explanatory-visualization" title="Link to this heading">#</a></h3>
+<p><strong>Explanatory visualizations</strong> are designed for an audience that needs to <strong>understand a conclusion</strong>. They are usually more polished and more intentional. The figure should emphasize one clear message and remove unnecessary clutter.</p>
+<p>Examples:</p>
 <ul class="simple">
-<li><p>When you realize the data cannot answer the original question Then loop back to Collect.</p></li>
-<li><p>When the model performance is poor due to messy or unscaled inputs Then loop back to Prepare.</p></li>
-<li><p>When the data reveals a completely new, unexpected pattern Then loop back to Explore.</p></li>
-<li><p>When the real-world data distribution changes (drift) Then loop back to Operate/Retrain.</p></li>
+<li><p>a highlight-and-callout chart comparing one region against the rest</p></li>
+<li><p>a carefully titled plot showing a key trend over time</p></li>
+<li><p>a simplified dashboard that explains which decisions or patterns matter</p></li>
 </ul>
+<p>The shift from exploratory to explanatory visualization is important because it reminds us that a chart is a communication tool. A good explanatory chart does not merely display data; it helps the audience understand a conclusion without guessing what the writer intended.</p>
+</section>
+</section>
+<section id="ai-generated-visualizations-useful-but-not-authoritative">
+<h2>3.6 AI-Generated Visualizations: Useful, but Not Authoritative<a class="headerlink" href="#ai-generated-visualizations-useful-but-not-authoritative" title="Link to this heading">#</a></h2>
+<p>Generative AI can create charts quickly. It can summarize patterns, suggest plot types, and generate polished visual output in seconds. That speed is useful, but it does not remove the need for human judgment.</p>
+<p>A generated chart should still be evaluated the same way as any other visualization:</p>
+<ul class="simple">
+<li><p>Does it match the question and the data?</p></li>
+<li><p>Is the scale honest and comparable?</p></li>
+<li><p>Does the chart reveal the real pattern, or does it oversimplify or distort it?</p></li>
+<li><p>Is the design accessible and readable for the intended audience?</p></li>
+<li><p>Does the visualization support a claim, or is it simply attractive without being informative?</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>AI-generated visuals should be treated as drafts to evaluate, not as final evidence without scrutiny.</p>
+</div>
 </section>
 <section id="key-takeaways">
-<h2>1.7 Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading">#</a></h2>
-<p>As you move toward your data Science Project, your success will depend less on your ability to write a perfect algorithm and more on your ability to navigate the non-linear map.</p>
-<p>Your Checklist for Success:</p>
-<ul class="contains-task-list simple">
-<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> <strong>Domain problem</strong>: Do I understand the real-world question and why it matters?</p></li>
-<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> <strong>Data</strong>: Does the available data actually represent the problem I want to study?</p></li>
-<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> <strong>Analysis</strong>: Are my methods appropriate for the data and question?</p></li>
-<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> <strong>Evaluation</strong>: Have I tested whether my conclusions are trustworthy?</p></li>
-<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> <strong>Iteration</strong>: What evidence would make me return to an earlier stage?</p></li>
-<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> <strong>Communication</strong>: Can a stakeholder understand and act on the result?</p></li>
-<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> <strong>Operations</strong>: If this becomes a deployed system, how will it be monitored?</p></li>
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Visualization is a core part of data science because <strong>it helps us detect patterns and communicate findings</strong>.</p></li>
+<li><p>The best chart depends on <strong>the question and the type of variables</strong> being studied.</p></li>
+<li><p>A strong visualization supports interpretation and does not hide the real story.</p></li>
+<li><p>Misleading scales, overplotting, poor color choices, and inaccessibility can all distort understanding.</p></li>
+<li><p><strong>Exploratory plots help us investigate; explanatory plots help us communicate</strong>.</p></li>
+<li><p>Human judgment remains essential, even when AI can generate graphics quickly.</p></li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Advice
-Data science is a “team sport” that requires extreme agility. Whether you are using statistical tests in the investigate phase or deploying an MVM to an API, keep your stakeholders close and your feedback loops tight.</p>
-</div>
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="references">
 <h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
 <p>This module draws on selected research articles, open educational resources, and professional documentation.</p>
 <ul class="simple">
-<li><p>Cardoso-Silva, J. (2026). <em>The LSE Data Science Workflow</em>. London School of Economics Data Science Institute. <a class="reference external" href="https://lse-dsi.github.io/DS105/2025-2026/winter-term/guides/data-science-workflow.html">https://lse-dsi.github.io/DS105/2025-2026/winter-term/guides/data-science-workflow.html</a></p></li>
-<li><p>Data Science PM. (2024). <em>What is a Data Science Life Cycle?</em> <a class="reference external" href="https://www.datascience-pm.com/data-science-life-cycle/">https://www.datascience-pm.com/data-science-life-cycle/</a></p></li>
-<li><p>Data Science PM. <em>What is the Data Science Process?</em> <a class="reference external" href="https://www.datascience-pm.com/data-science-process/">https://www.datascience-pm.com/data-science-process/</a></p></li>
-<li><p>Ries, E. (2011). <em>The Lean Startup: How Today’s Entrepreneurs Use Continuous Innovation to Create Radically Successful Businesses</em>. Crown Business.</p></li>
-<li><p>Saltz, J., Sutherland, A., &amp; Hotz, N. (2022). Achieving Lean Data Science Agility Via Data Driven Scrum. <em>Proceedings of the 55th Hawaii International Conference on System Sciences</em>. <a class="reference external" href="https://aisel.aisnet.org/hicss-55/st/agile_development/2/">https://aisel.aisnet.org/hicss-55/st/agile_development/2/</a></p></li>
-<li><p>Yu, B., &amp; Barter, R. L. (2024). <em>Veridical Data Science: The Practice of Responsible Data Analysis and Decision Making</em>. MIT Press. <a class="reference external" href="https://vdsbook.com/">https://vdsbook.com/</a></p></li>
+<li><p>Joseph F. Hair, William C. Black, Barry J. Babin, and Rolph E. Anderson. <em>Multivariate Data Analysis</em>. Pearson, Upper Saddle River, NJ, 7 edition, 2010.</p></li>
+<li><p>Barter, R., &amp; Yu, B. <em>Veridical Data Science</em>. Chapter 5: Exploratory Data Analysis.<br />
+<a class="reference external" href="https://vdsbook.com/05-data_viz">https://vdsbook.com/05-data_viz</a></p></li>
 </ul>
+<div class="toctree-wrapper compound">
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -629,7 +613,7 @@ Data science is a “team sport” that requires extreme agility. Whether you ar
         },
         kernelOptions: {
             name: "python3",
-            path: "./module01"
+            path: "./module03"
         },
         predefinedOutput: true
     }
@@ -647,20 +631,20 @@ Data science is a “team sport” that requires extreme agility. Whether you ar
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../welcome.html"
+       href="../module02/week2_outlier_practice_solution.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Applied Data Science</p>
+        <p class="prev-next-title">Week 2 Outliers and Data Quality - Solution</p>
       </div>
     </a>
     <a class="right-next"
-       href="../module02/data.html"
+       href="week3_visualization_practice.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">02 Data Quality</p>
+        <p class="prev-next-title">Coding Practice: Choosing and Checking Visualizations</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -682,14 +666,22 @@ Data science is a “team sport” that requires extreme agility. Whether you ar
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">01 Data Science Lifecycle</a><ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-reality-of-data-science">1.1 The Reality of Data Science</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-genesis-of-a-project-entry-points-and-ideation">1.2 The Genesis of a Project: Entry Points and Ideation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-vs-lifecycle">1.3 Workflow vs. Lifecycle</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-stages-of-the-modern-lifecycle">1.4 The Stages of the Modern Lifecycle</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-power-of-the-minimal-viable-model-mvm">1.5 The Power of the Minimal Viable Model (MVM)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feedback-loops-embracing-the-u-turn">1.6 Feedback Loops: Embracing the “U-Turn”</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">1.7 Key Takeaways</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">03 Data Visualization</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-visualization-matters">3.1 Why Visualization Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-chart-that-fits-the-question">3.2 Choosing a Chart That Fits the Question</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-to-read-a-visual-not-just-produce-one">3.3 Learning to Read a Visual, Not Just Produce One</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#misleading-visualizations-and-accessibility">3.4 Misleading Visualizations and Accessibility</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-problems">Common problems</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-vs-explanatory-visualization">3.5 Exploratory vs. Explanatory Visualization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-visualization">Exploratory visualization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explanatory-visualization">Explanatory visualization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-generated-visualizations-useful-but-not-authoritative">3.6 AI-Generated Visualizations: Useful, but Not Authoritative</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
