@@ -1,0 +1,798 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>04 Regression and Prediction &#8212; Lecture Notes Applied Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'module04/regression';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Week 3 Data Visualization - Solution" href="../module03/week3_visualization_practice_solution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/bannerADS.png" class="logo__image only-light" alt="Lecture Notes Applied Data Science - Home"/>
+    <img src="../_static/bannerADS.png" class="logo__image only-dark pst-js-only" alt="Lecture Notes Applied Data Science - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../welcome.html">
+                    Applied Data Science
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../module01/workflow.html">01 Data Science Lifecycle</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module02/data.html">02 Data Quality</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module03/visualization.html">03 Data Visualization</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">04 Regression and Prediction</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule04/regression.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/module04/regression.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>04 Regression and Prediction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">04 Regression and Prediction</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-relationships-to-predictions">4.1 From Relationships to Predictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-linear-regression">4.2 Simple Linear Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-and-error">Least squares and error</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-linear-regression">4.3 Multiple Linear Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-predictors-and-indicator-variables">Categorical predictors and indicator variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-continuous-to-binary-outcomes">4.4 From Continuous to Binary Outcomes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#does-the-model-actually-predict">4.5 Does the Model Actually Predict?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-regression-can-mislead">4.6 When Regression Can Mislead</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-as-practical-cautions">Assumptions as practical cautions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unusual-observations">Unusual observations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extrapolation">Extrapolation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confounding-and-causal-overreach">Confounding and causal overreach</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#communicating-model-results">4.7 Communicating Model Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-in-the-ai-era">4.8 Regression in the AI Era</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="regression-and-prediction">
+<h1>04 Regression and Prediction<a class="headerlink" href="#regression-and-prediction" title="Link to this heading">#</a></h1>
+<section id="big-idea">
+<h2>Big Idea<a class="headerlink" href="#big-idea" title="Link to this heading">#</a></h2>
+<p>Regression is one of the most common ways to describe relationships in data and use those relationships for prediction. It can help us describe how variables are related, estimate outcomes for new observations, and decide whether a model is useful enough to support a real decision.</p>
+<p>In applied data science, the important skill is not just fitting a model. It is deciding what question the model answers, whether the relationship is meaningful, whether the evaluation is trustworthy, and how carefully the results should be communicated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A regression model is a tool for reasoning from data. It does not automatically reveal causes, guarantee accurate future predictions, or remove the need for human judgment.</p>
+</div>
+</section>
+<section id="from-relationships-to-predictions">
+<h2>4.1 From Relationships to Predictions<a class="headerlink" href="#from-relationships-to-predictions" title="Link to this heading">#</a></h2>
+<p>Regression begins with a question. Sometimes the question is <strong>explanatory</strong>: which variables seem to be related, and how might we describe that relationship? Sometimes the question is <strong>predictive</strong>: given what we know now, what value should we expect for a new observation?</p>
+<p>These questions are related, but they are not identical.</p>
+<ul class="simple">
+<li><p>An <strong>explanatory question</strong> focuses on understanding a relationship.</p></li>
+<li><p>A <strong>predictive question</strong> focuses on making a useful forecast for unseen data.</p></li>
+</ul>
+<p>Every regression problem also requires us to distinguish between two roles:</p>
+<ul class="simple">
+<li><p>the <strong>response variable</strong>, or the outcome we want to explain or predict</p></li>
+<li><p>the <strong>predictor variables</strong>, or the features we use as evidence</p></li>
+</ul>
+<p>For example, if we want to estimate house sale prices, the sale price is the response. Variables such as living area, neighborhood, or house condition may be predictors. If we want to estimate whether an online shopping session will end in a purchase, the response is binary and the predictors might include browsing behavior or traffic source.</p>
+<p>Regression is often motivated by a visible relationship in a scatterplot or table, but that relationship should be interpreted carefully. A strong association does not prove that one variable causes the other. Two variables can move together because both are affected by a third factor, because the data were collected in a particular way, or because the pattern only holds in one context.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Correlation is evidence of association, not proof of causation. A model can be useful for prediction even when it does not identify the real-world mechanism behind the pattern.</p>
+</div>
+</section>
+<section id="simple-linear-regression">
+<h2>4.2 Simple Linear Regression<a class="headerlink" href="#simple-linear-regression" title="Link to this heading">#</a></h2>
+<p>The most familiar regression model is <strong>simple linear regression</strong>, which uses one predictor to model one numeric response with a fitted line.</p>
+<figure class="align-default" id="regression">
+<img alt="../_images/regression.png" src="../_images/regression.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Simple Linear Regression.</span><a class="headerlink" href="#regression" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>If a scatterplot suggests that larger values of a predictor tend to go with larger or smaller values of a response in a roughly straight-line pattern, a line can provide a useful summary. The line has two main pieces:</p>
+<ul class="simple">
+<li><p>the <strong>intercept</strong>, which gives the model’s predicted starting point</p></li>
+<li><p>the <strong>slope</strong>, which describes how much the predicted response changes for a one-unit increase in the predictor</p></li>
+</ul>
+<p>Once the line is fit, we can plug in a predictor value and generate a prediction. But a fitted line is only useful if the predictions are reasonably close to what we observe.</p>
+<p>The gap between an observed value and the model’s predicted value is called a <strong>residual</strong>. Residuals help us see where the model is doing well, where it is missing important structure, and whether a simple line is too crude for the problem.</p>
+<section id="least-squares-and-error">
+<h3>Least squares and error<a class="headerlink" href="#least-squares-and-error" title="Link to this heading">#</a></h3>
+<p>One common way to fit a line is <strong>least squares</strong>, which chooses the line that makes the squared prediction errors as small as possible overall. Squaring the residuals gives extra weight to larger mistakes, which is one reason least squares is sensitive to unusually extreme observations.</p>
+<p>Another approach is <strong>least absolute deviation (LAD)</strong>, which minimizes absolute errors instead of squared errors. In an applied setting, the most important distinction is usually this:</p>
+<ul class="simple">
+<li><p><strong>least squares</strong> is common, efficient, and strongly influenced by large errors</p></li>
+<li><p><strong>LAD</strong> is often more robust when extreme outliers would otherwise pull the line too far</p></li>
+</ul>
+</section>
+</section>
+<section id="multiple-linear-regression">
+<h2>4.3 Multiple Linear Regression<a class="headerlink" href="#multiple-linear-regression" title="Link to this heading">#</a></h2>
+<p>Real data problems rarely depend on only one predictor. <strong>Multiple linear regression</strong> extends the same idea by using several predictors at once.</p>
+<p>This matters because one-variable relationships can be misleading. A predictor may appear strongly related to the response on its own, but that relationship can weaken, strengthen, or even change direction once other relevant variables are included. As a result, coefficients in a multiple regression model should be interpreted <strong>in context</strong>.</p>
+<p>In a multiple regression model, a coefficient describes the expected change in the response for a one-unit change in that predictor <strong>while holding the other predictors fixed</strong>. That phrase matters. It means the coefficient is not a free-floating statement about the predictor in isolation.</p>
+<section id="categorical-predictors-and-indicator-variables">
+<h3>Categorical predictors and indicator variables<a class="headerlink" href="#categorical-predictors-and-indicator-variables" title="Link to this heading">#</a></h3>
+<p>Not every useful predictor is numeric. Categories such as neighborhood, browser type, or treatment group often carry important information. To include them in a regression model, we typically represent categories using <strong>indicator variables</strong> (also called <strong>dummy variables</strong>).</p>
+<p>An indicator variable marks whether an observation belongs to a category. For example, if a three-category variable is included in a model, one category is usually treated as the reference group and the others are represented with indicator columns. The resulting coefficients describe differences relative to that reference category.</p>
+<p>The key idea is conceptual: categories can be modeled, but their coefficients are interpreted as comparisons, not as numeric distances.</p>
+</section>
+</section>
+<section id="from-continuous-to-binary-outcomes">
+<h2>4.4 From Continuous to Binary Outcomes<a class="headerlink" href="#from-continuous-to-binary-outcomes" title="Link to this heading">#</a></h2>
+<p>So far, regression has described numeric outcomes such as price, revenue, or temperature. But many data science questions involve a <strong>binary outcome</strong> instead: yes or no, purchase or no purchase, churn or no churn.</p>
+<p>Ordinary linear regression is not ideal for these problems because it can produce predictions below 0 or above 1, which do not make sense as probabilities. It also assumes a straight-line relationship on a scale that is poorly matched to a binary response.</p>
+<p><strong>Logistic regression</strong> provides a bridge from linear modeling to binary prediction. Instead of predicting the binary outcome directly, it predicts the probability that the outcome belongs to one class. Those probabilities can then be converted into a classification decision using a threshold.</p>
+<p>For Week 04, the main idea is not the full mathematics of the logistic function. It is the modeling shift:</p>
+<ul class="simple">
+<li><p>linear regression predicts a numeric outcome</p></li>
+<li><p>logistic regression predicts a probability for a binary outcome</p></li>
+<li><p>classification decisions depend on how those probabilities are interpreted and thresholded</p></li>
+</ul>
+</section>
+<section id="does-the-model-actually-predict">
+<h2>4.5 Does the Model Actually Predict?<a class="headerlink" href="#does-the-model-actually-predict" title="Link to this heading">#</a></h2>
+<p>A regression model can fit the data we already have and still fail on new data. That is why model evaluation must focus on <strong>generalization</strong>, not only on how closely the model matches the training set.</p>
+<figure class="align-default" id="generalization">
+<img alt="../_images/generalization.png" src="../_images/generalization.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Generalization and Data Leakage.</span><a class="headerlink" href="#generalization" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>To do this well, we usually separate data into different roles:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Data split</p></th>
+<th class="head"><p>Main purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Training data</p></td>
+<td><p>Fit the model</p></td>
+</tr>
+<tr class="row-odd"><td><p>Validation data</p></td>
+<td><p>Compare alternatives and tune decisions</p></td>
+</tr>
+<tr class="row-even"><td><p>Test data</p></td>
+<td><p>Check the final model on unseen data</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This structure helps protect us from <strong>data leakage</strong>, where information from the evaluation data slips into model design and makes performance look better than it really is.</p>
+<p>Evaluation is also where you can see <strong>underfitting</strong> and <strong>overfitting</strong>:</p>
+<ul class="simple">
+<li><p><strong>underfitting</strong> happens when the model is too simple to capture an important pattern</p></li>
+<li><p><strong>overfitting</strong> happens when the model adapts too closely to the quirks of the training data and performs worse on new data</p></li>
+</ul>
+<p>Regression performance can be summarized with measures such as MAE, RMSE, or R-squared, but the main lesson here is conceptual: a model is only useful if its evaluation matches the kind of decision we care about.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A model with strong training performance may still be unreliable if preprocessing, model selection, or evaluation has used information from the test data.</p>
+</div>
+</section>
+<section id="when-regression-can-mislead">
+<h2>4.6 When Regression Can Mislead<a class="headerlink" href="#when-regression-can-mislead" title="Link to this heading">#</a></h2>
+<p>Regression is powerful, but it can also create false confidence when its limits are ignored.</p>
+<section id="assumptions-as-practical-cautions">
+<h3>Assumptions as practical cautions<a class="headerlink" href="#assumptions-as-practical-cautions" title="Link to this heading">#</a></h3>
+<p>Linear regression works best when the relationship is reasonably linear and when the error pattern is not wildly inconsistent across the data. Residual plots and other checks can reveal warning signs such as curvature, changing spread, or a model that systematically misses one region of the data.</p>
+</section>
+<section id="unusual-observations">
+<h3>Unusual observations<a class="headerlink" href="#unusual-observations" title="Link to this heading">#</a></h3>
+<p>Some observations matter more than others. Outliers, leverage points, and data-entry mistakes can change the fitted model and distort the story we tell from it. These cases are not automatically deleted, but they should trigger investigation.</p>
+</section>
+<section id="extrapolation">
+<h3>Extrapolation<a class="headerlink" href="#extrapolation" title="Link to this heading">#</a></h3>
+<p>A model is usually most trustworthy near the range of data on which it was trained. Predictions far outside that range are <strong>extrapolations</strong>, and they are often much less reliable than the model output may appear.</p>
+</section>
+<section id="confounding-and-causal-overreach">
+<h3>Confounding and causal overreach<a class="headerlink" href="#confounding-and-causal-overreach" title="Link to this heading">#</a></h3>
+<p>Even when a coefficient is stable and a prediction is accurate, that does not mean the predictor causes the response. A third variable may influence both. Data collection choices may also shape the pattern. Predictive relationships are evidence about what tends to move together in the observed data, not direct proof of what would happen under intervention.</p>
+</section>
+</section>
+<section id="communicating-model-results">
+<h2>4.7 Communicating Model Results<a class="headerlink" href="#communicating-model-results" title="Link to this heading">#</a></h2>
+<p>A good regression write-up explains what the model supports without claiming more than the evidence can justify.</p>
+<p>That usually means communicating:</p>
+<ul class="simple">
+<li><p>what outcome was modeled</p></li>
+<li><p>which predictors were used</p></li>
+<li><p>what the main relationships or predictions suggest</p></li>
+<li><p>how the model was evaluated</p></li>
+<li><p>what uncertainty or limitation remains</p></li>
+</ul>
+<p>The most common communication mistakes are overstatement and vagueness. Saying that a model “proves” a claim is usually too strong. Reporting a coefficient without context may confuse the audience rather than inform them. Reporting high model performance without explaining the evaluation setup can also be misleading.</p>
+<p>Clear communication should connect the statistical result to the practical question. A model can be mathematically strong and still not be useful enough for a real decision if the prediction error is too large, the evaluation context is weak, or the relationship is easily misinterpreted.</p>
+</section>
+<section id="regression-in-the-ai-era">
+<h2>4.8 Regression in the AI Era<a class="headerlink" href="#regression-in-the-ai-era" title="Link to this heading">#</a></h2>
+<p>AI tools can now fit models, write code, summarize coefficients, recommend features, and even draft conclusions. That speed is useful, but it does not replace the need for human reasoning.</p>
+<p>You still need to decide:</p>
+<ul class="simple">
+<li><p>whether regression is appropriate for the question</p></li>
+<li><p>whether the response and predictors are defined sensibly</p></li>
+<li><p>whether the evaluation design avoids leakage and reflects the future use case</p></li>
+<li><p>whether the model seems underfit, overfit, or unstable</p></li>
+<li><p>whether the interpretation confuses association with causation</p></li>
+<li><p>whether the final conclusion is careful enough for the audience and decision context</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>AI can automate parts of model building. It cannot take responsibility for whether the question, evidence, evaluation, and interpretation actually make sense.</p>
+</div>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Regression helps connect observed relationships to predictions, but explanation and prediction are not the same goal.</p></li>
+<li><p>A simple linear regression line gives predictions, while residuals show where those predictions miss.</p></li>
+<li><p>Multiple regression changes how coefficients are interpreted because predictors are considered together.</p></li>
+<li><p>Logistic regression extends the regression idea to binary outcomes by modeling probabilities.</p></li>
+<li><p>A model should be judged on unseen data, not only on how well it fits the training set.</p></li>
+<li><p>Assumptions, unusual observations, extrapolation, and confounding can all make regression misleading.</p></li>
+<li><p>Strong model communication explains both what the model shows and what it cannot establish.</p></li>
+<li><p>In the AI era, generating a model is easier; evaluating whether it is trustworthy is still a human task.</p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="references">
+<h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<p>This module synthesizes open educational source material on prediction and regression and adapts it for the course’s Week 04 learning goals.</p>
+<ul class="simple">
+<li><p>Yu, B., &amp; Barter, R. <em>Veridical Data Science</em>. Chapter 8: An Introduction to Prediction Problems.<br />
+<a class="reference external" href="https://vdsbook.com/08-prediction_intro">https://vdsbook.com/08-prediction_intro</a></p></li>
+<li><p>Yu, B., &amp; Barter, R. <em>Veridical Data Science</em>. Chapter 9: Continuous Responses and Least Squares.<br />
+<a class="reference external" href="https://vdsbook.com/09-ls">https://vdsbook.com/09-ls</a></p></li>
+<li><p>Yu, B., &amp; Barter, R. <em>Veridical Data Science</em>. Chapter 11: Binary Responses and Logistic Regression.<br />
+<a class="reference external" href="https://vdsbook.com/11-ls_binary">https://vdsbook.com/11-ls_binary</a></p></li>
+</ul>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./module04"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../module03/week3_visualization_practice_solution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 3 Data Visualization - Solution</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">04 Regression and Prediction</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-relationships-to-predictions">4.1 From Relationships to Predictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-linear-regression">4.2 Simple Linear Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-and-error">Least squares and error</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-linear-regression">4.3 Multiple Linear Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-predictors-and-indicator-variables">Categorical predictors and indicator variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-continuous-to-binary-outcomes">4.4 From Continuous to Binary Outcomes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#does-the-model-actually-predict">4.5 Does the Model Actually Predict?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-regression-can-mislead">4.6 When Regression Can Mislead</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-as-practical-cautions">Assumptions as practical cautions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unusual-observations">Unusual observations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extrapolation">Extrapolation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confounding-and-causal-overreach">Confounding and causal overreach</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#communicating-model-results">4.7 Communicating Model Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-in-the-ai-era">4.8 Regression in the AI Era</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Olga Scrivner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, Olga Scrivner.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
