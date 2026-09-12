@@ -1,0 +1,23 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: welcome
+chapters:
+- file: module01/workflow
+
+- file: module02/data
+  sections:
+    - file: module02/missing_values
+    - file: module02/week2_outlier_practice
+    - file: module02/week2_outlier_practice_solution
+
+- file: module03/visualization
+  sections:
+    - file: module03/week3_visualization_practice
+    - file: module03/week3_visualization_practice_solution
+
+- file: module04/regression
+  sections:
+    - file: module04/week4_regression_practice
+    - file: module04/week4_regression_practice_solution
