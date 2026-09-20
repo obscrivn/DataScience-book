@@ -398,15 +398,15 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-raw-rows-into-training-and-test-data">2. Split raw rows into training and test data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-and-read-a-small-regression-tree">3. Fit and read a small regression tree</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-translate-a-path">Reasoning checkpoint: translate a path</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-translate-a-path">Quick Check: translate a path</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-a-small-tree-a-deep-tree-and-a-random-forest">4. Compare a small tree, a deep tree, and a random forest</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-diagnose-complexity-with-evidence">Reasoning checkpoint: diagnose complexity with evidence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-diagnose-complexity-with-evidence">Quick Check: diagnose complexity with evidence</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-feature-importance-cautiously">5. Read feature importance cautiously</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-critique-an-importance-claim">Reasoning checkpoint: critique an importance claim</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-critique-an-importance-claim">Quick Check: critique an importance claim</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-transfer-change-one-meaningful-tree-decision">6. Optional transfer: change one meaningful tree decision</a></li>
@@ -414,17 +414,17 @@ document.write(`
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-finding-possible-latent-structure">Part B. Finding possible latent structure</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ask-a-different-kind-of-question">7. Ask a different kind of question</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-look-before-fitting">Reasoning checkpoint: look before fitting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-look-before-fitting">Quick Check: look before fitting</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-a-simple-two-factor-model-and-inspect-loadings">8. Fit a simple two-factor model and inspect loadings</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-interpret-then-qualify">Reasoning checkpoint: interpret, then qualify</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-interpret-then-qualify">Quick Check: interpret, then qualify</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-comparison-which-question-are-you-answering">Final comparison — Which question are you answering?</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-synthesis-checkpoint">Final synthesis checkpoint</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-comparison-which-question-are-you-answering">Final comparison: Which question are you answering?</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-check">Final check</a></li>
 </ul>
 </li>
 </ul>
@@ -562,8 +562,8 @@ document.write(`
 </div>
 </div>
 </div>
-<section id="reasoning-checkpoint-translate-a-path">
-<h3>Reasoning checkpoint: translate a path<a class="headerlink" href="#reasoning-checkpoint-translate-a-path" title="Permalink to this heading">#</a></h3>
+<section id="quick-check-translate-a-path">
+<h3>Quick Check: translate a path<a class="headerlink" href="#quick-check-translate-a-path" title="Permalink to this heading">#</a></h3>
 <p>Choose one path from the root to a leaf in the plotted tree. Translate it into plain language:</p>
 <ol class="arabic simple">
 <li><p>What conditions define the group that reaches the leaf?</p></li>
@@ -628,8 +628,8 @@ document.write(`
 </div>
 </div>
 </div>
-<section id="reasoning-checkpoint-diagnose-complexity-with-evidence">
-<h3>Reasoning checkpoint: diagnose complexity with evidence<a class="headerlink" href="#reasoning-checkpoint-diagnose-complexity-with-evidence" title="Permalink to this heading">#</a></h3>
+<section id="quick-check-diagnose-complexity-with-evidence">
+<h3>Quick Check: diagnose complexity with evidence<a class="headerlink" href="#quick-check-diagnose-complexity-with-evidence" title="Permalink to this heading">#</a></h3>
 <p>Use the table and chart, not just the model names.</p>
 <ul class="simple">
 <li><p>Which model has the lowest <em>training</em> RMSE? Is that enough to choose it?</p></li>
@@ -667,8 +667,8 @@ document.write(`
 </div>
 </div>
 </div>
-<section id="reasoning-checkpoint-critique-an-importance-claim">
-<h3>Reasoning checkpoint: critique an importance claim<a class="headerlink" href="#reasoning-checkpoint-critique-an-importance-claim" title="Permalink to this heading">#</a></h3>
+<section id="quick-check-critique-an-importance-claim">
+<h3>Quick Check: critique an importance claim<a class="headerlink" href="#quick-check-critique-an-importance-claim" title="Permalink to this heading">#</a></h3>
 <p>Suppose an AI summary says: <em>“The most important feature causes disease progression, so changing it will improve outcomes.”</em></p>
 <p>Write a correction that distinguishes what the importance values support from what they do not support. Then name one follow-up analysis or study you would need before making a causal claim.</p>
 </section>
@@ -713,8 +713,8 @@ document.write(`
 </div>
 </div>
 </div>
-<section id="reasoning-checkpoint-look-before-fitting">
-<h3>Reasoning checkpoint: look before fitting<a class="headerlink" href="#reasoning-checkpoint-look-before-fitting" title="Permalink to this heading">#</a></h3>
+<section id="quick-check-look-before-fitting">
+<h3>Quick Check: look before fitting<a class="headerlink" href="#quick-check-look-before-fitting" title="Permalink to this heading">#</a></h3>
 <p>Identify two or three measurements that appear strongly related in the heatmap. Would it be reasonable to investigate whether they reflect a shared pattern? Why?</p>
 <p>Correlation alone does not prove a single hidden factor exists. It does provide a reason to inspect whether a smaller set of shared patterns may be useful.</p>
 </section>
@@ -745,8 +745,8 @@ document.write(`
 </div>
 </div>
 </div>
-<section id="reasoning-checkpoint-interpret-then-qualify">
-<h3>Reasoning checkpoint: interpret, then qualify<a class="headerlink" href="#reasoning-checkpoint-interpret-then-qualify" title="Permalink to this heading">#</a></h3>
+<section id="quick-check-interpret-then-qualify">
+<h3>Quick Check: interpret, then qualify<a class="headerlink" href="#quick-check-interpret-then-qualify" title="Permalink to this heading">#</a></h3>
 <p>For each factor:</p>
 <ol class="arabic simple">
 <li><p>Identify the variables with the largest absolute loadings.</p></li>
@@ -758,10 +758,10 @@ document.write(`
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="final-comparison-which-question-are-you-answering">
-<h1>Final comparison — Which question are you answering?<a class="headerlink" href="#final-comparison-which-question-are-you-answering" title="Permalink to this heading">#</a></h1>
+<h1>Final comparison: Which question are you answering?<a class="headerlink" href="#final-comparison-which-question-are-you-answering" title="Permalink to this heading">#</a></h1>
 <p>Decision trees and random forests are <strong>supervised</strong> here: they learn from a known target, <code class="docutils literal notranslate"><span class="pre">progression</span></code>, and are judged by how well they predict held-out target values. Factor analysis is <strong>unsupervised</strong> here: it uses observed wine measurements without a target and looks for a possible shared structure.</p>
-<section id="final-synthesis-checkpoint">
-<h2>Final synthesis checkpoint<a class="headerlink" href="#final-synthesis-checkpoint" title="Permalink to this heading">#</a></h2>
+<section id="final-check">
+<h2>Final check<a class="headerlink" href="#final-check" title="Permalink to this heading">#</a></h2>
 <blockquote>
 <div><p>A dataset contains ten measurements about customers.</p>
 <p>If your goal is to predict whether a customer will renew a subscription, which method explored in this notebook would be appropriate?</p>
@@ -856,15 +856,15 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-raw-rows-into-training-and-test-data">2. Split raw rows into training and test data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-and-read-a-small-regression-tree">3. Fit and read a small regression tree</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-translate-a-path">Reasoning checkpoint: translate a path</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-translate-a-path">Quick Check: translate a path</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-a-small-tree-a-deep-tree-and-a-random-forest">4. Compare a small tree, a deep tree, and a random forest</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-diagnose-complexity-with-evidence">Reasoning checkpoint: diagnose complexity with evidence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-diagnose-complexity-with-evidence">Quick Check: diagnose complexity with evidence</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-feature-importance-cautiously">5. Read feature importance cautiously</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-critique-an-importance-claim">Reasoning checkpoint: critique an importance claim</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-critique-an-importance-claim">Quick Check: critique an importance claim</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-transfer-change-one-meaningful-tree-decision">6. Optional transfer: change one meaningful tree decision</a></li>
@@ -872,17 +872,17 @@ document.write(`
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-finding-possible-latent-structure">Part B. Finding possible latent structure</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ask-a-different-kind-of-question">7. Ask a different kind of question</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-look-before-fitting">Reasoning checkpoint: look before fitting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-look-before-fitting">Quick Check: look before fitting</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-a-simple-two-factor-model-and-inspect-loadings">8. Fit a simple two-factor model and inspect loadings</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-interpret-then-qualify">Reasoning checkpoint: interpret, then qualify</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-check-interpret-then-qualify">Quick Check: interpret, then qualify</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-comparison-which-question-are-you-answering">Final comparison — Which question are you answering?</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-synthesis-checkpoint">Final synthesis checkpoint</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-comparison-which-question-are-you-answering">Final comparison: Which question are you answering?</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-check">Final check</a></li>
 </ul>
 </li>
 </ul>

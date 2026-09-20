@@ -386,14 +386,14 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-solution-trees-for-prediction">Part A solution — Trees for prediction</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-solution-trees-for-prediction">Part A solution. Trees for prediction</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-one-path">Interpreting one path</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complexity-diagnosis">Complexity diagnosis</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-importance-correction">Feature-importance correction</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-meaningful-tree-change">One meaningful tree change</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-solution-finding-possible-latent-structure">Part B solution — Finding possible latent structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-solution-finding-possible-latent-structure">Part B solution: Finding possible latent structure</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-loading-pattern">Interpreting the loading pattern</a></li>
 </ul>
 </li>
@@ -415,9 +415,9 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="week-5-coding-practice-solution-predicting-outcomes-and-finding-hidden-structure">
 <h1>Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure<a class="headerlink" href="#week-5-coding-practice-solution-predicting-outcomes-and-finding-hidden-structure" title="Permalink to this heading">#</a></h1>
 <p><a class="reference external" href="https://colab.research.google.com/github/obscrivn/DataScience-book/blob/main/module05/week5_trees_factor_analysis_practice_solution.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
-<p>This companion provides worked code and concise model responses for the Week 5 coding practice. The interpretation examples show one defensible reading of this fixed instructional split; students may use different wording when their claims remain supported by the evidence.</p>
+<p>This companion provides worked code and concise model responses for the Week 5 coding practice.</p>
 <section id="part-a-solution-trees-for-prediction">
-<h2>Part A solution — Trees for prediction<a class="headerlink" href="#part-a-solution-trees-for-prediction" title="Permalink to this heading">#</a></h2>
+<h2>Part A solution. Trees for prediction<a class="headerlink" href="#part-a-solution-trees-for-prediction" title="Permalink to this heading">#</a></h2>
 <p>The target is the quantitative disease-progression measure observed one year after baseline. The ten baseline measurements are predictors. <code class="docutils literal notranslate"><span class="pre">bmi</span></code> is a plausible candidate for an early split because it is a baseline health measurement that may differentiate outcome levels, but that expectation must be checked in the fitted tree. Holding out test rows matters because a model can fit patterns specific to its training rows without predicting new people well.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -531,7 +531,7 @@ document.write(`
 </section>
 <section id="complexity-diagnosis">
 <h3>Complexity diagnosis<a class="headerlink" href="#complexity-diagnosis" title="Permalink to this heading">#</a></h3>
-<p>The deep tree has the lowest training RMSE—0.0—because it fits the training rows perfectly. That is not enough to choose it: its test RMSE is 77.1, much worse than the small tree’s 56.3 and the random forest’s 53.1. The zero-versus-77.1 gap is strong evidence of overfitting for this split.</p>
+<p>The deep tree has the lowest training RMSE=0.0 because it fits the training rows perfectly. That is not enough to choose it: its test RMSE is 77.1, much worse than the small tree’s 56.3 and the random forest’s 53.1. The zero versus 77.1 gap is strong evidence of overfitting for this split.</p>
 <p>The random forest is the strongest predictor on these held-out rows, but the small tree may still be preferable when a stakeholder needs a compact, auditable rule and its modestly higher error is acceptable. A decision should also consider the cost of an error, stability across additional splits, fairness, and whether the data represent the intended population.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -560,7 +560,7 @@ document.write(`
 </section>
 <section id="feature-importance-correction">
 <h3>Feature-importance correction<a class="headerlink" href="#feature-importance-correction" title="Permalink to this heading">#</a></h3>
-<p>A high importance means the fitted model used that measurement to reduce prediction error in this dataset. It does not show that changing the measurement would change progression, nor does it establish that less-important variables are irrelevant in every population. A causal claim would need a study design that addresses confounding—such as a well-designed experiment or a defensible causal observational design—and domain expertise about the measurement.</p>
+<p>A high importance means the fitted model used that measurement to reduce prediction error in this dataset. It does not show that changing the measurement would change progression, nor does it establish that less-important variables are irrelevant in every population. A causal claim would need a study design that addresses confounding, such as a well-designed experiment or a defensible causal observational design, and domain expertise about the measurement.</p>
 </section>
 <section id="one-meaningful-tree-change">
 <h3>One meaningful tree change<a class="headerlink" href="#one-meaningful-tree-change" title="Permalink to this heading">#</a></h3>
@@ -589,7 +589,7 @@ document.write(`
 </section>
 </section>
 <section id="part-b-solution-finding-possible-latent-structure">
-<h2>Part B solution — Finding possible latent structure<a class="headerlink" href="#part-b-solution-finding-possible-latent-structure" title="Permalink to this heading">#</a></h2>
+<h2>Part B solution: Finding possible latent structure<a class="headerlink" href="#part-b-solution-finding-possible-latent-structure" title="Permalink to this heading">#</a></h2>
 <p>This part uses the wine measurements without the cultivar label. The goal is not prediction; it is to inspect whether related observed variables might reflect a smaller number of shared patterns.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -632,7 +632,7 @@ document.write(`
 <section class="tex2jax_ignore mathjax_ignore" id="final-synthesis-solution">
 <h1>Final synthesis solution<a class="headerlink" href="#final-synthesis-solution" title="Permalink to this heading">#</a></h1>
 <p>To predict whether a customer will renew a subscription, use a supervised predictive model such as a decision tree or random forest, trained with a known renewal outcome and evaluated on held-out customers. To investigate whether ten customer measurements reflect a smaller number of underlying characteristics, use factor analysis because the question concerns shared structure among observed variables rather than predicting a target.</p>
-<p>A defensible final check is: confirm the target matches the prediction question; evaluate predictive claims on unseen rows; avoid choosing complexity from training error alone; treat importance as model evidence rather than causation; label factors tentatively from their loadings; and keep prediction distinct from explanation or causal proof.</p>
+<p>A final check is: confirm the target matches the prediction question; evaluate predictive claims on unseen rows; avoid choosing complexity from training error alone; treat importance as model evidence rather than causation; label factors tentatively from their loadings; and keep prediction distinct from explanation or causal proof.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -691,14 +691,14 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-solution-trees-for-prediction">Part A solution — Trees for prediction</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-solution-trees-for-prediction">Part A solution. Trees for prediction</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-one-path">Interpreting one path</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complexity-diagnosis">Complexity diagnosis</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-importance-correction">Feature-importance correction</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-meaningful-tree-change">One meaningful tree change</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-solution-finding-possible-latent-structure">Part B solution — Finding possible latent structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-solution-finding-possible-latent-structure">Part B solution: Finding possible latent structure</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-loading-pattern">Interpreting the loading pattern</a></li>
 </ul>
 </li>
