@@ -21,3 +21,8 @@ chapters:
   sections:
     - file: module04/week4_regression_practice
     - file: module04/week4_regression_practice_solution
+
+- file: module05/trees
+  sections:
+    - file: module05/week5_trees_factor_analysis_practice
+    - file: module05/week5_trees_factor_analysis_practice_solution
