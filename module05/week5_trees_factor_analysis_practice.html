@@ -1,0 +1,917 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure &#8212; Lecture Notes Applied Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'module05/week5_trees_factor_analysis_practice';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/bannerADS.png" class="logo__image only-light" alt="Lecture Notes Applied Data Science - Home"/>
+    <script>document.write(`<img src="../_static/bannerADS.png" class="logo__image only-dark" alt="Lecture Notes Applied Data Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../welcome.html">
+                    Applied Data Science
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../module01/workflow.html">01 Data Science Lifecycle</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module02/data.html">02 Data Quality</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module03/visualization.html">03 Data Visualization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module04/regression.html">04 Regression and Prediction</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="trees.html">05 Decision Trees, Random Forests, and Factor Analysis</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule05/week5_trees_factor_analysis_practice.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/module05/week5_trees_factor_analysis_practice.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning objectives</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-trees-for-prediction">Part A. Trees for prediction</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-prediction-question">1. Define the prediction question</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-glossary">Feature glossary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-choose-the-evidence-before-fitting">Reasoning checkpoint: choose the evidence before fitting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-raw-rows-into-training-and-test-data">2. Split raw rows into training and test data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-and-read-a-small-regression-tree">3. Fit and read a small regression tree</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-translate-a-path">Reasoning checkpoint: translate a path</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-a-small-tree-a-deep-tree-and-a-random-forest">4. Compare a small tree, a deep tree, and a random forest</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-diagnose-complexity-with-evidence">Reasoning checkpoint: diagnose complexity with evidence</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-feature-importance-cautiously">5. Read feature importance cautiously</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-critique-an-importance-claim">Reasoning checkpoint: critique an importance claim</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-transfer-change-one-meaningful-tree-decision">6. Optional transfer: change one meaningful tree decision</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-finding-possible-latent-structure">Part B. Finding possible latent structure</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ask-a-different-kind-of-question">7. Ask a different kind of question</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-look-before-fitting">Reasoning checkpoint: look before fitting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-a-simple-two-factor-model-and-inspect-loadings">8. Fit a simple two-factor model and inspect loadings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-interpret-then-qualify">Reasoning checkpoint: interpret, then qualify</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-comparison-which-question-are-you-answering">Final comparison — Which question are you answering?</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-synthesis-checkpoint">Final synthesis checkpoint</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="week-5-coding-practice-predicting-outcomes-and-finding-hidden-structure">
+<h1>Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure<a class="headerlink" href="#week-5-coding-practice-predicting-outcomes-and-finding-hidden-structure" title="Permalink to this heading">#</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/obscrivn/DataScience-book/blob/main/module05/week5_trees_factor_analysis_practice.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p><strong>Estimated time:</strong> 45–60 minutes<br />
+<strong>Format:</strong> worked examples, reasoning checkpoints, and one optional transfer task</p>
+<p>This activity contrasts two ways to work with multivariate data. In Part A, we use a known outcome to predict disease progression with decision trees and a random forest. In Part B, we use measurements alone to look for possible latent structure in wine chemistry. These are instructional analyses, not clinical or product decisions.</p>
+<section id="learning-objectives">
+<h2>Learning objectives<a class="headerlink" href="#learning-objectives" title="Permalink to this heading">#</a></h2>
+<p>By the end of this activity, you should be able to:</p>
+<ol class="arabic simple">
+<li><p>translate a prediction question into a target, predictors, and held-out evaluation plan;</p></li>
+<li><p>fit, visualize, and interpret a small regression tree;</p></li>
+<li><p>use train/test evidence to recognize possible overfitting as tree complexity grows;</p></li>
+<li><p>compare one interpretable tree with a random forest on unseen data;</p></li>
+<li><p>interpret feature importance as model evidence, not causal evidence;</p></li>
+<li><p>inspect relationships among observed variables before factor analysis;</p></li>
+<li><p>interpret factor loadings cautiously and propose tentative factor meanings; and</p></li>
+<li><p>distinguish supervised prediction from unsupervised latent-structure discovery.</p></li>
+</ol>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="part-a-trees-for-prediction">
+<h1>Part A. Trees for prediction<a class="headerlink" href="#part-a-trees-for-prediction" title="Permalink to this heading">#</a></h1>
+<section id="define-the-prediction-question">
+<h2>1. Define the prediction question<a class="headerlink" href="#define-the-prediction-question" title="Permalink to this heading">#</a></h2>
+<p>The bundled diabetes dataset contains baseline measurements for 442 people and a quantitative measure of disease progression one year later. Our instructional question is:</p>
+<blockquote>
+<div><p>Given these baseline measurements, how accurately can a model predict the one-year progression measure for a new person?</p>
+</div></blockquote>
+<p>The progression measure is the <strong>target</strong>. The baseline measurements are <strong>predictors</strong>. A useful model may support prediction, but it does not establish that a predictor causes progression.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_diabetes</span><span class="p">,</span> <span class="n">load_wine</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">FactorAnalysis</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestRegressor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">mean_squared_error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeRegressor</span><span class="p">,</span> <span class="n">plot_tree</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s2">&quot;notebook&quot;</span><span class="p">)</span>
+<span class="n">RANDOM_STATE</span> <span class="o">=</span> <span class="mi">42</span>
+
+<span class="n">diabetes</span> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">tree_data</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tree_data</span><span class="p">[</span><span class="s2">&quot;progression&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">target</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tree_data</span><span class="p">)</span><span class="si">}</span><span class="s2"> | Predictors: </span><span class="si">{</span><span class="n">tree_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">tree_data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">tree_data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">[[</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="feature-glossary">
+<h3>Feature glossary<a class="headerlink" href="#feature-glossary" title="Permalink to this heading">#</a></h3>
+<p>The predictors are standardized baseline measurements. <code class="docutils literal notranslate"><span class="pre">bmi</span></code> and <code class="docutils literal notranslate"><span class="pre">bp</span></code> are body-mass index and average blood pressure. <code class="docutils literal notranslate"><span class="pre">s1</span></code> through <code class="docutils literal notranslate"><span class="pre">s6</span></code> are six blood-serum measurements. Standardization makes the numbers less intuitive, but it does not change the prediction question.</p>
+</section>
+<section id="reasoning-checkpoint-choose-the-evidence-before-fitting">
+<h3>Reasoning checkpoint: choose the evidence before fitting<a class="headerlink" href="#reasoning-checkpoint-choose-the-evidence-before-fitting" title="Permalink to this heading">#</a></h3>
+<p>Before continuing, answer briefly:</p>
+<ul class="simple">
+<li><p>What is the target, and when would it be observed?</p></li>
+<li><p>Which baseline measurement do you expect a tree might split on first? Why?</p></li>
+<li><p>Why must the test rows be held aside before judging whether the model will generalize?</p></li>
+</ul>
+</section>
+</section>
+<section id="split-raw-rows-into-training-and-test-data">
+<h2>2. Split raw rows into training and test data<a class="headerlink" href="#split-raw-rows-into-training-and-test-data" title="Permalink to this heading">#</a></h2>
+<p>We reserve 25% of the rows for testing. Every model below sees the same training rows and is evaluated on the same unseen test rows. This makes the comparison fair.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">tree_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;progression&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">tree_data</span><span class="p">[</span><span class="s2">&quot;progression&quot;</span><span class="p">]</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test rows:     </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training target mean: </span><span class="si">{</span><span class="n">y_train</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test target mean:     </span><span class="si">{</span><span class="n">y_test</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="fit-and-read-a-small-regression-tree">
+<h2>3. Fit and read a small regression tree<a class="headerlink" href="#fit-and-read-a-small-regression-tree" title="Permalink to this heading">#</a></h2>
+<p>A regression tree divides the predictor space with yes/no rules. Each leaf predicts the average training outcome for the people who reached that leaf. We start with a deliberately small tree: depth 3 and at least 12 training rows per leaf. Those settings make the tree readable and reduce the chance that a leaf represents only a few unusual people.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">small_tree</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">(</span>
+    <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_samples_leaf</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span>
+<span class="p">)</span>
+<span class="n">small_tree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plot_tree</span><span class="p">(</span>
+    <span class="n">small_tree</span><span class="p">,</span>
+    <span class="n">feature_names</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+    <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">rounded</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">precision</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Small regression tree: predicted one-year progression&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Actual fitted depth: </span><span class="si">{</span><span class="n">small_tree</span><span class="o">.</span><span class="n">get_depth</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of leaves: </span><span class="si">{</span><span class="n">small_tree</span><span class="o">.</span><span class="n">get_n_leaves</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="reasoning-checkpoint-translate-a-path">
+<h3>Reasoning checkpoint: translate a path<a class="headerlink" href="#reasoning-checkpoint-translate-a-path" title="Permalink to this heading">#</a></h3>
+<p>Choose one path from the root to a leaf in the plotted tree. Translate it into plain language:</p>
+<ol class="arabic simple">
+<li><p>What conditions define the group that reaches the leaf?</p></li>
+<li><p>What progression value does that leaf predict?</p></li>
+<li><p>Why should we avoid treating that value as an exact prediction for every future person in the group?</p></li>
+</ol>
+<p>A tree can make a rule easy to read, but readability alone does not establish that it is accurate on new data.</p>
+</section>
+</section>
+<section id="compare-a-small-tree-a-deep-tree-and-a-random-forest">
+<h2>4. Compare a small tree, a deep tree, and a random forest<a class="headerlink" href="#compare-a-small-tree-a-deep-tree-and-a-random-forest" title="Permalink to this heading">#</a></h2>
+<p>Next we compare three models on the same split. The deep tree is intentionally allowed to keep splitting until individual training rows can be isolated. The random forest averages many moderately constrained trees. We use MAE and RMSE; lower values are better. RMSE penalizes especially large errors more heavily.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">deep_tree</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span>
+    <span class="n">n_estimators</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">min_samples_leaf</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span>
+<span class="p">)</span>
+
+<span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Small tree (depth 3)&quot;</span><span class="p">:</span> <span class="n">small_tree</span><span class="p">,</span>
+    <span class="s2">&quot;Deep tree&quot;</span><span class="p">:</span> <span class="n">deep_tree</span><span class="p">,</span>
+    <span class="s2">&quot;Random forest&quot;</span><span class="p">:</span> <span class="n">forest</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">regression_scores</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_values</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;MAE&quot;</span><span class="p">:</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y_values</span><span class="p">,</span> <span class="n">predictions</span><span class="p">),</span>
+        <span class="s2">&quot;RMSE&quot;</span><span class="p">:</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_values</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">}</span>
+
+<span class="n">score_rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;Small tree (depth 3)&quot;</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">train_scores</span> <span class="o">=</span> <span class="n">regression_scores</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">test_scores</span> <span class="o">=</span> <span class="n">regression_scores</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+    <span class="n">score_rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s2">&quot;train_MAE&quot;</span><span class="p">:</span> <span class="n">train_scores</span><span class="p">[</span><span class="s2">&quot;MAE&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;test_MAE&quot;</span><span class="p">:</span> <span class="n">test_scores</span><span class="p">[</span><span class="s2">&quot;MAE&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;train_RMSE&quot;</span><span class="p">:</span> <span class="n">train_scores</span><span class="p">[</span><span class="s2">&quot;RMSE&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;test_RMSE&quot;</span><span class="p">:</span> <span class="n">test_scores</span><span class="p">[</span><span class="s2">&quot;RMSE&quot;</span><span class="p">],</span>
+    <span class="p">})</span>
+
+<span class="n">score_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">score_rows</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">score_table</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+<span class="n">score_table</span><span class="p">[[</span><span class="s2">&quot;train_RMSE&quot;</span><span class="p">,</span> <span class="s2">&quot;test_RMSE&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;#56B4E9&quot;</span><span class="p">,</span> <span class="s2">&quot;#D55E00&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;RMSE (lower is better)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Model&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Training versus unseen-test error&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Training&quot;</span><span class="p">,</span> <span class="s2">&quot;Test&quot;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Rows used for scoring&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deep tree depth: </span><span class="si">{</span><span class="n">deep_tree</span><span class="o">.</span><span class="n">get_depth</span><span class="p">()</span><span class="si">}</span><span class="s2"> | leaves: </span><span class="si">{</span><span class="n">deep_tree</span><span class="o">.</span><span class="n">get_n_leaves</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="reasoning-checkpoint-diagnose-complexity-with-evidence">
+<h3>Reasoning checkpoint: diagnose complexity with evidence<a class="headerlink" href="#reasoning-checkpoint-diagnose-complexity-with-evidence" title="Permalink to this heading">#</a></h3>
+<p>Use the table and chart, not just the model names.</p>
+<ul class="simple">
+<li><p>Which model has the lowest <em>training</em> RMSE? Is that enough to choose it?</p></li>
+<li><p>Which model has the lowest <em>test</em> RMSE on this split?</p></li>
+<li><p>Does the deep tree show a train/test gap consistent with overfitting? Explain what you see.</p></li>
+<li><p>If the random forest performs better on test rows but is harder to explain, what audience or decision stakes might favor the small tree instead?</p></li>
+</ul>
+<p>An AI assistant that says “choose the deepest tree because its training error is lowest” has ignored the held-out evidence.</p>
+</section>
+</section>
+<section id="read-feature-importance-cautiously">
+<h2>5. Read feature importance cautiously<a class="headerlink" href="#read-feature-importance-cautiously" title="Permalink to this heading">#</a></h2>
+<p>Tree-based feature importance summarizes how much a feature helped reduce error across that fitted model’s splits. It can be useful for investigation, but it does <strong>not</strong> prove a feature causes the outcome, does not reveal every useful predictor, and can shift when the data or correlated predictors change.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">importance_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;small_tree&quot;</span><span class="p">:</span> <span class="n">small_tree</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">,</span>
+        <span class="s2">&quot;random_forest&quot;</span><span class="p">:</span> <span class="n">forest</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;random_forest&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">importance_table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;random_forest&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">importance_table</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;#0072B2&quot;</span><span class="p">,</span> <span class="s2">&quot;#009E73&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Model feature importance&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Baseline measurement&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Importance can differ between one tree and many trees&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Small tree&quot;</span><span class="p">,</span> <span class="s2">&quot;Random forest&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="reasoning-checkpoint-critique-an-importance-claim">
+<h3>Reasoning checkpoint: critique an importance claim<a class="headerlink" href="#reasoning-checkpoint-critique-an-importance-claim" title="Permalink to this heading">#</a></h3>
+<p>Suppose an AI summary says: <em>“The most important feature causes disease progression, so changing it will improve outcomes.”</em></p>
+<p>Write a correction that distinguishes what the importance values support from what they do not support. Then name one follow-up analysis or study you would need before making a causal claim.</p>
+</section>
+</section>
+<section id="optional-transfer-change-one-meaningful-tree-decision">
+<h2>6. Optional transfer: change one meaningful tree decision<a class="headerlink" href="#optional-transfer-change-one-meaningful-tree-decision" title="Permalink to this heading">#</a></h2>
+<p>Choose <strong>one</strong> change: use <code class="docutils literal notranslate"><span class="pre">max_depth=2</span></code> or <code class="docutils literal notranslate"><span class="pre">max_depth=5</span></code>, change <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code>, or change the random seed used for the train/test split. Predict what will happen to training and test error before you run anything. Then fit one new tree and compare it with the small tree using the same metrics.</p>
+<p>This is intentionally an open response. It does not feed any later provided cell.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Write your one-decision tree comparison here.</span>
+<span class="c1"># Tip: create a DecisionTreeRegressor, fit it on X_train and y_train,</span>
+<span class="c1"># then call regression_scores on X_train/y_train and X_test/y_test.</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="part-b-finding-possible-latent-structure">
+<h1>Part B. Finding possible latent structure<a class="headerlink" href="#part-b-finding-possible-latent-structure" title="Permalink to this heading">#</a></h1>
+<section id="ask-a-different-kind-of-question">
+<h2>7. Ask a different kind of question<a class="headerlink" href="#ask-a-different-kind-of-question" title="Permalink to this heading">#</a></h2>
+<p>Factor analysis does not start with a target to predict. Instead, it asks whether several observed variables may reflect a smaller number of shared, unobserved patterns.</p>
+<p>We use the bundled wine-chemistry dataset. It contains laboratory measurements from wines from three cultivars. We will set the cultivar label aside: our question is not “which cultivar will this be?” but “which measurements tend to move together, and what tentative common concepts might they represent?”</p>
+<p>We intentionally use a different dataset here. Forcing the prediction dataset into factor analysis would make the latent-structure question less natural.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wine</span> <span class="o">=</span> <span class="n">load_wine</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">wine_measurements</span> <span class="o">=</span> <span class="n">wine</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Wine observations: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">wine_measurements</span><span class="p">)</span><span class="si">}</span><span class="s2"> | Measurements: </span><span class="si">{</span><span class="n">wine_measurements</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">wine_measurements</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="n">correlations</span> <span class="o">=</span> <span class="n">wine_measurements</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">correlations</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;vlag&quot;</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Relationships among observed wine measurements&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="reasoning-checkpoint-look-before-fitting">
+<h3>Reasoning checkpoint: look before fitting<a class="headerlink" href="#reasoning-checkpoint-look-before-fitting" title="Permalink to this heading">#</a></h3>
+<p>Identify two or three measurements that appear strongly related in the heatmap. Would it be reasonable to investigate whether they reflect a shared pattern? Why?</p>
+<p>Correlation alone does not prove a single hidden factor exists. It does provide a reason to inspect whether a smaller set of shared patterns may be useful.</p>
+</section>
+</section>
+<section id="fit-a-simple-two-factor-model-and-inspect-loadings">
+<h2>8. Fit a simple two-factor model and inspect loadings<a class="headerlink" href="#fit-a-simple-two-factor-model-and-inspect-loadings" title="Permalink to this heading">#</a></h2>
+<p>The measurements use different units, so we standardize them before fitting. We ask for two factors as a compact instructional example—not as a claim that exactly two factors are the uniquely correct scientific answer. A <strong>loading</strong> describes the relationship between an observed variable and a fitted factor. Large absolute loadings indicate a stronger relationship; the plus/minus direction is arbitrary for a factor and can be reversed without changing the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wine_scaled</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">wine_measurements</span><span class="p">)</span>
+<span class="n">factor_model</span> <span class="o">=</span> <span class="n">FactorAnalysis</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
+<span class="n">factor_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">wine_scaled</span><span class="p">)</span>
+
+<span class="n">loadings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">factor_model</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+    <span class="n">index</span><span class="o">=</span><span class="n">wine_measurements</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Factor 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Factor 2&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">loadings</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">loadings</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">loadings</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;vlag&quot;</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Two-factor loading pattern (standardized measurements)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="reasoning-checkpoint-interpret-then-qualify">
+<h3>Reasoning checkpoint: interpret, then qualify<a class="headerlink" href="#reasoning-checkpoint-interpret-then-qualify" title="Permalink to this heading">#</a></h3>
+<p>For each factor:</p>
+<ol class="arabic simple">
+<li><p>Identify the variables with the largest absolute loadings.</p></li>
+<li><p>Propose a <em>tentative</em> phrase that might describe what those variables have in common.</p></li>
+<li><p>Explain why that phrase is an interpretation you supply, not a label automatically discovered by the algorithm.</p></li>
+</ol>
+<p>A good answer refers to the observed variables and avoids presenting a factor name as a verified fact.</p>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="final-comparison-which-question-are-you-answering">
+<h1>Final comparison — Which question are you answering?<a class="headerlink" href="#final-comparison-which-question-are-you-answering" title="Permalink to this heading">#</a></h1>
+<p>Decision trees and random forests are <strong>supervised</strong> here: they learn from a known target, <code class="docutils literal notranslate"><span class="pre">progression</span></code>, and are judged by how well they predict held-out target values. Factor analysis is <strong>unsupervised</strong> here: it uses observed wine measurements without a target and looks for a possible shared structure.</p>
+<section id="final-synthesis-checkpoint">
+<h2>Final synthesis checkpoint<a class="headerlink" href="#final-synthesis-checkpoint" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>A dataset contains ten measurements about customers.</p>
+<p>If your goal is to predict whether a customer will renew a subscription, which method explored in this notebook would be appropriate?</p>
+<p>If your goal is instead to investigate whether the ten measurements reflect a smaller number of underlying customer characteristics, which method would be more appropriate?</p>
+<p>Explain why.</p>
+</div></blockquote>
+<p>Before accepting your own or an AI-generated analysis, check:</p>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Does the target (if any) match the practical question?</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Were prediction claims evaluated on held-out data?</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Does a complex tree improve test performance, rather than merely training performance?</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Are feature importance claims limited to what the fitted model supports?</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Are factor labels presented as tentative interpretations grounded in loadings?</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Does the conclusion distinguish prediction from explanation or causal proof?</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./module05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning objectives</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-a-trees-for-prediction">Part A. Trees for prediction</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-prediction-question">1. Define the prediction question</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-glossary">Feature glossary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-choose-the-evidence-before-fitting">Reasoning checkpoint: choose the evidence before fitting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-raw-rows-into-training-and-test-data">2. Split raw rows into training and test data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-and-read-a-small-regression-tree">3. Fit and read a small regression tree</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-translate-a-path">Reasoning checkpoint: translate a path</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-a-small-tree-a-deep-tree-and-a-random-forest">4. Compare a small tree, a deep tree, and a random forest</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-diagnose-complexity-with-evidence">Reasoning checkpoint: diagnose complexity with evidence</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-feature-importance-cautiously">5. Read feature importance cautiously</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-critique-an-importance-claim">Reasoning checkpoint: critique an importance claim</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-transfer-change-one-meaningful-tree-decision">6. Optional transfer: change one meaningful tree decision</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#part-b-finding-possible-latent-structure">Part B. Finding possible latent structure</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ask-a-different-kind-of-question">7. Ask a different kind of question</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-look-before-fitting">Reasoning checkpoint: look before fitting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-a-simple-two-factor-model-and-inspect-loadings">8. Fit a simple two-factor model and inspect loadings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint-interpret-then-qualify">Reasoning checkpoint: interpret, then qualify</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-comparison-which-question-are-you-answering">Final comparison — Which question are you answering?</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-synthesis-checkpoint">Final synthesis checkpoint</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Olga Scrivner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, Olga Scrivner.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
