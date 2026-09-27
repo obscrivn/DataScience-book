@@ -1,0 +1,746 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>06 Clustering and Group Discovery &#8212; Lecture Notes Applied Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'module06/clustering';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure" href="../module05/week5_trees_factor_analysis_practice_solution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/bannerADS.png" class="logo__image only-light" alt="Lecture Notes Applied Data Science - Home"/>
+    <script>document.write(`<img src="../_static/bannerADS.png" class="logo__image only-dark" alt="Lecture Notes Applied Data Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../welcome.html">
+                    Applied Data Science
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../module01/workflow.html">01 Data Science Lifecycle</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module02/data.html">02 Data Quality</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module03/visualization.html">03 Data Visualization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module04/regression.html">04 Regression and Prediction</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module05/trees.html">05 Decision Trees, Random Forests, and Factor Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice.html">Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice_solution.html">Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">06 Clustering and Group Discovery</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule06/clustering.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/module06/clustering.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>06 Clustering and Group Discovery</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">06 Clustering and Group Discovery</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-clustering-matters">6.1 Why clustering matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-distance-and-feature-choice">6.2 Similarity, distance, and feature choice</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#euclidean-distance">Euclidean distance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means-as-the-main-algorithm">6.3 K-means as the main algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-k-means-can-be-unstable">Why K-means can be unstable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-k-means-is-and-is-not">What K-means is and is not</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-k-and-assessing-cluster-quality">6.4 Choosing K and assessing cluster quality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-clustering-in-brief">6.5 Hierarchical clustering in brief</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-cluster-labels">6.6 Interpreting cluster labels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-whether-a-clustering-result-is-useful">6.7 Evaluating whether a clustering result is useful</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-era-checkpoint">6.8 AI-era checkpoint</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="clustering-and-group-discovery">
+<h1>06 Clustering and Group Discovery<a class="headerlink" href="#clustering-and-group-discovery" title="Permalink to this heading">#</a></h1>
+<section id="big-idea">
+<h2>Big Idea<a class="headerlink" href="#big-idea" title="Permalink to this heading">#</a></h2>
+<p>Clustering is an unsupervised learning task. Its goal is not to predict a known target. Its goal is to organize observations into groups based on how similar they are to one another.</p>
+<p>This is useful when there are no labels to tell us the “right” groups ahead of time. A dataset may contain natural structure, but the structure is not always obvious, and different defensible choices can lead to different clusterings.</p>
+<p>A good clustering workflow is therefore not a single algorithmic step. It is a sequence of decisions:</p>
+<p><strong>data → features → preprocessing → similarity → algorithm → parameters → evaluation → interpretation</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A cluster is not automatically a real-world category. It is an interpretation produced by a model using a chosen set of features and assumptions.</p>
+</div>
+</section>
+<section id="why-clustering-matters">
+<h2>6.1 Why clustering matters<a class="headerlink" href="#why-clustering-matters" title="Permalink to this heading">#</a></h2>
+<p>Clustering helps us look for structure in unlabeled data. It is often used to:</p>
+<ul class="simple">
+<li><p>group customers with similar behavior</p></li>
+<li><p>identify repeated patterns in text or images</p></li>
+<li><p>summarize large collections of food, products, or documents</p></li>
+<li><p>explore whether data naturally separate into a few related subgroups</p></li>
+</ul>
+<p>Unlike supervised learning, clustering does not start with a target variable and a known answer. Instead, we ask: if we group observations by similarity, what patterns emerge? That question is useful, but it also means the answer depends on the choices we make.</p>
+<p>In practice, the same dataset can be clustered in different ways because the analyst has to decide:</p>
+<ul class="simple">
+<li><p>which features matter</p></li>
+<li><p>whether variables should be scaled</p></li>
+<li><p>what it means for two observations to be similar</p></li>
+<li><p>which algorithm to use</p></li>
+<li><p>how many groups to request</p></li>
+<li><p>whether the final clusters are meaningful</p></li>
+</ul>
+</section>
+<section id="similarity-distance-and-feature-choice">
+<h2>6.2 Similarity, distance, and feature choice<a class="headerlink" href="#similarity-distance-and-feature-choice" title="Permalink to this heading">#</a></h2>
+<p>A cluster is a group of observations that are more similar to one another than they are to other observations.</p>
+<p>But “similar” is not a universal fact. It depends on the representation of the data and the distance measure we choose.</p>
+<p>The most common idea for clustering is based on <strong>distance</strong>. If two observations are close together in feature space, they are considered more similar. In a simple two-variable example, we might look at points in a scatterplot and say that nearby points form a cluster.</p>
+<figure class="align-default" id="clustering-scaling">
+<img alt="_static/clustering_scaling.svg" src="_static/clustering_scaling.svg" /><figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">A simple clustering example: the same data can look much more grouped or much more mixed depending on whether the features are on comparable scales.</span><a class="headerlink" href="#clustering-scaling" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="euclidean-distance">
+<h3>Euclidean distance<a class="headerlink" href="#euclidean-distance" title="Permalink to this heading">#</a></h3>
+<p>A common way to measure closeness is <strong>Euclidean distance</strong>. Intuitively, it is the straight-line distance between two points. Two observations are more similar when the direct distance between them is small.</p>
+<p>This seems simple, but the distance calculation depends on the scale of the features. If one variable is measured in large numbers and another in small numbers, the variable with the larger numerical range may dominate the distance calculation.</p>
+<p>That is why <strong>scaling</strong> is a modeling decision, not a mechanical rule. If we do not scale appropriately, clusters can reflect the measurement scale rather than meaningful structure.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Clustering is not just a geometry problem. It is a representation problem. Features, scale, and preprocessing determine what the algorithm sees.</p>
+</div>
+</section>
+</section>
+<section id="k-means-as-the-main-algorithm">
+<h2>6.3 K-means as the main algorithm<a class="headerlink" href="#k-means-as-the-main-algorithm" title="Permalink to this heading">#</a></h2>
+<p>The best-known clustering algorithm for a first course is <strong>K-means</strong>. It is a partitioning method: it tries to divide the data into K groups by repeatedly updating cluster centers.</p>
+<p>The workflow is intuitive:</p>
+<ol class="arabic simple">
+<li><p>Choose the number of clusters, K.</p></li>
+<li><p>Place K initial centers in the feature space.</p></li>
+<li><p>Assign each observation to the nearest center.</p></li>
+<li><p>Recalculate each center as the mean of the observations assigned to it.</p></li>
+<li><p>Repeat until the assignments stop changing.</p></li>
+</ol>
+<figure class="align-default" id="kmeans-steps">
+<img alt="_static/kmeans_steps.svg" src="_static/kmeans_steps.svg" /><figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">The K-means workflow: assign observations to the nearest center, update the centers, and repeat until the solution stabilizes.</span><a class="headerlink" href="#kmeans-steps" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="why-k-means-can-be-unstable">
+<h3>Why K-means can be unstable<a class="headerlink" href="#why-k-means-can-be-unstable" title="Permalink to this heading">#</a></h3>
+<p>K-means is useful, but it is sensitive to initialization. Different random starting points can produce different final cluster assignments. This is not a bug in the algorithm; it is a reminder that clustering is not a single objective truth waiting to be discovered.</p>
+<p>This is why many implementations use multiple random starts. The algorithm tries several initializations and keeps the solution with the best overall fit. Even then, the result depends on the data, the features, and the chosen K.</p>
+</section>
+<section id="what-k-means-is-and-is-not">
+<h3>What K-means is and is not<a class="headerlink" href="#what-k-means-is-and-is-not" title="Permalink to this heading">#</a></h3>
+<p>K-means works best when clusters are roughly compact and have a center-like structure. It is less natural when clusters are irregularly shaped or when different groups have very different sizes and densities.</p>
+<p>This matters because K-means does not know the “true” groups. It just finds a solution that minimizes within-cluster distance under the chosen setup.</p>
+</section>
+</section>
+<section id="choosing-k-and-assessing-cluster-quality">
+<h2>6.4 Choosing K and assessing cluster quality<a class="headerlink" href="#choosing-k-and-assessing-cluster-quality" title="Permalink to this heading">#</a></h2>
+<p>The number of clusters, K, is one of the most important modeling decisions in clustering. There is usually no one obvious answer.</p>
+<p>A common diagnostic is the <strong>elbow plot</strong>, based on <strong>within-cluster sum of squares (WSS)</strong>, also called inertia. WSS measures how tightly the observations are grouped around their cluster centers. As K increases, WSS usually decreases. That does not automatically mean the larger K is better.</p>
+<figure class="align-default" id="elbow-plot">
+<img alt="_static/elbow_plot.svg" src="_static/elbow_plot.svg" /><figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">An elbow plot shows that WSS drops as K increases, but the elbow is only a heuristic hint; it does not prove the true number of clusters.</span><a class="headerlink" href="#elbow-plot" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>A plot may show a bend or elbow, but that bend is only a clue. It may point to a reasonable K, but it is not an objective truth. A modeler still needs to ask whether the chosen clusters are interpretable, stable, and useful.</p>
+<p>Another popular diagnostic is the <strong>silhouette score</strong>. It compares how close points are to other points in their own cluster versus points in neighboring clusters. Higher silhouette values suggest that clusters are more separated and internally cohesive.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>WSS and silhouette score are evidence for a clustering decision. They are not a magical detector of the one correct number of clusters.</p>
+</div>
+<p>Students should therefore treat K as a judgment call informed by diagnostic evidence and practical interpretation, not as a hidden fact encoded in the data.</p>
+</section>
+<section id="hierarchical-clustering-in-brief">
+<h2>6.5 Hierarchical clustering in brief<a class="headerlink" href="#hierarchical-clustering-in-brief" title="Permalink to this heading">#</a></h2>
+<p>A second major approach is <strong>hierarchical clustering</strong>. Instead of starting with a fixed K, it builds a sequence of cluster merges.</p>
+<p>The process starts with every observation in its own cluster. Then the two most similar clusters are merged, and the process continues until all observations are in one cluster.</p>
+<p>The result is often shown as a <strong>dendrogram</strong>.</p>
+<figure class="align-default" id="dendrogram">
+<img alt="_static/dendrogram.svg" src="_static/dendrogram.svg" /><figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">A dendrogram shows the order of merges. Cutting the tree at a chosen height creates a set of clusters.</span><a class="headerlink" href="#dendrogram" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>A dendrogram is valuable because it makes the nesting structure visible. If we cut the tree at a different height, we get a different number of clusters. This is another reminder that clustering is not only about the algorithm; it is also about where we decide to stop and what level of detail is meaningful.</p>
+<p>The specific way a cluster is judged to be similar to another cluster is called <strong>linkage</strong>. Common linkage choices such as single, complete, average, and Ward can produce different cluster structures. Linkage is another modeling decision.</p>
+</section>
+<section id="interpreting-cluster-labels">
+<h2>6.6 Interpreting cluster labels<a class="headerlink" href="#interpreting-cluster-labels" title="Permalink to this heading">#</a></h2>
+<p>Once a clustering algorithm runs, it produces labels such as:</p>
+<ul class="simple">
+<li><p>Cluster 0</p></li>
+<li><p>Cluster 1</p></li>
+<li><p>Cluster 2</p></li>
+</ul>
+<p>These labels are just identifiers. They are not explanations. A cluster label is only meaningful after we inspect what is inside the cluster.</p>
+<p>A careful interpretation asks:</p>
+<ul class="simple">
+<li><p>Which observations ended up together?</p></li>
+<li><p>What features distinguish this cluster from others?</p></li>
+<li><p>Are the clusters easy to explain in the context of the problem?</p></li>
+<li><p>Would a domain expert see the same pattern?</p></li>
+<li><p>Do the cluster assignments remain sensible under reasonable alternative choices?</p></li>
+</ul>
+<p>This matters because it is easy to confuse a numerical cluster label with a real-world category. A clustering algorithm does not automatically discover natural groups; it discovers patterns that depend on how the problem was defined.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Cluster labels are not natural facts. They are outputs that require interpretation.</p>
+</div>
+</section>
+<section id="evaluating-whether-a-clustering-result-is-useful">
+<h2>6.7 Evaluating whether a clustering result is useful<a class="headerlink" href="#evaluating-whether-a-clustering-result-is-useful" title="Permalink to this heading">#</a></h2>
+<p>A cluster solution should not be judged only by its mathematical neatness. It should also be judged by whether it is useful and trustworthy.</p>
+<p>At an introductory level, we can ask whether the clusters are:</p>
+<ul class="simple">
+<li><p><strong>tight</strong>: observations within a cluster are close together</p></li>
+<li><p><strong>distinct</strong>: different clusters are separated from one another</p></li>
+<li><p><strong>interpretable</strong>: the groups make sense to a human expert</p></li>
+<li><p><strong>stable</strong>: the results do not change dramatically under reasonable alternatives</p></li>
+</ul>
+<p>This last point is especially important. A clustering result is more convincing if it remains roughly similar when we vary defensible choices such as:</p>
+<ul class="simple">
+<li><p>scaling or normalization</p></li>
+<li><p>selected features</p></li>
+<li><p>K</p></li>
+<li><p>initialization</p></li>
+<li><p>linkage choice</p></li>
+</ul>
+<p>This is not a formal statistical procedure. It is a practical reasonableness check. If a clustering result changes dramatically when a minor decision changes, we should treat it cautiously.</p>
+</section>
+<section id="ai-era-checkpoint">
+<h2>6.8 AI-era checkpoint<a class="headerlink" href="#ai-era-checkpoint" title="Permalink to this heading">#</a></h2>
+<p>Generative AI can often produce a polished clustering interpretation quickly. For example, an AI assistant might say:</p>
+<blockquote>
+<div><p>“The elbow plot proves that this dataset has three natural groups.”</p>
+</div></blockquote>
+<p>That statement is too strong.</p>
+<p>An elbow plot provides evidence, not proof. It helps us evaluate a possible K, but it does not reveal the one true clustering in the data. A responsible interpretation would ask:</p>
+<ul class="simple">
+<li><p>Did we use the right features and preprocessing?</p></li>
+<li><p>Is the chosen K defensible beyond the elbow plot?</p></li>
+<li><p>Do the clusters look meaningful in context?</p></li>
+<li><p>Are the results stable under reasonable alternatives?</p></li>
+</ul>
+<p>This is exactly the kind of critical evaluation students should practice. AI can generate interpretation quickly, but humans still need to decide whether the interpretation is evidence-based and trustworthy.</p>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Clustering is an unsupervised learning task used to search for structure in unlabeled data.</p></li>
+<li><p>Similarity depends on features, scaling, and modeling choices, not just on the data itself.</p></li>
+<li><p>K-means is the central introductory algorithm: choose K, initialize centers, assign points, update centers, and repeat.</p></li>
+<li><p>WSS and silhouette are useful diagnostics, but they do not reveal a single objective truth.</p></li>
+<li><p>Hierarchical clustering gives a nested view of structure through dendrograms and linkage choices.</p></li>
+<li><p>Cluster labels are identifiers, not explanations.</p></li>
+<li><p>A good clustering result is useful, interpretable, and reasonably stable under defensible changes.</p></li>
+<li><p>The primary job is not to treat clustering as a black box. It is to evaluate whether the groups are sensible and credible.</p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Yu, B., &amp; Barter, R. <em>Veridical Data Science</em>. Chapter 7: Clustering. <a class="reference external" href="https://vdsbook.com/07-cluster">https://vdsbook.com/07-cluster</a></p></li>
+<li><p>Yu, B., &amp; Barter, R. <em>Veridical Data Science</em>. Book</p></li>
+</ul>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./module06"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../module05/week5_trees_factor_analysis_practice_solution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">06 Clustering and Group Discovery</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-clustering-matters">6.1 Why clustering matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-distance-and-feature-choice">6.2 Similarity, distance, and feature choice</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#euclidean-distance">Euclidean distance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means-as-the-main-algorithm">6.3 K-means as the main algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-k-means-can-be-unstable">Why K-means can be unstable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-k-means-is-and-is-not">What K-means is and is not</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-k-and-assessing-cluster-quality">6.4 Choosing K and assessing cluster quality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-clustering-in-brief">6.5 Hierarchical clustering in brief</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-cluster-labels">6.6 Interpreting cluster labels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-whether-a-clustering-result-is-useful">6.7 Evaluating whether a clustering result is useful</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-era-checkpoint">6.8 AI-era checkpoint</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Olga Scrivner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, Olga Scrivner.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
