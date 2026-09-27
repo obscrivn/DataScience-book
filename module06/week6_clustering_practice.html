@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'module06/week6_clustering_practice';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Week 6 Coding Practice: Clustering as a Modeling Workflow" href="week6_clustering_practice_solution.html" />
+    <link rel="next" title="Week 6 Clustering Practice (Solution)" href="week6_clustering_practice_solution.html" />
     <link rel="prev" title="06 Clustering and Group Discovery" href="clustering.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -480,11 +480,9 @@ document.write(`
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Raw silhouette score: </span><span class="si">{</span><span class="n">silhouette_score</span><span class="p">(</span><span class="n">X_raw</span><span class="p">,</span><span class="w"> </span><span class="n">raw_labels</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scaled silhouette score: </span><span class="si">{</span><span class="n">silhouette_score</span><span class="p">(</span><span class="n">X_scaled</span><span class="p">,</span><span class="w"> </span><span class="n">scaled_labels</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span>
-<span class="n">Raw</span> <span class="n">cluster</span> <span class="n">sizes</span><span class="p">:</span><span class="s2">&quot;)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw cluster sizes:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">raw_labels</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span>
-<span class="n">Scaled</span> <span class="n">cluster</span> <span class="n">sizes</span><span class="p">:</span><span class="s2">&quot;)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scaled cluster sizes:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">scaled_labels</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -669,7 +667,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Week 6 Coding Practice: Clustering as a Modeling Workflow</p>
+        <p class="prev-next-title">Week 6 Clustering Practice (Solution)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
