@@ -47,6 +47,8 @@ The most common idea for clustering is based on **distance**. If two observation
 A simple clustering example: the same data can look much more grouped or much more mixed depending on whether the features are on comparable scales.
 ```
 
+
+
 ### Euclidean distance
 
 A common way to measure closeness is **Euclidean distance**. Intuitively, it is the straight-line distance between two points. Two observations are more similar when the direct distance between them is small.
