@@ -1,0 +1,787 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>07 Principal Component Analysis &#8212; Lecture Notes Applied Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'module07/pca';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Week 7 Coding Practice: PCA vs. LDA — Two Views of the Same Data" href="week7_pca_lda_practice.html" />
+    <link rel="prev" title="Week 6 Clustering Practice (Solution)" href="../module06/week6_clustering_practice_solution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/bannerADS.png" class="logo__image only-light" alt="Lecture Notes Applied Data Science - Home"/>
+    <script>document.write(`<img src="../_static/bannerADS.png" class="logo__image only-dark" alt="Lecture Notes Applied Data Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../welcome.html">
+                    Applied Data Science
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../module01/workflow.html">01 Data Science Lifecycle</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module02/data.html">02 Data Quality</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module03/visualization.html">03 Data Visualization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module04/regression.html">04 Regression and Prediction</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module05/trees.html">05 Decision Trees, Random Forests, and Factor Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice.html">Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice_solution.html">Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../module06/clustering.html">06 Clustering and Group Discovery</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">07 Principal Component Analysis</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule07/pca.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/module07/pca.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>07 Principal Component Analysis</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">07 Principal Component Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-reduce-dimensions">7.1 Why reduce dimensions?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-intuition-finding-new-directions-in-the-data">7.2 PCA intuition: finding new directions in the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preparing-data-for-pca">7.3 Preparing data for PCA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#centering">Centering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling">Scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformations-and-feature-choices">Transformations and feature choices</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scores-loadings-and-explained-variance">7.4 Scores, loadings, and explained variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scores">Scores</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loadings">Loadings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-explained">Variance explained</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-how-many-components-to-keep">7.5 Choosing how many components to keep</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-and-visualizing-pca-results">7.6 Interpreting and visualizing PCA results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity-and-responsible-use">7.7 Sensitivity and responsible use</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-pca-can-and-cannot-tell-us">7.8 What PCA can and cannot tell us</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-pca-does-well">What PCA does well</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-pca-does-not-do">What PCA does not do</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="principal-component-analysis">
+<h1>07 Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this heading">#</a></h1>
+<section id="big-idea">
+<h2>Big Idea<a class="headerlink" href="#big-idea" title="Permalink to this heading">#</a></h2>
+<p>Principal component analysis (PCA) is an unsupervised method for reducing a large set of variables to a smaller number of synthetic dimensions that preserve as much of the original variation as possible.</p>
+<p>This is useful when data are high-dimensional and hard to visualize or model directly. But PCA is not just a black-box procedure for shrinking a table. It is a sequence of decisions about the data, the features, the preprocessing, the retained components, and how the results are interpreted.</p>
+<p>A good PCA workflow is not:</p>
+<p><strong>run PCA → keep the first two components → explain the data</strong></p>
+<p>It is:</p>
+<p><strong>question → data/features → preprocessing → PCA → explained variance → component selection → interpretation → sensitivity check → communication</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A principal component is not automatically a natural or causal category. It is a mathematical summary of variation in the chosen data representation.</p>
+</div>
+</section>
+<section id="why-reduce-dimensions">
+<h2>7.1 Why reduce dimensions?<a class="headerlink" href="#why-reduce-dimensions" title="Permalink to this heading">#</a></h2>
+<p>Many data problems involve dozens, hundreds, or even thousands of variables. In those settings, a table can be difficult to visualize and complex to model.</p>
+<p>PCA helps because it can find a smaller set of directions that explain a large share of the variation in the data. This can help with:</p>
+<ul class="simple">
+<li><p>visualization in two or three dimensions</p></li>
+<li><p>dimension reduction before clustering or prediction</p></li>
+<li><p>summarizing correlated features</p></li>
+<li><p>reducing noise and redundancy</p></li>
+<li><p>exploring patterns in data with many variables</p></li>
+</ul>
+<p>The key idea is that a dataset often contains correlated variables. If several variables move together, we may be able to summarize their shared variation with a smaller set of component axes.</p>
+</section>
+<section id="pca-intuition-finding-new-directions-in-the-data">
+<h2>7.2 PCA intuition: finding new directions in the data<a class="headerlink" href="#pca-intuition-finding-new-directions-in-the-data" title="Permalink to this heading">#</a></h2>
+<p>A useful way to think about PCA is geometric.</p>
+<p>Suppose we have a dataset with two variables, such as sodium and potassium measurements. Instead of looking only at the original axes, PCA rotates the coordinate system to find new directions through the data.</p>
+<p>The first principal component, PC1, is the direction along which the projected data have the greatest variance. The second principal component, PC2, is a different direction that is perpendicular to the first one and captures as much of the remaining variation as possible.</p>
+<p>This continues for additional components, each one representing another direction in the data. The result is a new coordinate system where the axes are ordered by how much variation they explain.</p>
+<p>In a simple expression, each principal component is a weighted linear combination of the original variables:</p>
+<p>PC1 = w1x1 + w2x2 + … + wpxp</p>
+<p>The weights are often called <strong>loadings</strong>. They describe how strongly each original variable contributes to that component.</p>
+<p>The data points can also be represented in the new component space using <strong>scores</strong>. A score tells us where an observation lies along each principal component.</p>
+<p>This is the core difference:</p>
+<ul class="simple">
+<li><p><strong>scores</strong> describe observations in the new component space</p></li>
+<li><p><strong>loadings</strong> describe how the original variables contribute to each component</p></li>
+</ul>
+</section>
+<section id="preparing-data-for-pca">
+<h2>7.3 Preparing data for PCA<a class="headerlink" href="#preparing-data-for-pca" title="Permalink to this heading">#</a></h2>
+<p>PCA results depend strongly on how the data are prepared. This is one of the most important lessons of the method.</p>
+<section id="centering">
+<h3>Centering<a class="headerlink" href="#centering" title="Permalink to this heading">#</a></h3>
+<p>PCA is usually applied after centering each variable by subtracting its mean. This changes the origin from zero to the mean of the variable, so the method focuses on variation around the center rather than the arbitrary zero point.</p>
+</section>
+<section id="scaling">
+<h3>Scaling<a class="headerlink" href="#scaling" title="Permalink to this heading">#</a></h3>
+<p>Scaling is especially important when variables are measured on different units or have very different spreads. Without scaling, a variable with a large numerical range can dominate the component calculation simply because its values are large in magnitude.</p>
+<p>This is why standardization is often used:</p>
+<ul class="simple">
+<li><p>subtract the mean</p></li>
+<li><p>divide by the standard deviation</p></li>
+</ul>
+<p>That gives each variable a roughly comparable scale.</p>
+<p>This is not always the best choice in every setting. Sometimes the original scale itself contains meaningful information. If variables are already on a common and meaningful measurement scale, forcing standardization may hide important structure. PCA is therefore sensitive to feature scale and to the analyst’s choices about preprocessing.</p>
+</section>
+<section id="transformations-and-feature-choices">
+<h3>Transformations and feature choices<a class="headerlink" href="#transformations-and-feature-choices" title="Permalink to this heading">#</a></h3>
+<p>Other decisions also matter:</p>
+<ul class="simple">
+<li><p>whether to apply a log transformation to skewed data</p></li>
+<li><p>how to handle outliers</p></li>
+<li><p>which variables to include in the analysis</p></li>
+<li><p>whether to aggregate or subset features before running PCA</p></li>
+</ul>
+<p>These choices can change the components and the interpretation. That is not a bug in PCA. It is an important reminder that the method is not discovering a unique objective truth in the raw data alone; it is summarizing a chosen representation of the data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A PCA result is only as trustworthy as the feature set and preprocessing decisions behind it.</p>
+</div>
+</section>
+</section>
+<section id="scores-loadings-and-explained-variance">
+<h2>7.4 Scores, loadings, and explained variance<a class="headerlink" href="#scores-loadings-and-explained-variance" title="Permalink to this heading">#</a></h2>
+<p>Once PCA is computed, we look at two main outputs: scores and loadings.</p>
+<section id="scores">
+<h3>Scores<a class="headerlink" href="#scores" title="Permalink to this heading">#</a></h3>
+<p>Scores are the coordinates of observations in the PCA space. If an observation has a high score on a component, it is located far along that component direction.</p>
+<p>Scores are useful for:</p>
+<ul class="simple">
+<li><p>plotting observations in a reduced space</p></li>
+<li><p>identifying clusters or gradients</p></li>
+<li><p>comparing cases in a lower-dimensional representation</p></li>
+</ul>
+</section>
+<section id="loadings">
+<h3>Loadings<a class="headerlink" href="#loadings" title="Permalink to this heading">#</a></h3>
+<p>Loadings are the weights of the original variables in each component. They reveal which variables contribute most strongly to a component.</p>
+<p>If a component has large positive loadings for a set of variables, those variables tend to move together in the same direction. Large negative loadings indicate the opposite direction. The size of the loading indicates strength; the sign indicates direction.</p>
+<p>The sign itself is not inherently meaningful. If we multiply all loadings in a component by -1, the component direction flips, but the underlying structure is the same. The important idea is the pattern of relative magnitudes and directions.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Large loadings do not automatically mean a variable is a true cause or a natural category. They mean the variable contributes strongly to the mathematical variation captured by that component.</p>
+</div>
+</section>
+<section id="variance-explained">
+<h3>Variance explained<a class="headerlink" href="#variance-explained" title="Permalink to this heading">#</a></h3>
+<p>Each principal component explains some share of the variation in the original data. A component with high explained variance captures a large amount of the information in the dataset.</p>
+<p>The total variation retained by the first K components can be summarized with:</p>
+<ul class="simple">
+<li><p><strong>proportion of variance explained</strong> for each component</p></li>
+<li><p><strong>cumulative explained variance</strong> across components</p></li>
+</ul>
+<p>This helps show how much information remains after reducing dimensionality.</p>
+</section>
+</section>
+<section id="choosing-how-many-components-to-keep">
+<h2>7.5 Choosing how many components to keep<a class="headerlink" href="#choosing-how-many-components-to-keep" title="Permalink to this heading">#</a></h2>
+<p>One of the hardest questions in PCA is deciding how many components to retain.</p>
+<p>A common tool is the <strong>scree plot</strong>, which shows the proportion of variance explained against the component number. The “elbow” is a useful visual cue: the curve drops sharply at first and then flattens.</p>
+<p>This is a helpful heuristic, but it is not a universal rule. The right number of components depends on the purpose of the analysis.</p>
+<p>For example:</p>
+<ul class="simple">
+<li><p>for visualization, a small number of components may be enough</p></li>
+<li><p>for compression, a moderate number may be needed</p></li>
+<li><p>for downstream modeling, a different threshold may be preferred</p></li>
+<li><p>for interpretation, fewer components may be easier to explain</p></li>
+</ul>
+<p>A scree plot is evidence, not proof. It should be used alongside domain understanding, model goals, and sensitivity checks.</p>
+</section>
+<section id="interpreting-and-visualizing-pca-results">
+<h2>7.6 Interpreting and visualizing PCA results<a class="headerlink" href="#interpreting-and-visualizing-pca-results" title="Permalink to this heading">#</a></h2>
+<p>PCA is often used to make high-dimensional data easier to understand visually or descriptively. But a component is only interpretable after we inspect it.</p>
+<p>A responsible interpretation asks:</p>
+<ul class="simple">
+<li><p>Which variables have the largest loadings?</p></li>
+<li><p>Do the loadings make sense in the context of the problem?</p></li>
+<li><p>Do the score plots show meaningful groups, gradients, or outliers?</p></li>
+<li><p>Does the apparent structure persist under reasonable alternative choices?</p></li>
+<li><p>Is the interpretation plausible for a domain expert?</p></li>
+</ul>
+<p>This is where PCA becomes an applied statistical tool rather than a purely mechanical one.</p>
+<p>It is also where caution matters. A component might look meaningful because it captures a lot of variance, but that does not mean it represents a hidden real-world construct, a latent cause, or a natural category. The component is still a mathematical summary of the selected data representation.</p>
+</section>
+<section id="sensitivity-and-responsible-use">
+<h2>7.7 Sensitivity and responsible use<a class="headerlink" href="#sensitivity-and-responsible-use" title="Permalink to this heading">#</a></h2>
+<p>One of the strongest applied lessons in PCA is that defensible modeling choices can change the output.</p>
+<p>A few common examples:</p>
+<ul class="simple">
+<li><p>standardizing versus not standardizing</p></li>
+<li><p>including or excluding a feature</p></li>
+<li><p>applying a log transformation to skewed variables</p></li>
+<li><p>handling outliers differently</p></li>
+<li><p>keeping a different number of components</p></li>
+</ul>
+<p>These decisions can produce different loadings, scores, and visual patterns. That does not make PCA unreliable. It means PCA is part of a reasoning process, not a single objective truth generated automatically from raw numbers.</p>
+<p>This is why we should check whether a PCA interpretation is reasonably stable under defensible alternative choices. If the structure disappears when we change preprocessing, we should be careful about claiming strong conclusions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The goal is not to find a magical “true” PCA. The goal is to understand whether the result is interpretable, useful, and reasonably stable.</p>
+</div>
+</section>
+<section id="what-pca-can-and-cannot-tell-us">
+<h2>7.8 What PCA can and cannot tell us<a class="headerlink" href="#what-pca-can-and-cannot-tell-us" title="Permalink to this heading">#</a></h2>
+<p>PCA is powerful, but it has important limits.</p>
+<section id="what-pca-does-well">
+<h3>What PCA does well<a class="headerlink" href="#what-pca-does-well" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>captures linear directions of variation</p></li>
+<li><p>summarizes redundant variables</p></li>
+<li><p>helps visualize high-dimensional data</p></li>
+<li><p>supports clustering, compression, and modeling workflows</p></li>
+<li><p>reduces complexity while preserving much of the signal</p></li>
+</ul>
+</section>
+<section id="what-pca-does-not-do">
+<h3>What PCA does not do<a class="headerlink" href="#what-pca-does-not-do" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>it does not use a target variable</p></li>
+<li><p>it does not establish causality</p></li>
+<li><p>it does not guarantee semantic meaning for the components</p></li>
+<li><p>it is sensitive to preprocessing choices and feature selection</p></li>
+<li><p>it prioritizes variance, not necessarily task relevance</p></li>
+<li><p>it is limited to linear structure</p></li>
+</ul>
+<p>This is why a high explained variance does not automatically mean a component is useful for every downstream task. A PCA summary may be mathematically strong but not operationally meaningful.</p>
+</section>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>PCA is a method for finding directions of maximum variation in data.</p></li>
+<li><p>The first component captures the largest variance, and later components capture remaining orthogonal variation.</p></li>
+<li><p>Scores describe observations in the reduced space; loadings describe how original variables contribute to each component.</p></li>
+<li><p>Preprocessing is central: centering, scaling, transformations, and feature selection can change the result.</p></li>
+<li><p>Scree plots and variance explained are useful tools, but they are not automatic decision rules.</p></li>
+<li><p>PCA is interpretable only when we inspect loadings, score plots, and domain context.</p></li>
+<li><p>Component interpretation requires caution: PCA does not automatically reveal hidden real-world categories or causal structure.</p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Yu, B., &amp; Barter, R. <em>Veridical Data Science</em>. Chapter 6: Principal Component Analysis. <a class="reference external" href="https://vdsbook.com/06-pca">https://vdsbook.com/06-pca</a></p></li>
+<li><p>Yu, B., &amp; Barter, R. <em>Veridical Data Science</em>. Book website.</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./module07"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../module06/week6_clustering_practice_solution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 6 Clustering Practice (Solution)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="week7_pca_lda_practice.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Week 7 Coding Practice: PCA vs. LDA — Two Views of the Same Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">07 Principal Component Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-reduce-dimensions">7.1 Why reduce dimensions?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-intuition-finding-new-directions-in-the-data">7.2 PCA intuition: finding new directions in the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preparing-data-for-pca">7.3 Preparing data for PCA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#centering">Centering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling">Scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformations-and-feature-choices">Transformations and feature choices</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scores-loadings-and-explained-variance">7.4 Scores, loadings, and explained variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scores">Scores</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loadings">Loadings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-explained">Variance explained</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-how-many-components-to-keep">7.5 Choosing how many components to keep</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-and-visualizing-pca-results">7.6 Interpreting and visualizing PCA results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity-and-responsible-use">7.7 Sensitivity and responsible use</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-pca-can-and-cannot-tell-us">7.8 What PCA can and cannot tell us</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-pca-does-well">What PCA does well</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-pca-does-not-do">What PCA does not do</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Olga Scrivner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, Olga Scrivner.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
