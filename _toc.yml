@@ -36,3 +36,8 @@ chapters:
   sections:
     - file: module07/week7_pca_lda_practice
     - file: module07/week7_pca_lda_practice_solution
+
+- file: module08/time_series
+  sections:
+    - file: module08/week8_time_series_practice
+    - file: module08/week8_time_series_practice_solution
