@@ -1,0 +1,921 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>08 Introduction to Time Series Analysis and Forecasting &#8212; Lecture Notes Applied Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'module08/time_series';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Week 7 Coding Practice (Solution): PCA vs. LDA" href="../module07/week7_pca_lda_practice_solution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/bannerADS.png" class="logo__image only-light" alt="Lecture Notes Applied Data Science - Home"/>
+    <script>document.write(`<img src="../_static/bannerADS.png" class="logo__image only-dark" alt="Lecture Notes Applied Data Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../welcome.html">
+                    Applied Data Science
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../module01/workflow.html">01 Data Science Lifecycle</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module02/data.html">02 Data Quality</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module03/visualization.html">03 Data Visualization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module04/regression.html">04 Regression and Prediction</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module05/trees.html">05 Decision Trees, Random Forests, and Factor Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice.html">Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice_solution.html">Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../module06/clustering.html">06 Clustering and Group Discovery</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module07/pca.html">07 Principal Component Analysis</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">08 Introduction to Time Series Analysis and Forecasting</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule08/time_series.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/module08/time_series.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>08 Introduction to Time Series Analysis and Forecasting</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-time-series-data">8.1 What Is Time Series Data?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#our-running-example">Our running example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-temporal-patterns">8.2 Understanding Temporal Patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-time-series-with-python">8.3 Exploring Time Series with Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datetime-indexes-and-ordering">Datetime indexes and ordering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-plots-and-rolling-averages">Time plots and rolling averages</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resampling-and-missing-periods">Resampling and missing periods</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-decomposition">8.4 Time Series Decomposition</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stl-in-python">STL in Python</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autocorrelation-and-lagged-relationships">8.5 Autocorrelation and Lagged Relationships</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-forecasting">8.6 Introduction to Forecasting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-forecasts">8.7 Evaluating Forecasts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keep-time-moving-forward">Keep time moving forward</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recognize-temporal-leakage">Recognize temporal leakage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mae-and-rmse">MAE and RMSE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uncertainty-and-judgment">Uncertainty and judgment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">8.8 Key Takeaways</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-misconceptions">Common misconceptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-checks">Self-checks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references-and-optional-further-reading">References and optional further reading</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-time-series-analysis-and-forecasting">
+<h1>08 Introduction to Time Series Analysis and Forecasting<a class="headerlink" href="#introduction-to-time-series-analysis-and-forecasting" title="Permalink to this heading">#</a></h1>
+<section id="big-idea">
+<h2>Big Idea<a class="headerlink" href="#big-idea" title="Permalink to this heading">#</a></h2>
+<p>Time changes what counts as a useful prediction. A model that has seen next month’s demand cannot fairly claim to forecast it. Before choosing a forecasting method, we need to understand the time axis, recognize patterns, and decide what information would actually be available when a decision is made.</p>
+<p>This chapter connects the visual reasoning of <a class="reference internal" href="../module03/visualization.html"><span class="doc std std-doc">Week 03</span></a> and model evaluation of <a class="reference internal" href="../module04/regression.html"><span class="doc std std-doc">Week 04</span></a> to temporal data. The goal is to explain a simple forecast and judge whether its evaluation is credible. Advanced forecasting methods belong in the separate Time Series course.</p>
+<p><strong>Reading guide:</strong> Allow 35–45 minutes, including interpreting the four figures and answering the self-checks. Executing the Python examples is optional and takes additional time. Read the examples for their purpose rather than memorize function names.</p>
+<p>By the end, you should be able to:</p>
+<ul class="simple">
+<li><p>distinguish time series from independent observations and identify frequency, trend, seasonality, cycles, and irregular variation;</p></li>
+<li><p>prepare a datetime index, check ordering and intervals, and interpret time plots, rolling summaries, and resampling;</p></li>
+<li><p>explain decomposition and interpret lagged relationships and autocorrelation;</p></li>
+<li><p>implement naive and seasonal naive baselines, evaluate chronologically with MAE/RMSE, and recognize leakage, uncertainty, and unsupported forecast claims.</p></li>
+</ul>
+</section>
+<section id="what-is-time-series-data">
+<h2>8.1 What Is Time Series Data?<a class="headerlink" href="#what-is-time-series-data" title="Permalink to this heading">#</a></h2>
+<p>A <strong>time series</strong> records a quantity over time: daily emergency-department arrivals, hourly electricity use, monthly product demand, or an asset’s trading-day closing price. A pandas Series stores one variable; a datetime index attaches a time to each value. A DataFrame can hold several variables or several entities’ series.</p>
+<p>The defining feature is that temporal order has meaning. Adjacent observations may depend on similar conditions. Shuffling observations destroys the sequence needed to ask what followed what. A histogram can summarize the distribution of monthly sales, but it cannot show whether a high-sales month came before or after a promotion.</p>
+<p><strong>Frequency</strong> is how often observations are recorded. <strong>Granularity</strong> is the level of detail represented by an observation. A timestamp labeled January 1 may represent the whole January total, rather than a measurement at midnight. Record that distinction in the data description. A monthly series with annual seasonality has 12 observations per seasonal cycle; a quarterly series has four.</p>
+<p>Do not confuse observation frequency with seasonal period. “Monthly” describes the spacing; “annual seasonality” describes repetition across 12 months. A series need not be seasonal just because it has regular timestamps.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Application</p></th>
+<th class="head"><p>Quantity and interval</p></th>
+<th class="head"><p>Decision supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Retail</p></td>
+<td><p>Monthly units sold</p></td>
+<td><p>Inventory purchasing</p></td>
+</tr>
+<tr class="row-odd"><td><p>Healthcare</p></td>
+<td><p>Daily arrivals</p></td>
+<td><p>Staffing and capacity</p></td>
+</tr>
+<tr class="row-even"><td><p>Finance</p></td>
+<td><p>Trading-day closing prices</p></td>
+<td><p>Risk monitoring</p></td>
+</tr>
+<tr class="row-odd"><td><p>Operations</p></td>
+<td><p>Hourly electricity demand</p></td>
+<td><p>Capacity scheduling</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The horizon must fit the decision: tomorrow’s staffing and next year’s expansion are different problems. Forecasting estimates what may happen; planning chooses what to do about it. Predictability depends on the stability of the process and available information, so a historical pattern alone is insufficient evidence for a future claim. See the <a class="reference external" href="https://otexts.com/fpppy/01-intro.html">forecasting introduction</a>.</p>
+<section id="our-running-example">
+<h3>Our running example<a class="headerlink" href="#our-running-example" title="Permalink to this heading">#</a></h3>
+<p>We use <strong>synthetic monthly demand</strong>, 60 observations from January 2020 through December 2024, in illustrative units. The data combine a rising level, a repeating annual pattern, and random variation. They are constructed for teaching, not measured sales or evidence about any real business.</p>
+<p><a class="reference download internal" download="" href="../_downloads/cea4ddd8f5a4c8aaf186e4f431cda896/monthly_demand.csv"><span class="xref download myst">Download the local CSV</span></a>. All four figures use this same series. The data and figures can be regenerated with <a class="reference download internal" download="" href="../_downloads/73c16c4847b4ba559e6229aafadb5db8/generate_figures.py"><span class="xref download myst">the Python script</span></a>; no data download is required when running it.</p>
+</section>
+</section>
+<section id="understanding-temporal-patterns">
+<h2>8.2 Understanding Temporal Patterns<a class="headerlink" href="#understanding-temporal-patterns" title="Permalink to this heading">#</a></h2>
+<p>Start with a time plot. Read the horizontal axis, units, and coverage before explaining the shape.</p>
+<ul class="simple">
+<li><p><strong>Level:</strong> the general magnitude of the series. Demand around 100 units presents different capacity needs from demand around 10,000.</p></li>
+<li><p><strong>Trend:</strong> a sustained increase or decrease. A trend can be curved, change direction, or stop; it need not be a straight line.</p></li>
+<li><p><strong>Seasonality:</strong> a pattern recurring at a known calendar interval, such as a weekly rhythm in daily arrivals or annual variation in monthly demand.</p></li>
+<li><p><strong>Cyclical variation:</strong> rises and falls without a fixed calendar period, such as expansions and contractions of business activity.</p></li>
+<li><p><strong>Irregular variation:</strong> fluctuations left unexplained by the patterns we have identified. These may include random noise, unusual events, or measurement problems.</p></li>
+</ul>
+<p>A peak is not enough to establish seasonality. Look for repeated peaks at comparable calendar positions over several cycles, and check a plausible explanation. A single surge could be a special event. Likewise, a cycle can last several years without having a reliably repeating duration.</p>
+<figure class="align-default" id="w08-patterns">
+<img alt="Monthly synthetic demand rises from 2020 to 2024 with repeated annual peaks. An orange trailing twelve-month mean smooths the fluctuations; annotations identify repeated peaks and a rising level." src="../_images/patterns.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Synthetic monthly demand and a trailing 12-month average. The annotations highlight annual repetition and a rising underlying level. The average appears only after 12 observations and trails changes in the series.</span><a class="headerlink" href="#w08-patterns" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Read the figure:</strong> Peaks return about a year apart, while later troughs generally sit above earlier troughs. A forecast that repeats last month may miss the seasonal rhythm; repeating last year’s month may miss growth. Neither observation proves that the next year will behave the same way.</p>
+<p><strong>Pause:</strong> Imagine the store closes for two months. Would the resulting dip be ordinary seasonality, or would you need additional context? The label should follow the evidence, rather than the shape alone.</p>
+</section>
+<section id="exploring-time-series-with-python">
+<h2>8.3 Exploring Time Series with Python<a class="headerlink" href="#exploring-time-series-with-python" title="Permalink to this heading">#</a></h2>
+<p>Run the following snippets in order in one notebook. Use a standard environment with NumPy, pandas, matplotlib, and statsmodels. Colab normally provides these packages; if statsmodels is absent, install it using your environment’s package manager. No forecasting framework is needed.</p>
+<p>For a fresh notebook, this cell recreates the local CSV’s values in memory:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;MS&quot;</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">demand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="mi">12</span><span class="p">)</span>
+                  <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">dates</span><span class="p">,</span> <span class="s2">&quot;demand&quot;</span><span class="p">:</span> <span class="n">demand</span><span class="p">})</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">MS</span></code> means month start. These labels represent monthly quantities; the numerical units remain illustrative. The fixed random seed makes the example reproducible. You do not need to learn the generation formula: it supplies a controlled example with recognizable patterns.</p>
+<section id="datetime-indexes-and-ordering">
+<h3>Datetime indexes and ordering<a class="headerlink" href="#datetime-indexes-and-ordering" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">])</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;month&quot;</span><span class="p">)[</span><span class="s2">&quot;demand&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">is_unique</span><span class="p">,</span> <span class="s2">&quot;Resolve duplicate months before analysis&quot;</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="s2">&quot;MS&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">s</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The example covers January 2020–December 2024 and has zero missing values. <code class="docutils literal notranslate"><span class="pre">sort_index()</span></code> puts time in chronological order. <code class="docutils literal notranslate"><span class="pre">asfreq(&quot;MS&quot;)</span></code> establishes a monthly grid and exposes missing months as missing values; it does not estimate them. Check the timestamp convention first: month-end observations would require an appropriate month-end grid instead.</p>
+<p>Duplicate timestamps require interpretation. Several transactions in a month may need aggregation, while repeated copies of the same monthly total need deduplication. Neither should be silently discarded. For irregular event data, choose a meaningful interval and aggregate events before treating row positions as equal time steps. With hourly measurements, time zones and daylight-saving changes can also affect intervals. The <a class="reference external" href="https://pandas.pydata.org/docs/user_guide/timeseries.html">pandas time-series guide</a> documents these operations.</p>
+</section>
+<section id="time-plots-and-rolling-averages">
+<h3>Time plots and rolling averages<a class="headerlink" href="#time-plots-and-rolling-averages" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Monthly demand&quot;</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Trailing 12-month mean&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Month&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Demand (illustrative units)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>A trailing average uses the current and previous 11 months. It smooths short-term variation but reacts slowly to changes. It is a summary of the past, not a prediction of the next observation. A centered average uses observations on both sides of a date; that can be useful for describing history but unavailable in real time.</p>
+</section>
+<section id="resampling-and-missing-periods">
+<h3>Resampling and missing periods<a class="headerlink" href="#resampling-and-missing-periods" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">quarterly_total</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;QS&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">min_count</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">quarterly_total</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">QS</span></code> groups observations into calendar quarters labeled by their starting date. Summing is appropriate for monthly demand quantities; averaging would be appropriate for something like monthly average temperature. <code class="docutils literal notranslate"><span class="pre">min_count=3</span></code> requires three observed months before reporting a quarterly total. Otherwise, a missing month could produce a deceptively low total.</p>
+<p>Changing the interval changes the question. Quarterly totals simplify the display but hide within-quarter variation. Compare units and aggregation rules before comparing series.</p>
+<p>A missing value is not automatically zero demand. It may mean a reporting failure, a closure, or an absent measurement. Investigate the reason, document the treatment, and check how the choice affects conclusions. Interpolation can help exploration, but filling a training gap using later test observations leaks future information. The complete teaching series needs no filling.</p>
+</section>
+</section>
+<section id="time-series-decomposition">
+<h2>8.4 Time Series Decomposition<a class="headerlink" href="#time-series-decomposition" title="Permalink to this heading">#</a></h2>
+<p><strong>Decomposition</strong> separates an observed series into estimated components so we can inspect its structure. The legacy Brownlee reading introduces this idea and emphasizes skepticism about automatic results <span id="id1">[<a class="reference internal" href="../statistics.html#id11" title="Jason Brownlee. Introduction to time series forecasting with python. 2021. Chapter 12: Decompose Time Series Data. Course-supplied excerpt; year follows the legacy Week 08 overview.">Bro21</a>]</span>.</p>
+<p>An additive representation is:</p>
+<p><strong>Observed = trend + seasonal component + remainder.</strong></p>
+<p>The trend component includes the underlying level and slow movement; a separate level panel is not required. The remainder is whatever the estimated trend and seasonality leave behind. It may still contain structure, unusual events, or model error, so “remainder” is safer than assuming it is pure noise.</p>
+<p>Additive decomposition is useful when seasonal swings are roughly constant in original units. If seasonal swings grow proportionally with the level, a multiplicative representation may be more useful:</p>
+<p><strong>Observed = trend × seasonal factor × remainder factor.</strong></p>
+<p>For example, a recurring increase of about 20 units suggests additive seasonality; a recurring increase of about 20% suggests multiplicative seasonality. This choice concerns how components combine. Additive decomposition can have a curved trend, and multiplicative seasonality still has a fixed seasonal period.</p>
+<section id="stl-in-python">
+<h3>STL in Python<a class="headerlink" href="#stl-in-python" title="Permalink to this heading">#</a></h3>
+<p><strong>STL</strong> means Seasonal and Trend decomposition using Loess. It estimates smooth trend and seasonal components; we focus on interpreting the result rather than the smoothing algorithm. See the <a class="reference external" href="https://www.statsmodels.org/stable/generated/statsmodels.tsa.seasonal.STL.html">STL documentation</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.tsa.seasonal</span><span class="w"> </span><span class="kn">import</span> <span class="n">STL</span>
+
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(),</span> <span class="s2">&quot;STL needs a complete series here&quot;</span>
+<span class="n">components</span> <span class="o">=</span> <span class="n">STL</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">components</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">period=12</span></code> specifies annual repetition in monthly observations. It does not mean that all monthly series have annual seasonality. <code class="docutils literal notranslate"><span class="pre">robust=True</span></code> reduces the influence of unusual observations on the estimated trend and seasonal components; it does not remove those observations or prove they are errors. STL is additive; strictly positive data can sometimes be analyzed on a log scale to represent multiplicative behavior.</p>
+<figure class="align-default" id="w08-decomposition">
+<img alt="Four aligned panels show synthetic observed demand, a rising estimated trend, an annual seasonal component oscillating around zero, and a smaller irregular remainder. Each panel is labeled in illustrative units." src="../_images/decomposition.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">STL applied to the complete historical series. Adding the bottom three components reconstructs the observed series. Panels have different vertical scales, so compare their labeled values rather than their apparent heights.</span><a class="headerlink" href="#w08-decomposition" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Read the figure:</strong> The trend rises, seasonal deviations alternate above and below zero, and the remainder is smaller but not identically zero. A negative seasonal value means demand is below the estimated trend for that month; it does not mean negative demand. The components are estimates, not explanations of why demand changed.</p>
+<p>Decomposition depends on the chosen period and smoothing settings. Endpoint estimates can change when new observations arrive, and a short history may provide weak evidence for a stable seasonal pattern. Multiple seasonal rhythms and calendar effects require additional care. Decomposition itself does not generate a future forecast. This full-history plot is descriptive; a forecast pipeline must estimate any decomposition used in prediction on training data only.</p>
+</section>
+</section>
+<section id="autocorrelation-and-lagged-relationships">
+<h2>8.5 Autocorrelation and Lagged Relationships<a class="headerlink" href="#autocorrelation-and-lagged-relationships" title="Permalink to this heading">#</a></h2>
+<p>A <strong>lag</strong> looks backward by a specified number of observations. On our complete monthly grid, lag 1 means the previous month and lag 12 means the same month in the previous year. On an irregular grid, 12 rows might not mean 12 months.</p>
+<p>A lag plot pairs current values with earlier values. Points following an upward diagonal suggest that high earlier values tend to accompany high current values. A downward pattern suggests an inverse relationship. A diffuse cloud suggests a weak relationship at that lag, though nonlinear dependence may still exist.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">lag_plot</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">lag</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Demand 12 months earlier (units)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Current demand (units)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default" id="w08-lags">
+<img alt="Two scatterplots pair current monthly demand with demand one month and twelve months earlier. Both show positive association, with the twelve-month comparison more closely following an upward diagonal." src="../_images/lags.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Lag 1 and lag 12 on the same historical series. Both growth and annual seasonality contribute to the relationships; the plots do not isolate a causal effect.</span><a class="headerlink" href="#w08-lags" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Autocorrelation</strong> summarizes linear association across time. The <strong>autocorrelation function (ACF)</strong> reports correlations at different lags. Positive values indicate that observations separated by that lag tend to move together; negative values indicate opposing movement. Lag zero compares the series with itself and equals one.</p>
+<p>A slowly declining ACF can reflect trend; repeated high correlations at seasonal lags can reflect seasonality. Therefore, a strong lag-12 relationship alone does not prove annual seasonality. Combine it with the time plot and calendar context. We do not use ACF/PACF patterns to select ARIMA parameters in this introductory chapter.</p>
+<p><strong>Pause:</strong> Could common growth produce a strong lag relationship even without a direct influence of last year’s demand on this year’s demand? Yes. Correlation is evidence of association, not a mechanism.</p>
+</section>
+<section id="introduction-to-forecasting">
+<h2>8.6 Introduction to Forecasting<a class="headerlink" href="#introduction-to-forecasting" title="Permalink to this heading">#</a></h2>
+<p>A <strong>forecast</strong> predicts observations beyond the available history. The <strong>forecast origin</strong> is the cutoff where information stops; the <strong>horizon</strong> is how far ahead we predict. At the end of December 2023, January 2024 is horizon 1 and December 2024 is horizon 12.</p>
+<p>Always establish a simple baseline before trying a complicated model. A <strong>naive forecast</strong> repeats the most recent observation at every future step. A <strong>seasonal naive forecast</strong> repeats the most recent observation for the same seasonal position. For a 12-month horizon, it copies the previous year’s 12 months.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="o">-</span><span class="mi">12</span><span class="p">],</span> <span class="n">s</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">12</span><span class="p">:]</span>
+<span class="n">naive</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">test</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Naive&quot;</span><span class="p">)</span>
+<span class="n">seasonal_naive</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">12</span><span class="p">:]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span>
+                           <span class="n">index</span><span class="o">=</span><span class="n">test</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Seasonal naive&quot;</span><span class="p">)</span>
+<span class="n">forecasts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">naive</span><span class="p">,</span> <span class="n">seasonal_naive</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Every predicted value comes from <code class="docutils literal notranslate"><span class="pre">train</span></code>; <code class="docutils literal notranslate"><span class="pre">test.index</span></code> supplies dates, not future demand. Converting the previous year’s values to an array assigns them to the new dates. Without that step, pandas would align old timestamps rather than matching seasonal positions.</p>
+<p>For horizons beyond one season, seasonal naive repeats the last complete seasonal cycle as often as needed. Our code intentionally handles exactly 12 months. Updating the baseline after each new observed month would be a different forecasting setup and should be evaluated separately.</p>
+<figure class="align-default" id="w08-forecasts">
+<img alt="Training demand ends in December 2023. A vertical dashed cutoff separates the shaded 2024 test period, where actuals are compared with a flat naive forecast and a repeating seasonal naive forecast. Seasonal naive follows the annual shape but generally lies below actuals." src="../_images/forecasts.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Two 12-month forecasts made using only history available through December 2023. Held-out actuals are shown afterward for evaluation; they did not supply forecast values.</span><a class="headerlink" href="#w08-forecasts" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Read the figure:</strong> Seasonal naive captures much of the annual shape but tends to underpredict because it repeats a lower historical level. The flat naive forecast misses the seasonal rhythm. More complex methods must earn their additional effort by improving credible out-of-sample performance.</p>
+<p>Exponential smoothing, ARIMA, and models using explanatory variables offer other ways to represent changing patterns. Their tuning and implementation are beyond this week’s scope.</p>
+</section>
+<section id="evaluating-forecasts">
+<h2>8.7 Evaluating Forecasts<a class="headerlink" href="#evaluating-forecasts" title="Permalink to this heading">#</a></h2>
+<section id="keep-time-moving-forward">
+<h3>Keep time moving forward<a class="headerlink" href="#keep-time-moving-forward" title="Permalink to this heading">#</a></h3>
+<p>A chronological holdout asks a realistic question: using information available through the cutoff, how well could we predict later observations? The test period should cover the horizon relevant to the decision. Here it includes a complete annual cycle, so an easy seasonal period cannot dominate the comparison.</p>
+<p>Random splitting can let a model learn from later observations while being evaluated on earlier ones. That is misleading for forecasting future demand, even when training and test rows do not overlap. Set aside the most recent period and keep it untouched while selecting methods. When comparing many choices, use earlier chronological validation windows for selection and reserve a final test period for reporting.</p>
+<p>A <strong>rolling-origin evaluation</strong> repeats the process at several historical cutoffs: train on the past, predict a future window, advance the cutoff, and repeat. This checks whether performance depends on one lucky year. It is a useful next step, not a requirement for the introductory example.</p>
+</section>
+<section id="recognize-temporal-leakage">
+<h3>Recognize temporal leakage<a class="headerlink" href="#recognize-temporal-leakage" title="Permalink to this heading">#</a></h3>
+<p>Leakage happens when future information enters the process used to make an earlier prediction. Check the whole workflow, not only the final model:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Choice</p></th>
+<th class="head"><p>What goes wrong</p></th>
+<th class="head"><p>Better approach</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fit decomposition or scaling before the split</p></td>
+<td><p>Test values affect estimated components or parameters</p></td>
+<td><p>Fit on each training window</p></td>
+</tr>
+<tr class="row-odd"><td><p>Center a rolling feature at the target date</p></td>
+<td><p>Later observations enter the feature</p></td>
+<td><p>Use only available past values</p></td>
+</tr>
+<tr class="row-even"><td><p>Fill a training gap from later test observations</p></td>
+<td><p>Future measurements repair the past</p></td>
+<td><p>Use an appropriate training-only policy</p></td>
+</tr>
+<tr class="row-odd"><td><p>Use realized future sales as a predictor</p></td>
+<td><p>The quantity is unknown at forecast time</p></td>
+<td><p>Audit predictor availability</p></td>
+</tr>
+<tr class="row-even"><td><p>Tune repeatedly on the final test year</p></td>
+<td><p>The reported score influences selection</p></td>
+<td><p>Use earlier validation windows</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A trailing mean containing today’s demand is also unavailable if today’s demand is the target being forecast before it is observed. “Past-looking” code is not sufficient: ask when each value became known. Some future predictors, such as scheduled holidays, are known in advance; others, such as realized weather, require their own forecasts. Reporting delays can make even a dated observation unavailable at the cutoff.</p>
+</section>
+<section id="mae-and-rmse">
+<h3>MAE and RMSE<a class="headerlink" href="#mae-and-rmse" title="Permalink to this heading">#</a></h3>
+<p>A <strong>forecast error</strong> is actual minus predicted. Positive errors indicate underprediction; negative errors indicate overprediction. Historical fitted residuals and held-out forecast errors answer different questions: fitting the past well does not guarantee predicting unseen months well.</p>
+<p><strong>MAE</strong> is the average absolute error. <strong>RMSE</strong> is the square root of the average squared error. Both use the target’s units; RMSE gives more weight to large misses. Signed errors can cancel, so averaging them alone does not measure typical error magnitude.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="n">forecasts</span><span class="o">.</span><span class="n">rsub</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># actual minus predicted</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;MAE&quot;</span><span class="p">:</span> <span class="n">errors</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+    <span class="s2">&quot;RMSE&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">scores</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Forecast</p></th>
+<th class="head text-right"><p>MAE (units)</p></th>
+<th class="head text-right"><p>RMSE (units)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Naive</p></td>
+<td class="text-right"><p>11.96</p></td>
+<td class="text-right"><p>15.40</p></td>
+</tr>
+<tr class="row-odd"><td><p>Seasonal naive</p></td>
+<td class="text-right"><p>11.37</p></td>
+<td class="text-right"><p>13.31</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The MAEs are close: a small difference at one cutoff is weak evidence for a general ranking. These are results for this constructed example and this cutoff, not guarantees for real demand. A seasonal-naive MAE of about 11 means an average absolute miss of about 11 illustrative units across the held-out months. It does not mean every error is 11 units, 11%, or within an 11-unit interval. Comparing errors across quantities measured in different units requires additional care.</p>
+<p>To communicate the result, name the cutoff, horizon, baseline, metric, and limitation: “Using history through December 2023, seasonal naive had slightly lower MAE and lower RMSE than naive on the next 12 months, but it generally missed the rising level. We need other historical cutoffs before recommending it for operations.”</p>
+</section>
+<section id="uncertainty-and-judgment">
+<h3>Uncertainty and judgment<a class="headerlink" href="#uncertainty-and-judgment" title="Permalink to this heading">#</a></h3>
+<p>A point forecast is one estimate, not a guarantee. A <strong>prediction interval</strong> expresses a range of plausible future observations under a model and its assumptions. It differs from an interval for an estimated mean. Forecast uncertainty often increases with horizon, but its behavior depends on the model and process.</p>
+<p>Our baseline cells calculate point forecasts only. RMSE is not automatically a valid prediction-interval width, and the shaded region in the figure marks the test period, not uncertainty. Building and checking calibrated intervals requires additional work. Unexpected closures, policy changes, or shifts in demand may invalidate historical patterns and widen the practical uncertainty.</p>
+<p>When an AI tool produces a forecast or explanation, ask for the data, cutoff, horizon, runnable code, baseline comparison, and evaluation procedure. A fluent explanation and a smooth forecast line are not evidence of accuracy. Verify claimed numbers, inspect leakage, and distinguish pattern description from a causal claim.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Optional modern context:</strong> Machine-learning models can use lagged observations and predictors. Foundation forecasting models transfer patterns learned across many series. Neither approach removes the need to audit data availability, compare baselines, and evaluate future periods. No additional library or implementation is required here. See the optional foundation-model reading below.</p>
+</div>
+</section>
+</section>
+<section id="key-takeaways">
+<h2>8.8 Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Time order, intervals, and information availability are part of the analysis.</p></li>
+<li><p>Trend, seasonality, cycles, and irregular variation help describe patterns; they do not guarantee future behavior.</p></li>
+<li><p>Rolling summaries, decomposition, and lag plots answer different exploratory questions.</p></li>
+<li><p>Naive baselines provide a meaningful starting point for forecast comparison.</p></li>
+<li><p>Evaluate chronologically, report errors in their units, and communicate uncertainty and limitations.</p></li>
+</ul>
+<section id="common-misconceptions">
+<h3>Common misconceptions<a class="headerlink" href="#common-misconceptions" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>“Monthly frequency proves annual seasonality.”</strong> Repetition needs evidence across multiple years.</p></li>
+<li><p><strong>“Decomposition gives the true causes.”</strong> It estimates components under modeling choices.</p></li>
+<li><p><strong>“A large autocorrelation proves a causal effect.”</strong> Common trend and seasonality can produce association.</p></li>
+<li><p><strong>“A low historical fitting error means a good forecast.”</strong> Future observations require separate evaluation.</p></li>
+<li><p><strong>“An AI-generated forecast needs less validation.”</strong> Its evidence must meet the same standard.</p></li>
+</ul>
+</section>
+<section id="self-checks">
+<h3>Self-checks<a class="headerlink" href="#self-checks" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Your monthly series jumps from February to April. What must you check before treating lag 1 as “one month ago”?</p></li>
+<li><p>Seasonal naive follows the timing of peaks but consistently underpredicts. Which historical pattern might it be missing, and what evidence would you inspect?</p></li>
+<li><p>A colleague decomposes all five years, then splits the components into training and test periods. Why is the forecast evaluation compromised?</p></li>
+<li><p>Two forecasts have similar MAE, but one has a much larger RMSE. What might their errors look like, and how could that affect a staffing decision?</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+Check your reasoning<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<ol class="arabic simple">
+<li><p class="sd-card-text">Establish a regular monthly grid, investigate the absent March observation, and distinguish missing reporting from an actual zero. A one-row shift otherwise spans unequal calendar time.</p></li>
+<li><p class="sd-card-text">A rising level or trend is plausible. Inspect the time plot and signed held-out errors; do not assume growth is the only possible cause.</p></li>
+<li><p class="sd-card-text">Test observations influenced the decomposition used to construct training components. Estimate predictive preprocessing on training data only.</p></li>
+<li><p class="sd-card-text">The larger RMSE suggests more extreme misses. Inspect individual months and the consequences of understaffing, rather than rank methods from one summary alone.</p></li>
+</ol>
+</div>
+</details></section>
+<section id="references-and-optional-further-reading">
+<h3>References and optional further reading<a class="headerlink" href="#references-and-optional-further-reading" title="Permalink to this heading">#</a></h3>
+<p>The principal reference is Hyndman et al.’s <em>Forecasting: Principles and Practice, the Pythonic Way</em> <span id="id2">[<a class="reference internal" href="../statistics.html#id10" title="Rob J. Hyndman, George Athanasopoulos, Azul Garza, Cristian Challu, Max Mergenthaler, and Kin G. Olivares. Forecasting: Principles and Practice, the Pythonic Way. OTexts, Melbourne, Australia, 2026. URL: https://otexts.com/fpppy/ (visited on 2026-10-10).">HAG+26</a>]</span>. This chapter adapts selected concepts to familiar Python libraries and an original teaching example.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://otexts.com/fpppy/01-intro.html">Chapter 1: Getting started</a>: decisions, predictability, and forecasting workflow.</p></li>
+<li><p><a class="reference external" href="https://otexts.com/fpppy/02-graphics.html">Chapter 2: Time series graphics</a>: time plots, seasonal patterns, lag plots, and autocorrelation.</p></li>
+<li><p><a class="reference external" href="https://otexts.com/fpppy/03-decomposition.html">Chapter 3: Time series decomposition</a>: components and STL.</p></li>
+<li><p><a class="reference external" href="https://otexts.com/fpppy/05-toolbox.html">Chapter 5: The forecaster’s toolbox</a>: simple methods, uncertainty, and forecast evaluation.</p></li>
+<li><p>Optional: Chapter 16, <em>Foundation forecasting models</em>, accessible from the <a class="reference external" href="https://otexts.com/fpppy/">book contents</a>. Read for context only; implementation is beyond this chapter.</p></li>
+<li><p>Brownlee (2021), supplied Chapter 12, <em>Decompose Time Series Data</em> <span id="id3">[<a class="reference internal" href="../statistics.html#id11" title="Jason Brownlee. Introduction to time series forecasting with python. 2021. Chapter 12: Decompose Time Series Data. Course-supplied excerpt; year follows the legacy Week 08 overview.">Bro21</a>]</span>: legacy background on decomposition. Use the current examples here instead of its older pandas API.</p></li>
+<li><p><a class="reference external" href="https://pandas.pydata.org/docs/user_guide/timeseries.html">pandas time-series documentation</a> and <a class="reference external" href="https://www.statsmodels.org/stable/generated/statsmodels.tsa.seasonal.STL.html">statsmodels STL API</a>: optional implementation reference.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./module08"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../module07/week7_pca_lda_practice_solution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 7 Coding Practice (Solution): PCA vs. LDA</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-time-series-data">8.1 What Is Time Series Data?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#our-running-example">Our running example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-temporal-patterns">8.2 Understanding Temporal Patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-time-series-with-python">8.3 Exploring Time Series with Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datetime-indexes-and-ordering">Datetime indexes and ordering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-plots-and-rolling-averages">Time plots and rolling averages</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resampling-and-missing-periods">Resampling and missing periods</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-decomposition">8.4 Time Series Decomposition</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stl-in-python">STL in Python</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autocorrelation-and-lagged-relationships">8.5 Autocorrelation and Lagged Relationships</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-forecasting">8.6 Introduction to Forecasting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-forecasts">8.7 Evaluating Forecasts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keep-time-moving-forward">Keep time moving forward</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recognize-temporal-leakage">Recognize temporal leakage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mae-and-rmse">MAE and RMSE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uncertainty-and-judgment">Uncertainty and judgment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">8.8 Key Takeaways</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-misconceptions">Common misconceptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#self-checks">Self-checks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references-and-optional-further-reading">References and optional further reading</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Olga Scrivner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, Olga Scrivner.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
