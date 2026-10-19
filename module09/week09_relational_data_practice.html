@@ -1,0 +1,1060 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Week 9 Coding Practice: Relational Data in Applied Data Science &#8212; Lecture Notes Applied Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'module09/week09_relational_data_practice';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Week 9 Coding Practice: Relational Data in Applied Data Science (Instructor Solution)" href="week09_relational_data_practice_solution.html" />
+    <link rel="prev" title="09 From Related Tables to Analysis-Ready Data" href="database.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/bannerADS.png" class="logo__image only-light" alt="Lecture Notes Applied Data Science - Home"/>
+    <script>document.write(`<img src="../_static/bannerADS.png" class="logo__image only-dark" alt="Lecture Notes Applied Data Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../welcome.html">
+                    Applied Data Science
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../module01/workflow.html">01 Data Science Lifecycle</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module02/data.html">02 Data Quality</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module03/visualization.html">03 Data Visualization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module04/regression.html">04 Regression and Prediction</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module05/trees.html">05 Decision Trees, Random Forests, and Factor Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice.html">Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice_solution.html">Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../module06/clustering.html">06 Clustering and Group Discovery</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module07/pca.html">07 Principal Component Analysis</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module08/time_series.html">08 Introduction to Time Series Analysis and Forecasting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module08/week8_time_series_practice.html">Week 8 Coding Practice: Working with Time Series in pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module08/week8_time_series_practice_solution.html">Week 8 Coding Practice Solution: Working with Time Series in pandas</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="database.html">09 From Related Tables to Analysis-Ready Data</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Week 9 Coding Practice: Relational Data in Applied Data Science</a></li>
+<li class="toctree-l2"><a class="reference internal" href="week09_relational_data_practice_solution.html">Week 9 Coding Practice: Relational Data in Applied Data Science (Instructor Solution)</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule09/week09_relational_data_practice.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/module09/week09_relational_data_practice.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Week 9 Coding Practice: Relational Data in Applied Data Science</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-and-inspect-the-data">1. Load and inspect the data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint">Reasoning checkpoint</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-the-raw-tables">2. Inspect the raw tables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explain-what-the-checks-establish">Explain what the checks establish</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predict-and-compare-joins">3. Predict and compare joins</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnose-a-misleading-summary">4. Diagnose a misleading summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#questions-to-answer">Questions to answer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-an-analysis-ready-station-table">5. Build an analysis-ready station table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validate-before-interpreting">6. Validate before interpreting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-prompt">Interpretation prompt</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-in-pandas">7. Analyze in pandas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpret-the-chart">Interpret the chart</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#independent-practice">8. Independent practice</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="week-9-coding-practice-relational-data-in-applied-data-science">
+<h1>Week 9 Coding Practice: Relational Data in Applied Data Science<a class="headerlink" href="#week-9-coding-practice-relational-data-in-applied-data-science" title="Permalink to this heading">#</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/obscrivn/DataScience-book/blob/w09-cp-01-colab-link/module09/week09_relational_data_practice.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p><strong>Estimated time:</strong> 60–90 minutes
+<strong>Format:</strong> ungraded guided practice</p>
+<p>This activity uses a small bike-share dataset with two related tables: <code class="docutils literal notranslate"><span class="pre">stations</span></code> and <code class="docutils literal notranslate"><span class="pre">trips</span></code>. The goal is not to memorize SQL syntax. Instead, the focus is on turning related records into a trustworthy analysis dataset and then using that dataset to answer a practical question.</p>
+<p>The main question is:</p>
+<p><strong>How does recorded departure activity vary across stations and neighborhoods during a defined observation period?</strong></p>
+<p>Recorded departures describe observed use. They do not, by themselves, establish unmet demand or justify adding or removing stations.</p>
+<section id="learning-objectives">
+<h2>Learning objectives<a class="headerlink" href="#learning-objectives" title="Permalink to this heading">#</a></h2>
+<p>By the end of this activity, you should be able to:</p>
+<ol class="arabic simple">
+<li><p>explain the relationship between a station table and a trip table;</p></li>
+<li><p>inspect raw relational data for missing values and invalid references;</p></li>
+<li><p>compare different join strategies and explain what each type of join keeps;</p></li>
+<li><p>diagnose a misleading count after a left join and repair it;</p></li>
+<li><p>build a station-level analysis table with one row per station;</p></li>
+<li><p>validate the final table before interpreting it; and</p></li>
+<li><p>use the validated station table to answer a new neighborhood-level question.</p></li>
+</ol>
+</section>
+<section id="load-and-inspect-the-data">
+<h2>1. Load and inspect the data<a class="headerlink" href="#load-and-inspect-the-data" title="Permalink to this heading">#</a></h2>
+<p>We will work with a synthetic bike-share extract containing:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">stations</span></code>: one row per station, with neighborhood information;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">trips</span></code>: one row per recorded trip, including a start-station reference and a trip duration when available.</p></li>
+</ul>
+<p>The raw trip table contains some integrity problems by design, including invalid or missing start-station IDs and missing duration values. This is realistic for a raw extract and is exactly why we validate before interpreting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-v0_8-whitegrid&#39;</span><span class="p">)</span>
+
+<span class="n">candidate_paths</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;appliedDataScience/module09/stations.csv&#39;</span><span class="p">),</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;module09/stations.csv&#39;</span><span class="p">),</span>
+    <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s1">&#39;appliedDataScience/module09/stations.csv&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">stations_path</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">candidate_paths</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">exists</span><span class="p">()),</span> <span class="n">candidate_paths</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">trip_paths</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;appliedDataScience/module09/trips.csv&#39;</span><span class="p">),</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;module09/trips.csv&#39;</span><span class="p">),</span>
+    <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s1">&#39;appliedDataScience/module09/trips.csv&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">trips_path</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">trip_paths</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">exists</span><span class="p">()),</span> <span class="n">trip_paths</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Stations path:&#39;</span><span class="p">,</span> <span class="n">stations_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Trips path:&#39;</span><span class="p">,</span> <span class="n">trips_path</span><span class="p">)</span>
+
+<span class="n">stations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">stations_path</span><span class="p">)</span>
+<span class="n">trips</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">trips_path</span><span class="p">)</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;:memory:&#39;</span><span class="p">)</span>
+<span class="n">stations</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s1">&#39;stations&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">)</span>
+<span class="n">trips</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s1">&#39;trips&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Stations rows:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">stations</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Trips rows:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">trips</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stations</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">trips</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="reasoning-checkpoint">
+<h3>Reasoning checkpoint<a class="headerlink" href="#reasoning-checkpoint" title="Permalink to this heading">#</a></h3>
+<p>Before running the SQL below, answer these questions in writing:</p>
+<ol class="arabic simple">
+<li><p>What does one row in <code class="docutils literal notranslate"><span class="pre">stations</span></code> represent?</p></li>
+<li><p>What does one row in <code class="docutils literal notranslate"><span class="pre">trips</span></code> represent?</p></li>
+<li><p>Which field links trips to stations?</p></li>
+<li><p>Should a station that has no recorded departures still appear in the final station-level table?</p></li>
+<li><p>What should one row represent in the final analysis dataset?</p></li>
+</ol>
+</section>
+</section>
+<section id="inspect-the-raw-tables">
+<h2>2. Inspect the raw tables<a class="headerlink" href="#inspect-the-raw-tables" title="Permalink to this heading">#</a></h2>
+<p>Start by checking the size of each table and the relationship between keys. The first query is intentionally short and should help you decide whether the data look consistent enough to proceed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT</span>
+<span class="s2">    &#39;stations&#39; AS table_name,</span>
+<span class="s2">    COUNT(*) AS row_count,</span>
+<span class="s2">    COUNT(DISTINCT station_id) AS distinct_station_ids</span>
+<span class="s2">FROM stations</span>
+
+<span class="s2">UNION ALL</span>
+
+<span class="s2">SELECT</span>
+<span class="s2">    &#39;trips&#39; AS table_name,</span>
+<span class="s2">    COUNT(*) AS row_count,</span>
+<span class="s2">    COUNT(DISTINCT trip_id) AS distinct_trip_ids</span>
+<span class="s2">FROM trips;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO: Modify the query to inspect missing values and invalid station references.</span>
+<span class="c1"># Use the trips table and check:</span>
+<span class="c1"># - the number of rows;</span>
+<span class="c1"># - the number of times start_station_id is NULL;</span>
+<span class="c1"># - the number of trips with a start_station_id not found in stations;</span>
+<span class="c1"># - a few example rows with missing or invalid station IDs.</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT</span>
+<span class="s2">    COUNT(*) AS total_trips,</span>
+<span class="s2">    SUM(CASE WHEN start_station_id IS NULL THEN 1 ELSE 0 END) AS missing_start_station_id,</span>
+<span class="s2">    SUM(CASE WHEN start_station_id IS NOT NULL AND start_station_id NOT IN (SELECT station_id FROM stations) THEN 1 ELSE 0 END) AS unmatched_start_station_id</span>
+<span class="s2">FROM trips;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="explain-what-the-checks-establish">
+<h3>Explain what the checks establish<a class="headerlink" href="#explain-what-the-checks-establish" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>A <code class="docutils literal notranslate"><span class="pre">NULL</span></code> station ID means the trip record does not identify a start station.</p></li>
+<li><p>A station ID that does not appear in <code class="docutils literal notranslate"><span class="pre">stations</span></code> is an unmatched reference.</p></li>
+<li><p>These are not the same concept. A trip can have a missing key or an invalid key, and both cases matter when we create a trustworthy analytical dataset.</p></li>
+</ul>
+</section>
+</section>
+<section id="predict-and-compare-joins">
+<h2>3. Predict and compare joins<a class="headerlink" href="#predict-and-compare-joins" title="Permalink to this heading">#</a></h2>
+<p>Before running the next queries, write down the answers to these questions:</p>
+<ul class="simple">
+<li><p>Which stations will disappear from an <code class="docutils literal notranslate"><span class="pre">INNER</span> <span class="pre">JOIN</span></code> between <code class="docutils literal notranslate"><span class="pre">stations</span></code> and <code class="docutils literal notranslate"><span class="pre">trips</span></code>?</p></li>
+<li><p>Which rows will remain in a <code class="docutils literal notranslate"><span class="pre">LEFT</span> <span class="pre">JOIN</span></code> from <code class="docutils literal notranslate"><span class="pre">stations</span></code> to <code class="docutils literal notranslate"><span class="pre">trips</span></code>?</p></li>
+<li><p>Will station identifiers repeat after joining to trips? Why?</p></li>
+<li><p>If a trip references a non-existent station ID, will it be visible in a left join from <code class="docutils literal notranslate"><span class="pre">stations</span></code>?</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">inner_join</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT s.station_id, s.station_name, s.neighborhood, t.trip_id, t.duration_minutes</span>
+<span class="s2">FROM stations s</span>
+<span class="s2">INNER JOIN trips t</span>
+<span class="s2">    ON s.station_id = t.start_station_id</span>
+<span class="s2">ORDER BY s.station_id, t.trip_id</span>
+<span class="s2">LIMIT 12;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">inner_join</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">left_join</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT s.station_id, s.station_name, s.neighborhood, t.trip_id, t.duration_minutes</span>
+<span class="s2">FROM stations s</span>
+<span class="s2">LEFT JOIN trips t</span>
+<span class="s2">    ON s.station_id = t.start_station_id</span>
+<span class="s2">ORDER BY s.station_id, t.trip_id</span>
+<span class="s2">LIMIT 12;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">left_join</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="interpretation">
+<h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">INNER</span> <span class="pre">JOIN</span></code> returns only trips with a valid station match. The <code class="docutils literal notranslate"><span class="pre">LEFT</span> <span class="pre">JOIN</span></code> preserves all stations, including those with no recorded departures. But notice the important limitation: a left join from <code class="docutils literal notranslate"><span class="pre">stations</span></code> does not reveal every trip with an invalid or missing start-station reference. Those trips can only be found by checking the <code class="docutils literal notranslate"><span class="pre">trips</span></code> table directly.</p>
+</section>
+</section>
+<section id="diagnose-a-misleading-summary">
+<h2>4. Diagnose a misleading summary<a class="headerlink" href="#diagnose-a-misleading-summary" title="Permalink to this heading">#</a></h2>
+<p>The next SQL query looks reasonable, but it is intentionally misleading. It uses <code class="docutils literal notranslate"><span class="pre">COUNT(*)</span></code> after a left join, and it counts one row for a station with no trips even though the station had zero departures.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">misleading_query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT</span>
+<span class="s2">    s.station_id,</span>
+<span class="s2">    s.station_name,</span>
+<span class="s2">    COUNT(*) AS reported_departures</span>
+<span class="s2">FROM stations s</span>
+<span class="s2">LEFT JOIN trips t</span>
+<span class="s2">    ON s.station_id = t.start_station_id</span>
+<span class="s2">GROUP BY s.station_id, s.station_name</span>
+<span class="s2">ORDER BY s.station_id;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">misleading_query</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="questions-to-answer">
+<h3>Questions to answer<a class="headerlink" href="#questions-to-answer" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Why does the query run successfully even when a station has no departures?</p></li>
+<li><p>What is <code class="docutils literal notranslate"><span class="pre">COUNT(*)</span></code> actually counting in this joined table?</p></li>
+<li><p>How should the query be corrected?</p></li>
+<li><p>Why is it wrong to treat <code class="docutils literal notranslate"><span class="pre">COUNT(*)</span></code> as a valid departure count after a left join?</p></li>
+<li><p>How does this differ from <code class="docutils literal notranslate"><span class="pre">COUNT(duration_minutes)</span></code>?</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO: Rewrite the joined summary so it counts trip_id values instead of joined rows.</span>
+<span class="c1"># After fixing it, verify the result for a station with no departures.</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT</span>
+<span class="s2">    s.station_id,</span>
+<span class="s2">    s.station_name,</span>
+<span class="s2">    COUNT(t.trip_id) AS recorded_departures,</span>
+<span class="s2">    COUNT(t.duration_minutes) AS departures_with_observed_duration</span>
+<span class="s2">FROM stations s</span>
+<span class="s2">LEFT JOIN trips t</span>
+<span class="s2">    ON s.station_id = t.start_station_id</span>
+<span class="s2">GROUP BY s.station_id, s.station_name</span>
+<span class="s2">ORDER BY s.station_id;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="build-an-analysis-ready-station-table">
+<h2>5. Build an analysis-ready station table<a class="headerlink" href="#build-an-analysis-ready-station-table" title="Permalink to this heading">#</a></h2>
+<p>The final table should contain one row per station and at least these columns:</p>
+<ul class="simple">
+<li><p>station_id</p></li>
+<li><p>station_name</p></li>
+<li><p>neighborhood</p></li>
+<li><p>recorded_departure_count</p></li>
+<li><p>departures_with_observed_duration</p></li>
+<li><p>mean_duration_minutes</p></li>
+</ul>
+<p>A good strategy is:</p>
+<ol class="arabic simple">
+<li><p>aggregate trips by start station to get counts and duration summaries;</p></li>
+<li><p>left join the aggregated results to the station table;</p></li>
+<li><p>retain all stations, including those with zero departures;</p></li>
+<li><p>keep the mean duration as missing when there are no observed trips or no observed durations.</p></li>
+</ol>
+<p>Do not replace missing duration measurements with zero.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO: Build the final station-level table.</span>
+<span class="c1"># It should aggregate trips by start_station_id and then join back to stations.</span>
+<span class="c1"># Keep all stations. Use COUNT(trip_id) for recorded departures.</span>
+<span class="c1"># Use COUNT(duration_minutes) for departures with observed durations.</span>
+<span class="c1"># Use AVG(duration_minutes) for the mean duration among observed durations only.</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">WITH trip_summary AS (</span>
+<span class="s2">    SELECT</span>
+<span class="s2">        start_station_id,</span>
+<span class="s2">        COUNT(trip_id) AS recorded_departure_count,</span>
+<span class="s2">        COUNT(duration_minutes) AS departures_with_observed_duration,</span>
+<span class="s2">        AVG(duration_minutes) AS mean_duration_minutes</span>
+<span class="s2">    FROM trips</span>
+<span class="s2">    WHERE start_station_id IS NOT NULL</span>
+<span class="s2">      AND start_station_id IN (SELECT station_id FROM stations)</span>
+<span class="s2">    GROUP BY start_station_id</span>
+<span class="s2">)</span>
+<span class="s2">SELECT</span>
+<span class="s2">    s.station_id,</span>
+<span class="s2">    s.station_name,</span>
+<span class="s2">    s.neighborhood,</span>
+<span class="s2">    COALESCE(ts.recorded_departure_count, 0) AS recorded_departure_count,</span>
+<span class="s2">    COALESCE(ts.departures_with_observed_duration, 0) AS departures_with_observed_duration,</span>
+<span class="s2">    ts.mean_duration_minutes</span>
+<span class="s2">FROM stations s</span>
+<span class="s2">LEFT JOIN trip_summary ts</span>
+<span class="s2">    ON s.station_id = ts.start_station_id</span>
+<span class="s2">ORDER BY s.station_id;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">station_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<span class="n">station_summary</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="validate-before-interpreting">
+<h2>6. Validate before interpreting<a class="headerlink" href="#validate-before-interpreting" title="Permalink to this heading">#</a></h2>
+<p>Before making conclusions, check the dataset you have constructed. The final station table should satisfy all of these conditions:</p>
+<ul class="simple">
+<li><p>exactly one row per station;</p></li>
+<li><p>unique station IDs in the final table;</p></li>
+<li><p>the final row count matches the station table;</p></li>
+<li><p>stations with no departures have zero departure counts;</p></li>
+<li><p>summed station departure counts equal trips with valid matched start-station IDs;</p></li>
+<li><p>matched, unmatched, and missing-key trip counts reconcile with the raw trip count.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO: Write validation checks for the final station table.</span>
+<span class="c1"># Check the row count, distinct station IDs, zero departure counts, and reconciliation with the raw trips table.</span>
+
+<span class="n">validations</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">WITH trip_summary AS (</span>
+<span class="s2">    SELECT</span>
+<span class="s2">        start_station_id,</span>
+<span class="s2">        COUNT(trip_id) AS recorded_departure_count,</span>
+<span class="s2">        COUNT(duration_minutes) AS departures_with_observed_duration,</span>
+<span class="s2">        AVG(duration_minutes) AS mean_duration_minutes</span>
+<span class="s2">    FROM trips</span>
+<span class="s2">    WHERE start_station_id IS NOT NULL</span>
+<span class="s2">      AND start_station_id IN (SELECT station_id FROM stations)</span>
+<span class="s2">    GROUP BY start_station_id</span>
+<span class="s2">), station_summary AS (</span>
+<span class="s2">    SELECT</span>
+<span class="s2">        s.station_id,</span>
+<span class="s2">        s.station_name,</span>
+<span class="s2">        s.neighborhood,</span>
+<span class="s2">        COALESCE(ts.recorded_departure_count, 0) AS recorded_departure_count,</span>
+<span class="s2">        COALESCE(ts.departures_with_observed_duration, 0) AS departures_with_observed_duration,</span>
+<span class="s2">        ts.mean_duration_minutes</span>
+<span class="s2">    FROM stations s</span>
+<span class="s2">    LEFT JOIN trip_summary ts</span>
+<span class="s2">        ON s.station_id = ts.start_station_id</span>
+<span class="s2">), matched AS (</span>
+<span class="s2">    SELECT COUNT(*) AS matched_trips</span>
+<span class="s2">    FROM trips</span>
+<span class="s2">    WHERE start_station_id IS NOT NULL</span>
+<span class="s2">      AND start_station_id IN (SELECT station_id FROM stations)</span>
+<span class="s2">), unmatched AS (</span>
+<span class="s2">    SELECT COUNT(*) AS unmatched_trips</span>
+<span class="s2">    FROM trips</span>
+<span class="s2">    WHERE start_station_id IS NOT NULL</span>
+<span class="s2">      AND start_station_id NOT IN (SELECT station_id FROM stations)</span>
+<span class="s2">), missing_key AS (</span>
+<span class="s2">    SELECT COUNT(*) AS missing_key_trips</span>
+<span class="s2">    FROM trips</span>
+<span class="s2">    WHERE start_station_id IS NULL</span>
+<span class="s2">), raw_total AS (</span>
+<span class="s2">    SELECT COUNT(*) AS total_trips FROM trips</span>
+<span class="s2">)</span>
+<span class="s2">SELECT</span>
+<span class="s2">    (SELECT COUNT(*) FROM station_summary) AS station_rows,</span>
+<span class="s2">    (SELECT COUNT(DISTINCT station_id) FROM station_summary) AS distinct_station_ids,</span>
+<span class="s2">    (SELECT COUNT(*) FROM station_summary WHERE recorded_departure_count = 0) AS stations_with_no_recorded_departures,</span>
+<span class="s2">    (SELECT SUM(recorded_departure_count) FROM station_summary) AS sum_of_station_departure_counts,</span>
+<span class="s2">    (SELECT matched_trips FROM matched) AS matched_trips,</span>
+<span class="s2">    (SELECT unmatched_trips FROM unmatched) AS unmatched_trips,</span>
+<span class="s2">    (SELECT missing_key_trips FROM missing_key) AS missing_key_trips,</span>
+<span class="s2">    (SELECT total_trips FROM raw_total) AS total_trips;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">validations</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="interpretation-prompt">
+<h3>Interpretation prompt<a class="headerlink" href="#interpretation-prompt" title="Permalink to this heading">#</a></h3>
+<p>Why can the final station totals be smaller than the total number of source trips? Explain the difference between valid matched trips, invalid or unmatched references, and missing keys.</p>
+</section>
+</section>
+<section id="analyze-in-pandas">
+<h2>7. Analyze in pandas<a class="headerlink" href="#analyze-in-pandas" title="Permalink to this heading">#</a></h2>
+<p>Now that the station-level table is validated, use it for analysis. Plot the number of recorded departures by station and interpret the pattern.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">station_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">WITH trip_summary AS (</span>
+<span class="s2">    SELECT</span>
+<span class="s2">        start_station_id,</span>
+<span class="s2">        COUNT(trip_id) AS recorded_departure_count,</span>
+<span class="s2">        COUNT(duration_minutes) AS departures_with_observed_duration,</span>
+<span class="s2">        AVG(duration_minutes) AS mean_duration_minutes</span>
+<span class="s2">    FROM trips</span>
+<span class="s2">    WHERE start_station_id IS NOT NULL</span>
+<span class="s2">      AND start_station_id IN (SELECT station_id FROM stations)</span>
+<span class="s2">    GROUP BY start_station_id</span>
+<span class="s2">)</span>
+<span class="s2">SELECT</span>
+<span class="s2">    s.station_id,</span>
+<span class="s2">    s.station_name,</span>
+<span class="s2">    s.neighborhood,</span>
+<span class="s2">    COALESCE(ts.recorded_departure_count, 0) AS recorded_departure_count,</span>
+<span class="s2">    COALESCE(ts.departures_with_observed_duration, 0) AS departures_with_observed_duration,</span>
+<span class="s2">    ts.mean_duration_minutes</span>
+<span class="s2">FROM stations s</span>
+<span class="s2">LEFT JOIN trip_summary ts</span>
+<span class="s2">    ON s.station_id = ts.start_station_id</span>
+<span class="s2">ORDER BY s.station_id;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+
+<span class="n">station_summary</span> <span class="o">=</span> <span class="n">station_summary</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;recorded_departure_count&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">station_summary</span><span class="p">[</span><span class="s1">&#39;station_name&#39;</span><span class="p">],</span> <span class="n">station_summary</span><span class="p">[</span><span class="s1">&#39;recorded_departure_count&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2c7fb8&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Recorded departures by station&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Station&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Recorded departures&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="interpret-the-chart">
+<h3>Interpret the chart<a class="headerlink" href="#interpret-the-chart" title="Permalink to this heading">#</a></h3>
+<p>What pattern stands out?</p>
+<ul class="simple">
+<li><p>Which stations have the highest observed departure counts?</p></li>
+<li><p>Which neighborhood or neighborhoods appear most active?</p></li>
+<li><p>Do missing durations or unmatched trip records affect your interpretation?</p></li>
+<li><p>Does the chart show demand, or only observed departures? Explain the difference.</p></li>
+</ul>
+</section>
+</section>
+<section id="independent-practice">
+<h2>8. Independent practice<a class="headerlink" href="#independent-practice" title="Permalink to this heading">#</a></h2>
+<p>Use the same validated station-level table to answer a new question:</p>
+<p><strong>Which neighborhoods have the highest average recorded departures per station during the observation period?</strong></p>
+<p>Your answer should include all of the following:</p>
+<ol class="arabic simple">
+<li><p>State the intended unit of observation.</p></li>
+<li><p>Use the validated station table, not the raw trips table.</p></li>
+<li><p>Calculate station count, total departures, and mean departures per station for each neighborhood.</p></li>
+<li><p>Include stations with zero departures in the calculations.</p></li>
+<li><p>Create an appropriate visualization.</p></li>
+<li><p>Support your conclusion with numerical evidence.</p></li>
+<li><p>Explain why total departures and average departures per station can produce different rankings.</p></li>
+<li><p>State one limitation of the conclusion.</p></li>
+</ol>
+<p>Do not include the final answer in this notebook. You should work through the logic on your own and justify each choice.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO: Compute neighborhood-level summary statistics.</span>
+<span class="c1"># The final output should have one row per neighborhood, with:</span>
+<span class="c1"># - neighborhood</span>
+<span class="c1"># - station_count</span>
+<span class="c1"># - total_departures</span>
+<span class="c1"># - mean_departures_per_station</span>
+<span class="c1"># Then create a bar chart for comparison.</span>
+
+<span class="c1"># Suggested workflow:</span>
+<span class="c1"># 1. Start from station_summary.</span>
+<span class="c1"># 2. Group by neighborhood.</span>
+<span class="c1"># 3. Sum recorded_departure_count.</span>
+<span class="c1"># 4. Compute mean recorded_departure_count by neighborhood.</span>
+<span class="c1"># 5. Plot the mean departures per station by neighborhood.</span>
+
+<span class="c1"># neighborhood_summary = ...</span>
+<span class="c1"># neighborhood_summary</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./module09"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="database.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">09 From Related Tables to Analysis-Ready Data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="week09_relational_data_practice_solution.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Week 9 Coding Practice: Relational Data in Applied Data Science (Instructor Solution)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-and-inspect-the-data">1. Load and inspect the data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-checkpoint">Reasoning checkpoint</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-the-raw-tables">2. Inspect the raw tables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explain-what-the-checks-establish">Explain what the checks establish</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predict-and-compare-joins">3. Predict and compare joins</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnose-a-misleading-summary">4. Diagnose a misleading summary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#questions-to-answer">Questions to answer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-an-analysis-ready-station-table">5. Build an analysis-ready station table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validate-before-interpreting">6. Validate before interpreting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-prompt">Interpretation prompt</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-in-pandas">7. Analyze in pandas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpret-the-chart">Interpret the chart</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#independent-practice">8. Independent practice</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Olga Scrivner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, Olga Scrivner.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
