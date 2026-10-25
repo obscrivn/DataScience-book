@@ -1,0 +1,667 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>10 Explainable AI and Model Reliability &#8212; Lecture Notes Applied Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'module10/explainability';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Week 9 Coding Practice: Relational Data in Applied Data Science (Instructor Solution)" href="../module09/week09_relational_data_practice_solution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/bannerADS.png" class="logo__image only-light" alt="Lecture Notes Applied Data Science - Home"/>
+    <script>document.write(`<img src="../_static/bannerADS.png" class="logo__image only-dark" alt="Lecture Notes Applied Data Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../welcome.html">
+                    Applied Data Science
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../module01/workflow.html">01 Data Science Lifecycle</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module02/data.html">02 Data Quality</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module03/visualization.html">03 Data Visualization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module04/regression.html">04 Regression and Prediction</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module05/trees.html">05 Decision Trees, Random Forests, and Factor Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice.html">Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice_solution.html">Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../module06/clustering.html">06 Clustering and Group Discovery</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module07/pca.html">07 Principal Component Analysis</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module08/time_series.html">08 Introduction to Time Series Analysis and Forecasting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module08/week8_time_series_practice.html">Week 8 Coding Practice: Working with Time Series in pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module08/week8_time_series_practice_solution.html">Week 8 Coding Practice Solution: Working with Time Series in pandas</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module09/database.html">09 From Related Tables to Analysis-Ready Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module09/week09_relational_data_practice.html">Week 9 Coding Practice: Relational Data in Applied Data Science</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module09/week09_relational_data_practice_solution.html">Week 9 Coding Practice: Relational Data in Applied Data Science (Instructor Solution)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10 Explainable AI and Model Reliability</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule10/explainability.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/module10/explainability.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>10 Explainable AI and Model Reliability</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-explainability-matters">10.1 Why Explainability Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#global-vs-local-explanations">10.2 Global vs. Local Explanations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#permutation-feature-importance">10.3 Permutation Feature Importance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-shap">10.4 Understanding SHAP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-explanations-can-mislead-and-how-much-to-trust-them">10.5 When Explanations Can Mislead and How Much to Trust Them</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="explainable-ai-and-model-reliability">
+<h1>10 Explainable AI and Model Reliability<a class="headerlink" href="#explainable-ai-and-model-reliability" title="Permalink to this heading">#</a></h1>
+<section id="big-idea">
+<h2>Big Idea<a class="headerlink" href="#big-idea" title="Permalink to this heading">#</a></h2>
+<p>A model can be accurate and still be hard to understand. Accuracy tells us how often a model gets the right answer. It does not tell us why the model made a specific decision, or whether we should trust the reasons behind it.</p>
+<p>This chapter asks one guiding question:</p>
+<blockquote>
+<div><p>A model makes accurate predictions, but can we explain its decisions, and how much should we trust those explanations?</p>
+</div></blockquote>
+<p>You have already built models with <a class="reference internal" href="../module04/regression.html"><span class="doc std std-doc">regression</span></a> and <a class="reference internal" href="../module05/trees.html"><span class="doc std std-doc">decision trees</span></a>, and you have learned how to check whether a model performs well. This chapter adds a new question on top of performance: once a model works, can you explain what it is doing, and can you trust that explanation?</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Explaining a model is not the same as proving it is correct. An explanation describes how the model behaved. It does not automatically tell you the real-world cause of an outcome.</p>
+</div>
+</section>
+<section id="why-explainability-matters">
+<h2>10.1 Why Explainability Matters<a class="headerlink" href="#why-explainability-matters" title="Permalink to this heading">#</a></h2>
+<p>Imagine a model predicts that a loan application should be denied, or that a patient is at high risk for a condition. The prediction might be accurate most of the time. But the people affected by that decision, and the people responsible for it, usually want to know why.</p>
+<p>A model can be useful and still raise hard questions:</p>
+<ul class="simple">
+<li><p>Which factors pushed the prediction in this direction?</p></li>
+<li><p>Would a small change in the input change the outcome?</p></li>
+<li><p>Is the model relying on a factor it should not be using?</p></li>
+<li><p>Can we explain this decision to someone who is not a data scientist?</p></li>
+</ul>
+<p>Some models are <strong>interpretable by design</strong>. A small decision tree or a simple linear regression can often be read directly: you can look at the rules or the coefficients and see roughly how the model is making decisions. Other models, such as large ensembles of trees or neural networks, are harder to read directly. These are often called <strong>black-box models</strong>, because the path from input to prediction is too complex to trace by hand.</p>
+<p>When a model is a black box, we often turn to <strong>post-hoc explanation methods</strong>: tools that are applied after training to estimate what the model is paying attention to, without changing the model itself. Permutation feature importance and SHAP, covered later in this chapter, are both post-hoc methods.</p>
+<p>It helps to keep two separate questions in mind throughout this chapter:</p>
+<ol class="arabic simple">
+<li><p>Is the model accurate? (You already know how to check this.)</p></li>
+<li><p>Can we explain and trust how the model is making its decisions? (This is the new question.)</p></li>
+</ol>
+<p>A good model answers both. A model that only answers the first question is a risk, especially when its predictions affect real people.</p>
+</section>
+<section id="global-vs-local-explanations">
+<h2>10.2 Global vs. Local Explanations<a class="headerlink" href="#global-vs-local-explanations" title="Permalink to this heading">#</a></h2>
+<p>Explanations come in two main types, and it helps to know which one you are looking at.</p>
+<p>A <strong>global explanation</strong> describes how the model behaves across many predictions. It answers a question like: “Overall, which features matter most to this model?”</p>
+<p>A <strong>local explanation</strong> describes a single prediction. It answers a question like: “Why did the model make this decision for this one person or record?”</p>
+<figure class="align-default" id="global-vs-local">
+<img alt="../_images/global_vs_local.svg" src="../_images/global_vs_local.svg" /><figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Global explanations summarize the model’s behavior across many predictions. Local explanations zoom in on one single prediction.</span><a class="headerlink" href="#global-vs-local" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Both views are useful, and they can disagree. A feature might be important on average (global) but have little effect on one particular case (local), or the other way around. If you only look at the global picture, you can miss something unusual about an individual case. If you only look at one local explanation, you can mistake an unusual case for the general pattern. Good practice is to check both.</p>
+</section>
+<section id="permutation-feature-importance">
+<h2>10.3 Permutation Feature Importance<a class="headerlink" href="#permutation-feature-importance" title="Permalink to this heading">#</a></h2>
+<p>Permutation feature importance is one of the simplest ways to estimate a <strong>global</strong> explanation, and it can be used with almost any trained model.</p>
+<p>The idea is simple: if a feature is actually useful to the model, then scrambling that feature’s values should hurt the model’s accuracy. If a feature is not useful, scrambling it should barely change anything.</p>
+<figure class="align-default" id="permutation-importance-steps">
+<img alt="../_images/permutation_importance_steps.svg" src="../_images/permutation_importance_steps.svg" /><figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Permutation importance works by measuring accuracy, scrambling one feature at a time, and measuring how much accuracy drops.</span><a class="headerlink" href="#permutation-importance-steps" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The steps are:</p>
+<ol class="arabic simple">
+<li><p>Train the model and measure its accuracy on held-out data.</p></li>
+<li><p>Pick one feature and randomly shuffle its values, so the feature no longer lines up with the correct rows.</p></li>
+<li><p>Measure the model’s accuracy again, using the shuffled feature.</p></li>
+<li><p>The drop in accuracy is the feature’s importance. A bigger drop means the model relied on that feature more.</p></li>
+</ol>
+<p>Permutation importance is easy to compute and easy to explain, but it has a real limitation: <strong>correlated features</strong>. If two features carry similar information (for example, two measurements of roughly the same thing), scrambling just one of them may barely hurt accuracy, because the model can still lean on the other, correlated feature. In that case, both features might look unimportant even though the pair, together, is doing a lot of work. When you see a surprisingly low importance score, it is worth checking whether that feature is correlated with another one in the dataset.</p>
+<p>It is also worth repeating a point from the required reading: feature importance describes what the model used. It does not prove that the feature actually causes the outcome. A feature can be important to a model’s predictions without being a real-world cause of anything. Chapter 10.5 returns to this distinction.</p>
+</section>
+<section id="understanding-shap">
+<h2>10.4 Understanding SHAP<a class="headerlink" href="#understanding-shap" title="Permalink to this heading">#</a></h2>
+<p>SHAP (SHapley Additive exPlanations) is a widely used method for <strong>local</strong> explanations: explaining one prediction at a time.</p>
+<p>The intuition behind SHAP is easier than the math behind it. Start from the model’s average prediction across the whole dataset. Then, for one specific case, ask how much each feature value pushed the prediction up or down, away from that average, until you land on the model’s actual prediction for that case. Some features push the prediction higher. Others pull it lower. SHAP assigns each feature a share of the credit (or blame) for the final result.</p>
+<p>This chapter will help you learn to read the output.</p>
+<figure class="align-default" id="shap-local-explanation">
+<img alt="../_images/shap_local_explanation.svg" src="../_images/shap_local_explanation.svg" /><figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">A SHAP explanation starts at the model’s average prediction, then shows how each feature value moves one specific prediction up or down.</span><a class="headerlink" href="#shap-local-explanation" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>A SHAP plot like this one is often called a waterfall plot. To read it:</p>
+<ul class="simple">
+<li><p>Start at the left with the model’s average prediction.</p></li>
+<li><p>Each bar shows one feature. A bar that moves up means that feature pushed the prediction higher. A bar that moves down means it pushed the prediction lower.</p></li>
+<li><p>The bar on the right is the final prediction for this one case, after adding up every feature’s contribution.</p></li>
+</ul>
+<p>SHAP values can also be summarized across many predictions to build a global picture, similar to permutation importance, but SHAP’s main strength is explaining individual cases clearly, which permutation importance does not do.</p>
+<p>SHAP can be slower to compute than permutation importance, especially on large datasets or complex models, so it is normally applied to a smaller sample of cases rather than an entire dataset.</p>
+</section>
+<section id="when-explanations-can-mislead-and-how-much-to-trust-them">
+<h2>10.5 When Explanations Can Mislead and How Much to Trust Them<a class="headerlink" href="#when-explanations-can-mislead-and-how-much-to-trust-them" title="Permalink to this heading">#</a></h2>
+<p>Explanation tools are genuinely useful, but they describe the model’s behavior, not necessarily the real world. Keep the following limits in mind.</p>
+<p><strong>Correlated features.</strong> As discussed in 10.3, when two features are correlated, importance can be split between them in a way that makes both look less important than they really are.</p>
+<p><strong>Data leakage.</strong> If a feature accidentally contains information that would not be available at prediction time (for example, a value that is only known after the outcome happens), that feature can appear highly important, while the model is actually just memorizing a shortcut.</p>
+<p><strong>Instability.</strong> Explanation results can shift from one trained model to another, even when both models perform similarly well on the same data. A small change in model training can lead to a different ranking of feature importance. Before trusting one explanation, it helps to check whether it holds up under small, reasonable changes, such as retraining with a different random seed.</p>
+<p><strong>Interpretable does not mean reliable.</strong> A simple, readable model is easy to explain, but that does not make it automatically correct or fair. A small decision tree can still make biased or inaccurate predictions. Being easy to read and being trustworthy are two different properties, and a model needs both to be used responsibly.</p>
+<p><strong>Importance is not causation.</strong> This point from 10.3 is worth repeating directly: a feature can be important to a model without being a real cause of the outcome. If two features tend to occur together in the data, the model may lean on whichever one happens to be easiest to use, which is not the same as saying that feature caused the result.</p>
+<div class="tip admonition">
+<p class="admonition-title">Evaluating an explanation, critically</p>
+<p>When you see a feature-importance chart or a SHAP plot, ask:</p>
+<ul class="simple">
+<li><p>Does this result make sense given what I know about the data?</p></li>
+<li><p>Could a correlated feature be hiding or inflating this result?</p></li>
+<li><p>Would this result hold up if the model were retrained?</p></li>
+<li><p>Is this explanation describing a cause, or just a pattern the model picked up on?</p></li>
+</ul>
+<p>A generative AI tool can describe a chart’s shape very confidently. It cannot tell you, on its own, whether that chart reflects something real about your data. That judgment is still your responsibility.</p>
+</div>
+<p>Putting this chapter’s guiding question back together: accuracy tells you how often a model is right. Explanation tools tell you what the model is paying attention to. Trust has to be built by checking both, together, and by staying alert to the limits above, rather than by accepting either one on its own.</p>
+<p>A short note on resources: two supplementary videos on explainable AI and SHAP are posted on this week’s Canvas page. They are optional background and are not required to complete the reading.</p>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Accuracy and explainability are two separate questions. A model can score well on one and still raise concerns on the other.</p></li>
+<li><p>Interpretable models can be read directly. Black-box models usually need a post-hoc explanation method, such as permutation importance or SHAP.</p></li>
+<li><p>A global explanation summarizes the whole model. A local explanation covers one prediction. They can disagree, and both are worth checking.</p></li>
+<li><p>Permutation feature importance measures how much accuracy drops when one feature is scrambled. It is simple and broadly applicable, but it can be misleading when features are correlated.</p></li>
+<li><p>SHAP explains individual predictions by showing how much each feature pushed the result up or down from the model’s average prediction.</p></li>
+<li><p>Feature importance describes what the model used. It does not prove what caused the outcome in the real world.</p></li>
+<li><p>Explanations can be unstable, affected by correlated features, or distorted by data leakage. An interpretable model is not automatically a reliable one.</p></li>
+<li><p>Evaluating an explanation critically, rather than accepting it at face value, is itself a core applied data science skill.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Molnar, C. <em>Interpretable Machine Learning</em>. Permutation Feature Importance. <a class="reference external" href="https://christophm.github.io/interpretable-ml-book/feature-importance.html">https://christophm.github.io/interpretable-ml-book/feature-importance.html</a></p></li>
+<li><p>Molnar, C. <em>Interpretable Machine Learning</em>. SHAP. <a class="reference external" href="https://christophm.github.io/interpretable-ml-book/shap.html">https://christophm.github.io/interpretable-ml-book/shap.html</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./module10"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../module09/week09_relational_data_practice_solution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 9 Coding Practice: Relational Data in Applied Data Science (Instructor Solution)</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-explainability-matters">10.1 Why Explainability Matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#global-vs-local-explanations">10.2 Global vs. Local Explanations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#permutation-feature-importance">10.3 Permutation Feature Importance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-shap">10.4 Understanding SHAP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-explanations-can-mislead-and-how-much-to-trust-them">10.5 When Explanations Can Mislead and How Much to Trust Them</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Olga Scrivner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, Olga Scrivner.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

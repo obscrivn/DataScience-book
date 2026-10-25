@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="260" viewBox="0 0 760 260">
+  <defs>
+    <style>
+      .title { font: 18px sans-serif; fill: #1f2937; }
+      .panel-title { font: 14px sans-serif; font-weight: bold; fill: #1f2937; }
+      .label { font: 12px sans-serif; fill: #374151; }
+      .small { font: 11px sans-serif; fill: #4b5563; }
+      .point { fill: #a8b8d8; stroke: #4b5563; stroke-width: 1; }
+      .highlight { fill: #f59e0b; stroke: #92400e; stroke-width: 1.5; }
+      .bar-pos { fill: #3b82f6; }
+      .bar-neg { fill: #ef4444; }
+      .panel-box { fill: white; stroke: #d1d5db; stroke-width: 1; }
+      .axis { stroke: #9ca3af; stroke-width: 1; }
+    </style>
+  </defs>
+  <rect width="760" height="260" fill="#f8fafc"/>
+  <text x="30" y="28" class="title">Global vs. local explanations</text>
+
+  <!-- Left panel: Global -->
+  <rect x="30" y="45" width="330" height="195" rx="6" class="panel-box"/>
+  <text x="50" y="68" class="panel-title">Global: how the model behaves overall</text>
+  <text x="50" y="86" class="small">Every prediction the model has made</text>
+
+  <g transform="translate(55,100)">
+    <circle cx="10" cy="10" r="5" class="point"/>
+    <circle cx="35" cy="25" r="5" class="point"/>
+    <circle cx="60" cy="8" r="5" class="point"/>
+    <circle cx="90" cy="30" r="5" class="point"/>
+    <circle cx="20" cy="40" r="5" class="point"/>
+    <circle cx="70" cy="45" r="5" class="point"/>
+    <circle cx="110" cy="15" r="5" class="point"/>
+    <circle cx="130" cy="38" r="5" class="point"/>
+    <circle cx="45" cy="55" r="5" class="point"/>
+    <circle cx="100" cy="50" r="5" class="point"/>
+  </g>
+  <text x="50" y="180" class="small">Average feature importance across all of these points</text>
+  <g transform="translate(55,190)">
+    <rect x="0" y="0" width="60" height="10" class="bar-pos"/>
+    <rect x="0" y="16" width="40" height="10" class="bar-pos"/>
+    <rect x="0" y="32" width="22" height="10" class="bar-pos"/>
+  </g>
+
+  <!-- Right panel: Local -->
+  <rect x="400" y="45" width="330" height="195" rx="6" class="panel-box"/>
+  <text x="420" y="68" class="panel-title">Local: how the model treated one case</text>
+  <text x="420" y="86" class="small">A single prediction for one person or record</text>
+
+  <g transform="translate(425,100)">
+    <circle cx="10" cy="10" r="5" class="point"/>
+    <circle cx="35" cy="25" r="5" class="point"/>
+    <circle cx="60" cy="8" r="5" class="point"/>
+    <circle cx="90" cy="30" r="5" class="point"/>
+    <circle cx="20" cy="40" r="5" class="point"/>
+    <circle cx="110" cy="15" r="5" class="point"/>
+    <circle cx="130" cy="38" r="5" class="point"/>
+    <circle cx="70" cy="22" r="7" class="highlight"/>
+  </g>
+  <text x="420" y="180" class="small">What pushed this one prediction up or down</text>
+  <g transform="translate(425,190)">
+    <rect x="0" y="0" width="45" height="10" class="bar-pos"/>
+    <text x="50" y="9" class="small">income (+)</text>
+    <rect x="0" y="16" width="25" height="10" class="bar-neg"/>
+    <text x="30" y="25" class="small">age (-)</text>
+  </g>
+</svg>
