@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="230" viewBox="0 0 760 230">
+  <defs>
+    <style>
+      .title { font: 18px sans-serif; fill: #1f2937; }
+      .label { font: 12px sans-serif; fill: #374151; }
+      .small { font: 11px sans-serif; fill: #4b5563; }
+      .bar-pos { fill: #3b82f6; }
+      .bar-neg { fill: #ef4444; }
+      .base { fill: #9ca3af; }
+      .final { fill: #10b981; }
+      .axis { stroke: #9ca3af; stroke-width: 1; }
+      .connector { stroke: #9ca3af; stroke-width: 1; stroke-dasharray: 3,3; }
+    </style>
+  </defs>
+  <rect width="760" height="230" fill="#f8fafc"/>
+  <text x="30" y="28" class="title">Reading a SHAP waterfall for one prediction</text>
+  <text x="30" y="48" class="small">Starts at the model's average prediction, then shows how each feature pushes this one case up or down</text>
+
+  <line x1="60" y1="80" x2="60" y2="190" class="axis"/>
+  <line x1="60" y1="190" x2="720" y2="190" class="axis"/>
+
+  <!-- base value -->
+  <rect x="70" y="150" width="60" height="30" class="base"/>
+  <text x="75" y="200" class="small">Average</text>
+  <text x="75" y="212" class="small">prediction</text>
+
+  <!-- feature 1 positive -->
+  <rect x="150" y="110" width="60" height="40" class="bar-pos"/>
+  <text x="152" y="200" class="small">income (+)</text>
+
+  <!-- feature 2 positive -->
+  <rect x="230" y="85" width="60" height="25" class="bar-pos"/>
+  <text x="232" y="200" class="small">credit (+)</text>
+
+  <!-- feature 3 negative -->
+  <rect x="310" y="110" width="60" height="30" class="bar-neg"/>
+  <text x="318" y="200" class="small">age (-)</text>
+
+  <!-- feature 4 negative -->
+  <rect x="390" y="110" width="60" height="15" class="bar-neg"/>
+  <text x="392" y="200" class="small">region (-)</text>
+
+  <!-- connector to final -->
+  <line x1="450" y1="80" x2="470" y2="80" class="connector"/>
+
+  <!-- final prediction -->
+  <rect x="470" y="60" width="70" height="20" class="final"/>
+  <text x="475" y="200" class="small">This case's</text>
+  <text x="475" y="212" class="small">prediction</text>
+
+  <text x="600" y="100" class="small">Bars that reach</text>
+  <text x="600" y="114" class="small">higher push the</text>
+  <text x="600" y="128" class="small">prediction up.</text>
+  <text x="600" y="150" class="small">Bars that dip</text>
+  <text x="600" y="164" class="small">lower push it</text>
+  <text x="600" y="178" class="small">down.</text>
+</svg>

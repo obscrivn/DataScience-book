@@ -41,3 +41,13 @@ chapters:
   sections:
     - file: module08/week8_time_series_practice
     - file: module08/week8_time_series_practice_solution
+
+- file: module09/database
+  sections:
+    - file: module09/week09_relational_data_practice
+    - file: module09/week09_relational_data_practice_solution
+
+- file: module10/explainability
+  sections:
+    - file: module10/week10_explainability_practice
+    - file: module10/week10_explainability_practice_solution

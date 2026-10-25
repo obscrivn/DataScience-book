@@ -62,6 +62,7 @@ requests==2.34.2
 rpds-py==2026.6.3
 seaborn==0.13.2
 scikit-learn==1.7.2
+shap==0.51.0
 six==1.17.0
 snowballstemmer==3.1.1
 soupsieve==2.9.2
