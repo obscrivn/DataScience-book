@@ -1,0 +1,815 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>11 Neural Networks and Deep Learning &#8212; Lecture Notes Applied Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'module11/neural_networks';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Week 10 Coding Practice: Can We Trust an Explanation? (Instructor Solution)" href="../module10/week10_explainability_practice_solution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/bannerADS.png" class="logo__image only-light" alt="Lecture Notes Applied Data Science - Home"/>
+    <script>document.write(`<img src="../_static/bannerADS.png" class="logo__image only-dark" alt="Lecture Notes Applied Data Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../welcome.html">
+                    Applied Data Science
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../module01/workflow.html">01 Data Science Lifecycle</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module02/data.html">02 Data Quality</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module03/visualization.html">03 Data Visualization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module04/regression.html">04 Regression and Prediction</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module05/trees.html">05 Decision Trees, Random Forests, and Factor Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice.html">Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice_solution.html">Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../module06/clustering.html">06 Clustering and Group Discovery</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module07/pca.html">07 Principal Component Analysis</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module08/time_series.html">08 Introduction to Time Series Analysis and Forecasting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module08/week8_time_series_practice.html">Week 8 Coding Practice: Working with Time Series in pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module08/week8_time_series_practice_solution.html">Week 8 Coding Practice Solution: Working with Time Series in pandas</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module09/database.html">09 From Related Tables to Analysis-Ready Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module09/week09_relational_data_practice.html">Week 9 Coding Practice: Relational Data in Applied Data Science</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module09/week09_relational_data_practice_solution.html">Week 9 Coding Practice: Relational Data in Applied Data Science (Instructor Solution)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module10/explainability.html">10 Explainable AI and Model Reliability</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module10/week10_explainability_practice.html">Week 10 Coding Practice: Can We Trust an Explanation?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module10/week10_explainability_practice_solution.html">Week 10 Coding Practice: Can We Trust an Explanation? (Instructor Solution)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">11 Neural Networks and Deep Learning</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule11/neural_networks.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/module11/neural_networks.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>11 Neural Networks and Deep Learning</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-deep-learning-fits">11.1 Where Deep Learning Fits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-a-neural-network-makes-a-prediction">11.2 How a Neural Network Makes a Prediction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-a-network-learns">11.3 How a Network Learns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-trustworthy-comparison">11.4 Building a Trustworthy Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-is-the-added-complexity-worthwhile">11.5 When Is the Added Complexity Worthwhile?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cnns-a-brief-image-example">11.6 CNNs: A Brief Image Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-a-transition-to-fairness">11.7 Limitations and a Transition to Fairness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-misconceptions">Common misconceptions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-checks">Self-checks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="neural-networks-and-deep-learning">
+<h1>11 Neural Networks and Deep Learning<a class="headerlink" href="#neural-networks-and-deep-learning" title="Permalink to this heading">#</a></h1>
+<section id="big-idea">
+<h2>Big Idea<a class="headerlink" href="#big-idea" title="Permalink to this heading">#</a></h2>
+<p>A neural network is one more modeling option, not an automatic upgrade. Before reaching for one, it helps to ask a direct question:</p>
+<blockquote>
+<div><p>If we replace a familiar model with a neural network, what evidence would justify that choice?</p>
+</div></blockquote>
+<p>You already know how to build and evaluate models with <a class="reference internal" href="../module04/regression.html"><span class="doc std std-doc">regression</span></a> and <a class="reference internal" href="../module05/trees.html"><span class="doc std std-doc">decision trees</span></a>, and in the last chapter you learned to ask whether a model’s decisions can be <a class="reference internal" href="../module10/explainability.html"><span class="doc std std-doc">explained and trusted</span></a>. This chapter adds a neural network to your toolbox, and shows how to decide, with evidence, whether the added complexity is worth using.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A neural network is not guaranteed to perform better than a simpler model. It adds flexibility, and flexibility has to be justified the same way any other modeling choice is: with a fair comparison on held-out data.</p>
+</div>
+</section>
+<section id="where-deep-learning-fits">
+<h2>11.1 Where Deep Learning Fits<a class="headerlink" href="#where-deep-learning-fits" title="Permalink to this heading">#</a></h2>
+<p>It helps to place a few terms in order before going further.</p>
+<ul class="simple">
+<li><p><strong>Artificial intelligence (AI)</strong> is the broad goal of building systems that perform tasks normally requiring human judgment.</p></li>
+<li><p><strong>Machine learning</strong> is one way to build AI systems: instead of writing explicit rules, the system learns patterns from data.</p></li>
+<li><p><strong>Neural networks</strong> are one family of machine learning models, loosely inspired by how biological neurons pass signals to each other.</p></li>
+<li><p><strong>Deep learning</strong> refers to neural networks with multiple hidden layers stacked together, which allows the network to build up more complex representations step by step.</p></li>
+</ul>
+<figure class="align-default" id="network-and-neuron">
+<img alt="../_images/network_neuron_diagram.svg" src="../_images/network_neuron_diagram.svg" /><figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">A small feedforward network (left) and a close-up view of how a single hidden neuron turns its inputs into an output (right).</span><a class="headerlink" href="#network-and-neuron" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>A neural network with one small hidden layer is a neural network, but it is not usually called deep learning. “Deep” refers to depth (multiple stacked hidden layers), not to how advanced or accurate the model is.</p>
+<p>The history here is long, but the short version is enough for this course: the core ideas go back decades, and neural networks became practical for large, real-world problems only once enough data, computing power, and training techniques were available. Nothing about this chapter requires that history in detail.</p>
+</section>
+<section id="how-a-neural-network-makes-a-prediction">
+<h2>11.2 How a Neural Network Makes a Prediction<a class="headerlink" href="#how-a-neural-network-makes-a-prediction" title="Permalink to this heading">#</a></h2>
+<p>Use the diagram above as a reference while reading this section.</p>
+<p>A neural network takes a set of input features, passes them through one or more hidden layers, and produces an output.</p>
+<p><strong>Input layer.</strong> Each input node holds the value of one feature for one observation, the same kind of feature you have already used in regression and tree models.</p>
+<p><strong>Weighted combination and bias.</strong> Every connection between an input and a hidden neuron has a <strong>weight</strong>, a number learned during training that controls how much that input matters to that neuron. Each neuron also has a <strong>bias</strong>, a learned number added to the combination. For a neuron with two inputs:</p>
+<div class="math notranslate nohighlight">
+\[z = (w_1 \times x_1) + (w_2 \times x_2) + b\]</div>
+<p>Here <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span> are the input values, <span class="math notranslate nohighlight">\(w_1\)</span> and <span class="math notranslate nohighlight">\(w_2\)</span> are the learned weights, <span class="math notranslate nohighlight">\(b\)</span> is the learned bias, and <span class="math notranslate nohighlight">\(z\)</span> is the neuron’s weighted sum before activation.</p>
+<p>Working through the example in the figure: <span class="math notranslate nohighlight">\(x_1 = 1.0\)</span>, <span class="math notranslate nohighlight">\(x_2 = 2.0\)</span>, <span class="math notranslate nohighlight">\(w_1 = 0.5\)</span>, <span class="math notranslate nohighlight">\(w_2 = -0.3\)</span>, and <span class="math notranslate nohighlight">\(b = 0.1\)</span>. Then:</p>
+<div class="math notranslate nohighlight">
+\[z = (0.5 \times 1.0) + (-0.3 \times 2.0) + 0.1 = 0.5 - 0.6 + 0.1 = 0.1\]</div>
+<p><strong>Activation function.</strong> The value <span class="math notranslate nohighlight">\(z\)</span> is passed through an <strong>activation function</strong>, which decides what the neuron actually outputs. Without an activation function, stacking layers would collapse into one big linear calculation, no matter how many layers you add. A nonlinear activation function lets the network represent curved, non-linear relationships, which is a large part of why networks can model complex patterns.</p>
+<p>Two commonly used activation functions:</p>
+<ul class="simple">
+<li><p><strong>ReLU</strong> (rectified linear unit) outputs <span class="math notranslate nohighlight">\(z\)</span> when <span class="math notranslate nohighlight">\(z\)</span> is positive, and <span class="math notranslate nohighlight">\(0\)</span> otherwise. It is simple and widely used in hidden layers.</p></li>
+<li><p><strong>Sigmoid</strong> squeezes any input into a value between 0 and 1. It is often used at the output layer for binary classification, where that value can be read as a probability.</p></li>
+</ul>
+<p>This chapter does not survey every activation function. ReLU and sigmoid are enough to understand the role activation functions play.</p>
+<p><strong>Hidden layers.</strong> A hidden layer is a group of neurons that each repeat this same pattern (weighted sum, add bias, apply activation) using their own learned weights and bias. Their outputs become the inputs to the next layer.</p>
+<p><strong>Output layer.</strong> The final layer produces the network’s prediction. Its shape depends on the task:</p>
+<ul class="simple">
+<li><p>For a <strong>regression</strong> task (predicting a number), the output layer typically produces a single numeric value directly, with no activation function forcing it into a fixed range.</p></li>
+<li><p>For a <strong>classification</strong> task (predicting a category), the output layer typically produces a score per class, often converted to something that behaves like a probability.</p></li>
+</ul>
+<p>Not every network output should be read as a probability. Whether a value is a probability depends on the task and the output layer’s design, not on the fact that it came from a neural network.</p>
+</section>
+<section id="how-a-network-learns">
+<h2>11.3 How a Network Learns<a class="headerlink" href="#how-a-network-learns" title="Permalink to this heading">#</a></h2>
+<p>Training a neural network means finding weights and biases that make its predictions as good as possible. The process repeats four steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Make predictions.</strong> Pass a batch of training examples through the network to get its current predictions.</p></li>
+<li><p><strong>Calculate a loss.</strong> A <strong>loss function</strong> measures how far the predictions are from the actual values. Lower loss means the predictions are closer to correct.</p></li>
+<li><p><strong>Use backpropagation to calculate gradients.</strong> <strong>Backpropagation</strong> works backward through the network to figure out how much each weight and bias contributed to the loss, and in which direction adjusting it would reduce that loss.</p></li>
+<li><p><strong>Use an optimizer to update weights and biases.</strong> The <strong>optimizer</strong> uses those gradients to nudge every weight and bias slightly, aiming to reduce the loss next time.</p></li>
+</ol>
+<p>This cycle repeats across the training data until the model stops improving by much, or until training is stopped on purpose.</p>
+<p>A few terms are worth defining here, since they show up constantly in practice:</p>
+<ul class="simple">
+<li><p>A <strong>learning rate</strong> controls how large each update step is. Too large, and training can bounce around without settling. Too small, and training can take a very long time to improve.</p></li>
+<li><p>A <strong>batch</strong> is a small group of training examples processed together before the weights are updated once.</p></li>
+<li><p>An <strong>epoch</strong> is one complete pass through the entire training dataset.</p></li>
+</ul>
+<p>Two distinctions are easy to blur but worth keeping separate:</p>
+<ul class="simple">
+<li><p><strong>Loss vs. evaluation metrics.</strong> Loss is the quantity the optimizer is actively trying to reduce during training. An evaluation metric, such as accuracy or RMSE, is how you judge the finished model’s performance in terms that are meaningful to the problem. They are often related, but they are not always the same quantity, and loss is not usually reported as the final measure of success.</p></li>
+<li><p><strong>Backpropagation vs. the optimizer.</strong> Backpropagation computes how much each weight contributed to the error. The optimizer decides how to use that information to actually change the weights. No calculus derivation is needed here: the important idea is that these are two separate steps, not one.</p></li>
+</ul>
+</section>
+<section id="building-a-trustworthy-comparison">
+<h2>11.4 Building a Trustworthy Comparison<a class="headerlink" href="#building-a-trustworthy-comparison" title="Permalink to this heading">#</a></h2>
+<p>A neural network fits into the same evaluation workflow you have already been using. None of the following steps change:</p>
+<ol class="arabic simple">
+<li><p>Define the target you are predicting and the predictors available to you.</p></li>
+<li><p>Split the data into training, validation, and test sets before fitting any preprocessing.</p></li>
+<li><p>Fit scaling and other preprocessing using the training data only, then apply it to the validation and test data.</p></li>
+<li><p>Establish a simple baseline and a familiar model (such as linear or logistic regression, or a tree-based model) before trying a neural network.</p></li>
+<li><p>Train and tune the neural network using the training and validation data only.</p></li>
+<li><p>Evaluate the final, tuned models on the same held-out test set, used once, at the end.</p></li>
+</ol>
+<p><strong>Why feature scaling often matters here.</strong> Many neural networks are sensitive to the scale of their inputs, because large input values can produce large weighted sums that make training unstable or slow. Scaling features to a similar range (for example, standardizing them) is a standard part of preparing data for a neural network, the same way it is for several other model types you have already used.</p>
+<p><strong>Using learning curves to spot overfitting.</strong> A <strong>learning curve</strong> plots loss (or another metric) on the training set and the validation set across training epochs. Early in training, both usually improve together. If training loss keeps improving while validation loss stops improving or starts getting worse, the model is <strong>overfitting</strong>: it is starting to fit patterns specific to the training data rather than patterns that generalize.</p>
+<figure class="align-default" id="learning-curves-overfitting">
+<img alt="../_images/learning_curves_overfitting.svg" src="../_images/learning_curves_overfitting.svg" /><figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Training loss keeps falling, but validation loss turns upward after a point. That gap is a sign of overfitting.</span><a class="headerlink" href="#learning-curves-overfitting" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Two common ways to respond to overfitting:</p>
+<ul class="simple">
+<li><p><strong>Early stopping</strong> halts training once validation performance stops improving, instead of continuing to the maximum number of epochs.</p></li>
+<li><p><strong>Regularization</strong> adds a penalty or constraint that discourages the network from fitting the training data too closely.</p></li>
+</ul>
+<p>Neither technique is explored in depth here. The important habit is to watch both curves, not just the training curve, and to remember that the test set stays out of every tuning decision, exactly as with any other model.</p>
+</section>
+<section id="when-is-the-added-complexity-worthwhile">
+<h2>11.5 When Is the Added Complexity Worthwhile?<a class="headerlink" href="#when-is-the-added-complexity-worthwhile" title="Permalink to this heading">#</a></h2>
+<p>Return to this chapter’s opening question: what evidence would justify replacing a familiar model with a neural network?</p>
+<p>The table below illustrates the kind of comparison that answers that question. The numbers are not measured results from a real dataset; they are included only to show what a comparison like this looks like and what it should make visible.</p>
+<p><strong>Illustrative example, not measured experimental results.</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Validation accuracy</p></th>
+<th class="head"><p>Training time</p></th>
+<th class="head"><p>Stability across runs</p></th>
+<th class="head"><p>Explainability</p></th>
+<th class="head"><p>Practical notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Simple baseline (e.g., most frequent class)</p></td>
+<td><p>0.62</p></td>
+<td><p>seconds</p></td>
+<td><p>very stable</p></td>
+<td><p>fully transparent</p></td>
+<td><p>useful floor for comparison</p></td>
+</tr>
+<tr class="row-odd"><td><p>Familiar model (e.g., logistic regression or random forest)</p></td>
+<td><p>0.84</p></td>
+<td><p>minutes</p></td>
+<td><p>stable</p></td>
+<td><p>interpretable or post-hoc explainable</p></td>
+<td><p>often close to the neural network’s performance</p></td>
+</tr>
+<tr class="row-even"><td><p>Small neural network</p></td>
+<td><p>0.86</p></td>
+<td><p>tens of minutes</p></td>
+<td><p>can vary across runs</p></td>
+<td><p>harder to explain directly</p></td>
+<td><p>small gain here may not be worth the added cost</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Reading a comparison like this one means weighing several things together, not just the top accuracy number:</p>
+<ul class="simple">
+<li><p><strong>Predictive performance.</strong> How large is the actual improvement, and is it consistent, or could it be within normal run-to-run variation?</p></li>
+<li><p><strong>Training time and computational cost.</strong> A small accuracy gain that costs far more time and compute may not be worth it in practice.</p></li>
+<li><p><strong>Stability.</strong> Does retraining the same network with a different random seed give a similar result, or does performance swing noticeably?</p></li>
+<li><p><strong>Explainability.</strong> Revisiting the previous chapter: a harder-to-explain model is a real cost, not a neutral tradeoff, especially when a decision affects people directly.</p></li>
+<li><p><strong>Practical needs.</strong> Does the deployment environment support the extra complexity, and does the problem actually need it?</p></li>
+</ul>
+<p>If you calculate real comparison numbers for a dataset in a future assignment, document the dataset and the exact procedure used, so the comparison can be checked and repeated. Numbers without that documentation should not be presented as measured results.</p>
+</section>
+<section id="cnns-a-brief-image-example">
+<h2>11.6 CNNs: A Brief Image Example<a class="headerlink" href="#cnns-a-brief-image-example" title="Permalink to this heading">#</a></h2>
+<p>Images have a property that plain feedforward networks do not take advantage of well: nearby pixels are related to each other, and useful patterns (edges, textures, shapes) can appear anywhere in the image. A <strong>Convolutional Neural Network (CNN)</strong> is designed around that structure.</p>
+<figure class="align-default" id="cnn-conceptual">
+<img alt="../_images/cnn_conceptual.svg" src="../_images/cnn_conceptual.svg" /><figcaption>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">A CNN applies a small filter across an image to produce a feature map, then stacks layers so simple patterns combine into more complex ones.</span><a class="headerlink" href="#cnn-conceptual" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The key ideas, at a conceptual level:</p>
+<ul class="simple">
+<li><p>A <strong>convolutional filter</strong> is a small pattern detector (for example, something that responds to a vertical edge) that is applied across the entire image rather than being learned separately for every position.</p></li>
+<li><p>Because the same filter is reused across the whole image, the network can detect a pattern no matter where it appears, using far fewer learned parameters than if every pixel position needed its own separate weights.</p></li>
+<li><p>Applying a filter produces a <strong>feature map</strong>, showing where in the image that pattern was found, and how strongly.</p></li>
+<li><p>Successive layers build on earlier feature maps, so early layers tend to pick up simple patterns such as edges, while deeper layers combine those into more complex representations such as shapes or object parts.</p></li>
+<li><p>The final layers use these representations to produce a prediction, such as a class label.</p></li>
+</ul>
+<p>This chapter keeps CNNs at this conceptual level. You are not expected to implement a CNN, calculate output dimensions, or build a full image-processing pipeline here; this is meant to give you enough understanding to recognize what a CNN is doing and why it is a reasonable choice for image data.</p>
+</section>
+<section id="limitations-and-a-transition-to-fairness">
+<h2>11.7 Limitations and a Transition to Fairness<a class="headerlink" href="#limitations-and-a-transition-to-fairness" title="Permalink to this heading">#</a></h2>
+<p>Neural networks, including CNNs, come with real limitations worth keeping in view:</p>
+<ul class="simple">
+<li><p><strong>Data requirements.</strong> Neural networks, especially deep ones, often need more training data than simpler models to perform well and to generalize reliably.</p></li>
+<li><p><strong>Computational cost.</strong> Training and sometimes even running these models can require meaningfully more computation than a simpler model.</p></li>
+<li><p><strong>Distribution shift.</strong> A model trained on one population or time period can perform noticeably worse if the data it sees in practice looks different from its training data, a risk that applies to any model but is easy to overlook when a model’s accuracy numbers look strong.</p></li>
+<li><p><strong>Limits of explanation methods.</strong> The post-hoc explanation methods from the previous chapter can be applied to neural networks, but they describe the model’s behavior; they do not automatically reveal the real mechanism behind a prediction.</p></li>
+</ul>
+<p>A few points are worth stating directly, because they are easy to lose sight of when a model performs well:</p>
+<ul class="simple">
+<li><p>Good accuracy does not establish that a feature causes an outcome.</p></li>
+<li><p>An explanation does not prove that a model is correct, or fair.</p></li>
+<li><p>A strong overall accuracy number can still hide poor performance for a particular group of people, even when the model looks trustworthy on average.</p></li>
+</ul>
+<p>That last point is where this chapter ends and the next one begins:</p>
+<blockquote>
+<div><p>How should we evaluate who benefits and who bears the consequences of model errors?</p>
+</div></blockquote>
+<p>Module 12 picks up that question directly.</p>
+</section>
+<section id="common-misconceptions">
+<h2>Common misconceptions<a class="headerlink" href="#common-misconceptions" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>“Deep learning and neural networks are the same thing.”</strong> A neural network with one small hidden layer is a neural network, not deep learning. Depth is what makes a network “deep.”</p></li>
+<li><p><strong>“A neural network’s output is always a probability.”</strong> Whether an output behaves like a probability depends on the task and how the output layer is designed, not on the fact that the model is a neural network.</p></li>
+<li><p><strong>“A bigger or more complex network will perform better.”</strong> Added complexity is not automatically an improvement. It must be checked against a baseline and a familiar model, using the same held-out test set.</p></li>
+<li><p><strong>“Low training loss means the model is working well.”</strong> Low training loss combined with rising validation loss is a sign of overfitting, not success.</p></li>
+<li><p><strong>“An explanation proves the model is correct.”</strong> An explanation describes what the model paid attention to. It does not prove the model is right, or fair, as the previous chapter already established.</p></li>
+</ul>
+</section>
+<section id="self-checks">
+<h2>Self-checks<a class="headerlink" href="#self-checks" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>A classmate says their network has three layers, so it counts as “deep learning.” What question would you ask before agreeing?</p></li>
+<li><p>For the single-neuron example in this chapter, what would the output <span class="math notranslate nohighlight">\(z\)</span> be if <span class="math notranslate nohighlight">\(x_1 = 2.0\)</span>, <span class="math notranslate nohighlight">\(x_2 = 1.0\)</span>, <span class="math notranslate nohighlight">\(w_1 = 0.5\)</span>, <span class="math notranslate nohighlight">\(w_2 = -0.3\)</span>, and <span class="math notranslate nohighlight">\(b = 0.1\)</span>?</p></li>
+<li><p>A model’s training accuracy keeps climbing while its validation accuracy flattens and then declines. What is happening, and what are two ways to respond?</p></li>
+<li><p>You are comparing a random forest and a small neural network on the same task. The neural network scores slightly higher on the test set but performance varies noticeably between retrainings. What else would you want to know before recommending it?</p></li>
+<li><p>Why might a CNN be a more reasonable default than a plain feedforward network for an image classification task?</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+Check your reasoning<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<ol class="arabic simple">
+<li><p class="sd-card-text">Ask how many hidden layers the network has, not how many layers total. A network with one hidden layer is usually not called deep learning, regardless of how it is described informally.</p></li>
+<li><p class="sd-card-text"><span class="math notranslate nohighlight">\(z = (0.5 \times 2.0) + (-0.3 \times 1.0) + 0.1 = 1.0 - 0.3 + 0.1 = 0.8\)</span>.</p></li>
+<li><p class="sd-card-text">The model is overfitting: it is fitting patterns specific to the training data that do not generalize. Early stopping and regularization are two standard responses, and checking the learning curves is how you would notice this in the first place.</p></li>
+<li><p class="sd-card-text">Whether the gain is consistent across multiple random seeds, how it compares to training time and explainability costs, and whether the deployment context can support a less stable, less interpretable model.</p></li>
+<li><p class="sd-card-text">A CNN reuses the same filters across the whole image, which fits the fact that useful patterns (edges, shapes) can appear anywhere in an image, and does so with far fewer parameters than connecting every pixel to every neuron directly.</p></li>
+</ol>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+Optional extension: why nonlinearity matters mathematically<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">If every neuron only computed a weighted sum with no activation function, stacking any number of layers would still produce, mathematically, just another weighted sum of the original inputs. No amount of depth would add new modeling power. Nonlinear activation functions are what allow stacked layers to represent curved relationships that a single linear model cannot. This extension is optional background, not required for the learning objectives above.</p>
+</div>
+</details></section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>A neural network is one modeling option among several. Added complexity needs to be justified with a fair comparison, not assumed.</p></li>
+<li><p>A neural network builds a prediction from inputs, weights, biases, hidden layers, and activation functions. Nonlinear activation functions are what let the network represent non-linear relationships.</p></li>
+<li><p>Training repeats four steps: predict, calculate loss, use backpropagation to find gradients, and use an optimizer to update weights and biases.</p></li>
+<li><p>Parameters (weights, biases) are learned during training. Hyperparameters (learning rate, batch size, number of epochs, network architecture) are chosen by the analyst beforehand.</p></li>
+<li><p>The same evaluation workflow used for other models still applies: split data first, fit preprocessing on training data only, compare against a baseline, and evaluate once on a held-out test set.</p></li>
+<li><p>Learning curves showing training loss falling while validation loss rises are a sign of overfitting. Early stopping and regularization are two standard responses.</p></li>
+<li><p>CNNs apply shared filters across an image to detect patterns regardless of position, and stack layers so simple patterns combine into more complex representations.</p></li>
+<li><p>Good accuracy does not establish causality, an explanation does not prove correctness or fairness, and strong overall performance can still hide poor performance for a specific group, which is where the next chapter picks up.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Goodfellow, I., Bengio, Y., and Courville, A. <em>Deep Learning</em>. MIT Press. Chapter 1, “Introduction.” <a class="reference external" href="https://www.deeplearningbook.org/contents/intro.html">https://www.deeplearningbook.org/contents/intro.html</a></p></li>
+<li><p>Artasanchez, A., and Joshi, P. <em>Artificial Intelligence with Python</em>, 2nd ed. Packt Publishing. Chapter 1, “Introduction to Artificial Intelligence.”</p></li>
+<li><p>Artasanchez, A., and Joshi, P. <em>Artificial Intelligence with Python</em>, 2nd ed. Packt Publishing. Chapter 20, “Deep Learning with Convolutional Neural Networks.”</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./module11"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../module10/week10_explainability_practice_solution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 10 Coding Practice: Can We Trust an Explanation? (Instructor Solution)</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-deep-learning-fits">11.1 Where Deep Learning Fits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-a-neural-network-makes-a-prediction">11.2 How a Neural Network Makes a Prediction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-a-network-learns">11.3 How a Network Learns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-trustworthy-comparison">11.4 Building a Trustworthy Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-is-the-added-complexity-worthwhile">11.5 When Is the Added Complexity Worthwhile?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cnns-a-brief-image-example">11.6 CNNs: A Brief Image Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-a-transition-to-fairness">11.7 Limitations and a Transition to Fairness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-misconceptions">Common misconceptions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-checks">Self-checks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Olga Scrivner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, Olga Scrivner.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

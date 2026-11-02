@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="320" viewBox="0 0 700 320">
+  <defs>
+    <style>
+      .title { font: 18px sans-serif; fill: #1f2937; }
+      .axis-label { font: 12px sans-serif; fill: #374151; }
+      .tick { font: 10px sans-serif; fill: #6b7280; }
+      .legend { font: 12px sans-serif; fill: #374151; }
+      .axis { stroke: #9ca3af; stroke-width: 1; }
+      .train-line { fill: none; stroke: #3b82f6; stroke-width: 2.5; }
+      .val-line { fill: none; stroke: #f59e0b; stroke-width: 2.5; }
+      .marker-line { stroke: #6b7280; stroke-width: 1.2; stroke-dasharray: 4,3; }
+      .callout { font: 11px sans-serif; fill: #4b5563; }
+      .panel-box { fill: white; stroke: #d1d5db; stroke-width: 1; }
+    </style>
+  </defs>
+  <rect width="700" height="320" fill="#f8fafc"/>
+  <text x="30" y="28" class="title">Training vs. validation loss across epochs</text>
+
+  <rect x="30" y="45" width="640" height="245" rx="6" class="panel-box"/>
+
+  <!-- axes -->
+  <line x1="90" y1="260" x2="640" y2="260" class="axis"/>
+  <line x1="90" y1="70" x2="90" y2="260" class="axis"/>
+  <text x="330" y="295" class="axis-label">Training epoch</text>
+  <text x="40" y="165" class="axis-label" transform="rotate(-90 40 165)">Loss</text>
+
+  <!-- training loss: starts high, steadily decreases (moves down the page) -->
+  <polyline class="train-line" points="110,90 170,122 230,146 290,165 350,179 410,192 470,202 530,210 590,217"/>
+
+  <!-- validation loss: decreases with training, then rises again (overfitting, moves back up the page) -->
+  <polyline class="val-line" points="110,80 170,116 230,146 290,168 350,182 410,170 470,150 530,122 590,95"/>
+
+  <!-- marker for best validation point -->
+  <line x1="350" y1="70" x2="350" y2="260" class="marker-line"/>
+  <circle cx="350" cy="182" r="4" fill="#f59e0b" stroke="#92400e"/>
+  <text x="358" y="200" class="callout">best validation loss</text>
+  <text x="358" y="213" class="callout">(early stopping point)</text>
+
+  <text x="440" y="80" class="callout">after this point, validation loss rises</text>
+  <text x="440" y="94" class="callout">while training loss keeps falling:</text>
+  <text x="440" y="108" class="callout">a sign of overfitting</text>
+
+  <!-- legend -->
+  <rect x="100" y="215" width="150" height="48" rx="4" fill="white" stroke="#d1d5db"/>
+  <line x1="112" y1="232" x2="142" y2="232" class="train-line"/>
+  <text x="148" y="236" class="legend">training loss</text>
+  <line x1="112" y1="250" x2="142" y2="250" class="val-line"/>
+  <text x="148" y="254" class="legend">validation loss</text>
+</svg>

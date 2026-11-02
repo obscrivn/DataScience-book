@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="280" viewBox="0 0 820 280">
+  <defs>
+    <style>
+      .title { font: 18px sans-serif; fill: #1f2937; }
+      .step-title { font: 13px sans-serif; font-weight: bold; fill: #1f2937; }
+      .label { font: 11px sans-serif; fill: #374151; }
+      .box { fill: white; stroke: #d1d5db; stroke-width: 1; }
+      .px1 { fill: #e5e7eb; }
+      .px2 { fill: #cbd5e1; }
+      .px3 { fill: #94a3b8; }
+      .filter { fill: none; stroke: #f59e0b; stroke-width: 2.5; }
+      .fmap { fill: #93c5fd; stroke: #1d4ed8; stroke-width: 1; }
+      .fmap-hot { fill: #3b82f6; stroke: #1d4ed8; stroke-width: 1; }
+      .deep { fill: #a8b8d8; stroke: #4b5563; stroke-width: 1; }
+      .arrow { stroke: #4b5563; stroke-width: 2; marker-end: url(#arrowhead3); fill: none; }
+      .out { fill: #f59e0b; stroke: #92400e; stroke-width: 1.5; }
+    </style>
+    <marker id="arrowhead3" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#4b5563"/>
+    </marker>
+  </defs>
+  <rect width="820" height="280" fill="#f8fafc"/>
+  <text x="30" y="28" class="title">How a CNN builds up a prediction from an image</text>
+
+  <!-- Step 1: input image -->
+  <rect x="25" y="50" width="160" height="180" rx="6" class="box"/>
+  <text x="40" y="72" class="step-title">1. Input image</text>
+  <text x="40" y="88" class="label">A grid of pixel values</text>
+  <g transform="translate(45,100)">
+    <rect x="0" y="0" width="18" height="18" class="px1"/>
+    <rect x="18" y="0" width="18" height="18" class="px2"/>
+    <rect x="36" y="0" width="18" height="18" class="px1"/>
+    <rect x="54" y="0" width="18" height="18" class="px3"/>
+    <rect x="0" y="18" width="18" height="18" class="px2"/>
+    <rect x="18" y="18" width="18" height="18" class="px3"/>
+    <rect x="36" y="18" width="18" height="18" class="px3"/>
+    <rect x="54" y="18" width="18" height="18" class="px2"/>
+    <rect x="0" y="36" width="18" height="18" class="px1"/>
+    <rect x="18" y="36" width="18" height="18" class="px2"/>
+    <rect x="36" y="36" width="18" height="18" class="px1"/>
+    <rect x="54" y="36" width="18" height="18" class="px1"/>
+    <rect x="0" y="54" width="18" height="18" class="px2"/>
+    <rect x="18" y="54" width="18" height="18" class="px1"/>
+    <rect x="36" y="54" width="18" height="18" class="px2"/>
+    <rect x="54" y="54" width="18" height="18" class="px1"/>
+  </g>
+  <text x="40" y="200" class="label">Nearby pixels are</text>
+  <text x="40" y="214" class="label">related to each other</text>
+
+  <path d="M190,140 L220,140" class="arrow"/>
+
+  <!-- Step 2: filter scans -->
+  <rect x="225" y="50" width="175" height="180" rx="6" class="box"/>
+  <text x="240" y="72" class="step-title">2. A small filter scans</text>
+  <text x="240" y="86" class="step-title">the image</text>
+  <text x="240" y="102" class="label">The same small filter is</text>
+  <text x="240" y="115" class="label">applied at every position</text>
+  <g transform="translate(245,125)">
+    <rect x="0" y="0" width="18" height="18" class="px1"/>
+    <rect x="18" y="0" width="18" height="18" class="px2"/>
+    <rect x="36" y="0" width="18" height="18" class="px1"/>
+    <rect x="54" y="0" width="18" height="18" class="px3"/>
+    <rect x="0" y="18" width="18" height="18" class="px2"/>
+    <rect x="18" y="18" width="18" height="18" class="px3"/>
+    <rect x="36" y="18" width="18" height="18" class="px3"/>
+    <rect x="54" y="18" width="18" height="18" class="px2"/>
+    <rect x="0" y="36" width="18" height="18" class="px1"/>
+    <rect x="18" y="36" width="18" height="18" class="px2"/>
+    <rect x="36" y="36" width="18" height="18" class="px1"/>
+    <rect x="54" y="36" width="18" height="18" class="px1"/>
+    <rect x="18" y="0" width="36" height="36" class="filter"/>
+  </g>
+  <text x="240" y="195" class="label">Filter = a small pattern</text>
+  <text x="240" y="209" class="label">detector (e.g., an edge)</text>
+
+  <path d="M405,140 L435,140" class="arrow"/>
+
+  <!-- Step 3: feature map -->
+  <rect x="440" y="50" width="160" height="180" rx="6" class="box"/>
+  <text x="455" y="72" class="step-title">3. Feature map</text>
+  <text x="455" y="88" class="label">Where the pattern was</text>
+  <text x="455" y="101" class="label">found, strongly or weakly</text>
+  <g transform="translate(460,115)">
+    <rect x="0" y="0" width="24" height="24" class="fmap"/>
+    <rect x="24" y="0" width="24" height="24" class="fmap-hot"/>
+    <rect x="48" y="0" width="24" height="24" class="fmap"/>
+    <rect x="0" y="24" width="24" height="24" class="fmap"/>
+    <rect x="24" y="24" width="24" height="24" class="fmap-hot"/>
+    <rect x="48" y="24" width="24" height="24" class="fmap"/>
+    <rect x="0" y="48" width="24" height="24" class="fmap"/>
+    <rect x="24" y="48" width="24" height="24" class="fmap"/>
+    <rect x="48" y="48" width="24" height="24" class="fmap"/>
+  </g>
+  <text x="455" y="200" class="label">Darker = stronger match</text>
+  <text x="455" y="214" class="label">to the filter's pattern</text>
+
+  <path d="M605,140 L635,140" class="arrow"/>
+
+  <!-- Step 4: deeper layers + prediction -->
+  <rect x="640" y="50" width="150" height="180" rx="6" class="box"/>
+  <text x="652" y="72" class="step-title">4. Deeper layers</text>
+  <text x="652" y="88" class="label">combine simple patterns</text>
+  <text x="652" y="101" class="label">into more complex ones</text>
+  <g transform="translate(660,112)">
+    <rect x="0" y="0" width="14" height="14" class="deep"/>
+    <rect x="18" y="0" width="14" height="14" class="deep"/>
+    <rect x="9" y="18" width="14" height="14" class="deep"/>
+  </g>
+  <text x="652" y="150" class="label">edges &#8594; shapes &#8594;</text>
+  <text x="652" y="163" class="label">object parts</text>
+  <circle cx="712" cy="195" r="16" class="out"/>
+  <text x="652" y="222" class="label">Final layer predicts</text>
+  <text x="652" y="235" class="label">a class, e.g. "cat"</text>
+</svg>
