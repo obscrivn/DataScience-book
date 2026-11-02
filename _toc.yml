@@ -51,3 +51,5 @@ chapters:
   sections:
     - file: module10/week10_explainability_practice
     - file: module10/week10_explainability_practice_solution
+
+- file: module11/neural_networks
