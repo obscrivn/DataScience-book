@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="400" viewBox="0 0 700 400">
+  <defs>
+    <style>
+      .title { font: 15px sans-serif; fill: #1f2937; }
+      .badge-text { font: 13px sans-serif; font-weight: bold; fill: #1f2937; }
+      .badge-sub { font: 10px sans-serif; fill: #6b7280; }
+      .axis-label { font: 11px sans-serif; fill: #374151; }
+      .tick { font: 9.5px sans-serif; fill: #6b7280; }
+      .value-label { font: 10px sans-serif; font-weight: bold; fill: #1f2937; }
+      .legend { font: 11px sans-serif; fill: #374151; }
+      .caption { font: 10px sans-serif; font-style: italic; fill: #4b5563; }
+      .axis { stroke: #9ca3af; stroke-width: 1; }
+      .grid { stroke: #e5e7eb; stroke-width: 1; }
+      .panel-box { fill: white; stroke: #d1d5db; stroke-width: 1; }
+      .badge-box { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1; }
+      .bar-a { fill: #2563eb; }
+      .bar-b { fill: #f59e0b; }
+    </style>
+  </defs>
+
+  <rect width="700" height="400" fill="#f8fafc"/>
+  <text x="30" y="26" class="title">Overall accuracy looks strong, but error rates differ by group</text>
+  <text x="30" y="42" class="badge-sub">(illustrative numbers, not measured results)</text>
+
+  <!-- overall accuracy badge -->
+  <rect x="230" y="54" width="240" height="40" rx="6" class="badge-box"/>
+  <text x="350" y="73" text-anchor="middle" class="badge-text">Overall accuracy: 83%</text>
+  <text x="350" y="88" text-anchor="middle" class="badge-sub">aggregated across both groups</text>
+
+  <!-- chart panel -->
+  <rect x="30" y="110" width="640" height="230" rx="6" class="panel-box"/>
+
+  <!-- gridlines + y ticks at 0,10,20,30,40,50% ; scale: y = 320 - value*4, shifted by panel offset (panel starts y=110, so reuse origin at y=330 bottom, 130 top) -->
+  <!-- baseline at y=330 (0%), top at y=130 (50%) -->
+  <g class="grid">
+    <line x1="100" y1="330" x2="640" y2="330"/>
+    <line x1="100" y1="290" x2="640" y2="290"/>
+    <line x1="100" y1="250" x2="640" y2="250"/>
+    <line x1="100" y1="210" x2="640" y2="210"/>
+    <line x1="100" y1="170" x2="640" y2="170"/>
+    <line x1="100" y1="130" x2="640" y2="130"/>
+  </g>
+  <g class="tick">
+    <text x="90" y="333" text-anchor="end">0%</text>
+    <text x="90" y="293" text-anchor="end">10%</text>
+    <text x="90" y="253" text-anchor="end">20%</text>
+    <text x="90" y="213" text-anchor="end">30%</text>
+    <text x="90" y="173" text-anchor="end">40%</text>
+    <text x="90" y="133" text-anchor="end">50%</text>
+  </g>
+  <line x1="100" y1="130" x2="100" y2="330" class="axis"/>
+  <line x1="100" y1="330" x2="640" y2="330" class="axis"/>
+  <text x="40" y="235" class="axis-label" transform="rotate(-90 40 235)">Rate</text>
+
+  <!-- False negative rate group: Group A 20% (height 80), Group B 40% (height 160) -->
+  <rect x="170" y="250" width="40" height="80" class="bar-a"/>
+  <text x="190" y="244" text-anchor="middle" class="value-label">20%</text>
+  <rect x="220" y="170" width="40" height="160" class="bar-b"/>
+  <text x="240" y="164" text-anchor="middle" class="value-label">40%</text>
+  <text x="215" y="350" text-anchor="middle" class="axis-label">False negative rate</text>
+
+  <!-- False positive rate group: Group A 11% (height 44), Group B 16% (height 64) -->
+  <rect x="470" y="286" width="40" height="44" class="bar-a"/>
+  <text x="490" y="280" text-anchor="middle" class="value-label">11%</text>
+  <rect x="520" y="266" width="40" height="64" class="bar-b"/>
+  <text x="540" y="260" text-anchor="middle" class="value-label">16%</text>
+  <text x="515" y="350" text-anchor="middle" class="axis-label">False positive rate</text>
+
+  <!-- legend -->
+  <rect x="470" y="122" width="12" height="12" class="bar-a"/>
+  <text x="488" y="132" class="legend">Group A</text>
+  <rect x="470" y="140" width="12" height="12" class="bar-b"/>
+  <text x="488" y="150" class="legend">Group B</text>
+
+  <text x="30" y="372" class="caption">Group B's false-negative rate is double Group A's: students in Group B who need support are missed twice as often.</text>
+  <text x="30" y="388" class="caption">An overall accuracy number alone does not reveal this gap.</text>
+</svg>

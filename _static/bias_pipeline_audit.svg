@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="300" viewBox="0 0 980 300">
+  <defs>
+    <style>
+      .title { font: 15px sans-serif; fill: #1f2937; }
+      .stage-title { font: 10.5px sans-serif; font-weight: bold; fill: #1f2937; }
+      .tag-bias { font: 9px sans-serif; font-weight: bold; fill: #b45309; }
+      .tag-audit { font: 9px sans-serif; font-weight: bold; fill: #1d4ed8; }
+      .caption { font: 9px sans-serif; fill: #374151; }
+      .legend { font: 11px sans-serif; fill: #374151; }
+      .stage-box { fill: white; stroke: #d1d5db; stroke-width: 1; }
+      .arrow { fill: #9ca3af; }
+    </style>
+  </defs>
+
+  <rect width="980" height="300" fill="#f8fafc"/>
+  <text x="20" y="22" class="title">Bias entry points and audit opportunities across the data science pipeline</text>
+
+  <!-- stage boxes: x positions, width 120, step 136 -->
+  <!-- 1 Problem Definition -->
+  <rect x="20" y="42" width="120" height="40" rx="6" class="stage-box"/>
+  <text x="80" y="66" text-anchor="middle" class="stage-title">Problem Definition</text>
+
+  <!-- 2 Data Collection -->
+  <rect x="156" y="42" width="120" height="40" rx="6" class="stage-box"/>
+  <text x="216" y="66" text-anchor="middle" class="stage-title">Data Collection</text>
+
+  <!-- 3 Preparation -->
+  <rect x="292" y="42" width="120" height="40" rx="6" class="stage-box"/>
+  <text x="352" y="66" text-anchor="middle" class="stage-title">Preparation</text>
+
+  <!-- 4 EDA -->
+  <rect x="428" y="42" width="120" height="40" rx="6" class="stage-box"/>
+  <text x="488" y="66" text-anchor="middle" class="stage-title">EDA</text>
+
+  <!-- 5 Modeling -->
+  <rect x="564" y="42" width="120" height="40" rx="6" class="stage-box"/>
+  <text x="624" y="66" text-anchor="middle" class="stage-title">Modeling</text>
+
+  <!-- 6 Evaluation -->
+  <rect x="700" y="42" width="120" height="40" rx="6" class="stage-box"/>
+  <text x="760" y="66" text-anchor="middle" class="stage-title">Evaluation</text>
+
+  <!-- 7 Deployment & Monitoring -->
+  <rect x="836" y="42" width="120" height="40" rx="6" class="stage-box"/>
+  <text x="896" y="58" text-anchor="middle" class="stage-title">Deployment &amp;</text>
+  <text x="896" y="70" text-anchor="middle" class="stage-title">Monitoring</text>
+
+  <!-- arrows in the 16px gaps, mid-y = 62 -->
+  <g class="arrow">
+    <polygon points="140,58 152,62 140,66"/>
+    <polygon points="276,58 288,62 276,66"/>
+    <polygon points="412,58 424,62 412,66"/>
+    <polygon points="548,58 560,62 548,66"/>
+    <polygon points="684,58 696,62 684,66"/>
+    <polygon points="820,58 832,62 820,66"/>
+  </g>
+
+  <!-- Bias row -->
+  <g>
+    <rect x="20" y="96" width="9" height="9" fill="#f59e0b"/>
+    <text x="33" y="104" class="tag-bias">Bias:</text>
+    <text x="80" y="118" text-anchor="middle" class="caption">Target may encode bias</text>
+
+    <rect x="156" y="96" width="9" height="9" fill="#f59e0b"/>
+    <text x="169" y="104" class="tag-bias">Bias:</text>
+    <text x="216" y="118" text-anchor="middle" class="caption">Unequal sampling</text>
+
+    <rect x="292" y="96" width="9" height="9" fill="#f59e0b"/>
+    <text x="305" y="104" class="tag-bias">Bias:</text>
+    <text x="352" y="118" text-anchor="middle" class="caption">Uneven missingness</text>
+
+    <rect x="428" y="96" width="9" height="9" fill="#f59e0b"/>
+    <text x="441" y="104" class="tag-bias">Bias:</text>
+    <text x="488" y="118" text-anchor="middle" class="caption">Averages hide gaps</text>
+
+    <rect x="564" y="96" width="9" height="9" fill="#f59e0b"/>
+    <text x="577" y="104" class="tag-bias">Bias:</text>
+    <text x="624" y="118" text-anchor="middle" class="caption">Proxy variables</text>
+
+    <rect x="700" y="96" width="9" height="9" fill="#f59e0b"/>
+    <text x="713" y="104" class="tag-bias">Bias:</text>
+    <text x="760" y="118" text-anchor="middle" class="caption">Aggregate masks errors</text>
+
+    <rect x="836" y="96" width="9" height="9" fill="#f59e0b"/>
+    <text x="849" y="104" class="tag-bias">Bias:</text>
+    <text x="896" y="118" text-anchor="middle" class="caption">Feedback-loop drift</text>
+  </g>
+
+  <!-- Audit row -->
+  <g>
+    <rect x="20" y="138" width="9" height="9" fill="#2563eb"/>
+    <text x="33" y="146" class="tag-audit">Audit:</text>
+    <text x="80" y="160" text-anchor="middle" class="caption">Check target definition</text>
+
+    <rect x="156" y="138" width="9" height="9" fill="#2563eb"/>
+    <text x="169" y="146" class="tag-audit">Audit:</text>
+    <text x="216" y="160" text-anchor="middle" class="caption">Check group coverage</text>
+
+    <rect x="292" y="138" width="9" height="9" fill="#2563eb"/>
+    <text x="305" y="146" class="tag-audit">Audit:</text>
+    <text x="352" y="160" text-anchor="middle" class="caption">Compare missing rates</text>
+
+    <rect x="428" y="138" width="9" height="9" fill="#2563eb"/>
+    <text x="441" y="146" class="tag-audit">Audit:</text>
+    <text x="488" y="160" text-anchor="middle" class="caption">Disaggregate by group</text>
+
+    <rect x="564" y="138" width="9" height="9" fill="#2563eb"/>
+    <text x="577" y="146" class="tag-audit">Audit:</text>
+    <text x="624" y="160" text-anchor="middle" class="caption">Test feature removal</text>
+
+    <rect x="700" y="138" width="9" height="9" fill="#2563eb"/>
+    <text x="713" y="146" class="tag-audit">Audit:</text>
+    <text x="760" y="160" text-anchor="middle" class="caption">Report subgroup metrics</text>
+
+    <rect x="836" y="138" width="9" height="9" fill="#2563eb"/>
+    <text x="849" y="146" class="tag-audit">Audit:</text>
+    <text x="896" y="160" text-anchor="middle" class="caption">Monitor over time</text>
+  </g>
+
+  <!-- connecting lines from stage box down to its bias/audit column, light guide -->
+  <g stroke="#e5e7eb" stroke-width="1">
+    <line x1="80" y1="82" x2="80" y2="96"/>
+    <line x1="216" y1="82" x2="216" y2="96"/>
+    <line x1="352" y1="82" x2="352" y2="96"/>
+    <line x1="488" y1="82" x2="488" y2="96"/>
+    <line x1="624" y1="82" x2="624" y2="96"/>
+    <line x1="760" y1="82" x2="760" y2="96"/>
+    <line x1="896" y1="82" x2="896" y2="96"/>
+  </g>
+
+  <!-- legend -->
+  <rect x="20" y="188" width="940" height="1" fill="#e5e7eb"/>
+  <rect x="20" y="206" width="12" height="12" fill="#f59e0b"/>
+  <text x="38" y="216" class="legend">Potential bias introduced at this stage</text>
+  <rect x="330" y="206" width="12" height="12" fill="#2563eb"/>
+  <text x="348" y="216" class="legend">Audit or investigation opportunity</text>
+
+  <text x="20" y="250" class="legend">Bias is not only checked after a model is built. Each stage above is both a place bias can enter and a place it can be caught.</text>
+  <text x="20" y="270" class="legend">Example (student-support model): a target defined from past advisor referrals can already encode who historically had access to advising.</text>
+</svg>

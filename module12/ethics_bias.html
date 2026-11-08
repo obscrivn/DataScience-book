@@ -1,0 +1,878 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>12 Bias, Fairness, and Ethics Across the Data Science Pipeline &#8212; Lecture Notes Applied Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'module12/ethics_bias';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Week 11 Coding Practice: Does the Neural Network Earn Its Complexity?" href="../module11/week11_neural_network_practice_solution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../welcome.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/bannerADS.png" class="logo__image only-light" alt="Lecture Notes Applied Data Science - Home"/>
+    <script>document.write(`<img src="../_static/bannerADS.png" class="logo__image only-dark" alt="Lecture Notes Applied Data Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../welcome.html">
+                    Applied Data Science
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../module01/workflow.html">01 Data Science Lifecycle</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module02/data.html">02 Data Quality</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module03/visualization.html">03 Data Visualization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module04/regression.html">04 Regression and Prediction</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module05/trees.html">05 Decision Trees, Random Forests, and Factor Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice.html">Week 5 Coding Practice: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../module05/week5_trees_factor_analysis_practice_solution.html">Week 5 Coding Practice Solution: Predicting Outcomes and Finding Hidden Structure</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../module06/clustering.html">06 Clustering and Group Discovery</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../module07/pca.html">07 Principal Component Analysis</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module08/time_series.html">08 Introduction to Time Series Analysis and Forecasting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module08/week8_time_series_practice.html">Week 8 Coding Practice: Working with Time Series in pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module08/week8_time_series_practice_solution.html">Week 8 Coding Practice Solution: Working with Time Series in pandas</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module09/database.html">09 From Related Tables to Analysis-Ready Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module09/week09_relational_data_practice.html">Week 9 Coding Practice: Relational Data in Applied Data Science</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module09/week09_relational_data_practice_solution.html">Week 9 Coding Practice: Relational Data in Applied Data Science (Instructor Solution)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module10/explainability.html">10 Explainable AI and Model Reliability</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module10/week10_explainability_practice.html">Week 10 Coding Practice: Can We Trust an Explanation?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module10/week10_explainability_practice_solution.html">Week 10 Coding Practice: Can We Trust an Explanation? (Instructor Solution)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../module11/neural_networks.html">11 Neural Networks and Deep Learning</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../module11/week11_neural_network_practice.html">Week 11 Coding Practice: Does the Neural Network Earn Its Complexity?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../module11/week11_neural_network_practice_solution.html">Week 11 Coding Practice: Does the Neural Network Earn Its Complexity?</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">12 Bias, Fairness, and Ethics Across the Data Science Pipeline</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmodule12/ethics_bias.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/module12/ethics_bias.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>12 Bias, Fairness, and Ethics Across the Data Science Pipeline</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-ethics-matters-in-applied-data-science">12.1 Why Ethics Matters in Applied Data Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-bias-enters-the-data-science-pipeline">12.2 Where Bias Enters the Data Science Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-and-sources-of-bias">12.3 Types and Sources of Bias</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representational-bias-and-exnomination">12.4 Representational Bias and Exnomination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fairness-and-model-evaluation">12.5 Fairness and Model Evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifying-and-mitigating-bias">12.6 Identifying and Mitigating Bias</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-model-fairness-responsible-data-science">12.7 Beyond Model Fairness: Responsible Data Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-case-study-should-the-support-model-be-deployed">12.8 Applied Case Study: Should the Support Model Be Deployed?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-checklist-before-you-trust-or-deploy-a-model">12.9 Practical Checklist: Before You Trust or Deploy a Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#companion-activity">Companion Activity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="bias-fairness-and-ethics-across-the-data-science-pipeline">
+<h1>12 Bias, Fairness, and Ethics Across the Data Science Pipeline<a class="headerlink" href="#bias-fairness-and-ethics-across-the-data-science-pipeline" title="Permalink to this heading">#</a></h1>
+<section id="big-idea">
+<h2>Big Idea<a class="headerlink" href="#big-idea" title="Permalink to this heading">#</a></h2>
+<p>Imagine a college pilots a model that flags students who may benefit from proactive academic support, such as an advisor check-in. The model performs well overall: it correctly predicts support needs for most students. But a closer look shows something the overall number hides: the model is much more likely to miss students in one group than in another, meaning those students do not get flagged for outreach even when they need it.</p>
+<p>This single result is, at the same time:</p>
+<ul class="simple">
+<li><p>A <strong>data quality</strong> concern (how was “needs support” defined and labeled in the first place?)</p></li>
+<li><p>A <strong>model evaluation</strong> concern (an overall accuracy number did not surface this gap)</p></li>
+<li><p>A <strong>fairness</strong> concern (the model’s errors are not spread evenly across students)</p></li>
+<li><p>A <strong>deployment risk</strong> (acting on this model could quietly widen an existing gap in who receives support)</p></li>
+</ul>
+<p><strong>A model can have strong overall performance while producing unreliable or harmful outcomes for particular populations.</strong> That idea is the center of this chapter.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This chapter builds directly on work from earlier modules: sampling and representation, missing data, exploratory data analysis, regression and classification, model evaluation, and explainability. It is not a general introduction to AI ethics. The question throughout is a practical one: where could bias enter <em>this</em> pipeline, how would you notice it, and what would you do?</p>
+</div>
+<p><strong>Running example used throughout this chapter: the student-support prediction model.</strong> A college wants to predict which students may benefit from proactive academic outreach, such as an advisor reaching out before a student falls behind. A model is trained to flag students as “needs support” or “does not need support” based on academic and enrollment data. This example is revisited at several points below, because an early decision (how “needs support” is defined and labeled) resurfaces later as an evaluation and deployment question. Throughout, treat the model’s output as one input to a human advisor’s judgment, not as an automatic decision about a student’s eligibility for support.</p>
+</section>
+<section id="why-ethics-matters-in-applied-data-science">
+<h2>12.1 Why Ethics Matters in Applied Data Science<a class="headerlink" href="#why-ethics-matters-in-applied-data-science" title="Permalink to this heading">#</a></h2>
+<p>It is tempting to treat fairness and ethics as a final check, something to think about only after a model is built and performing well. The student-support example shows why that is a mistake: the model’s strong overall accuracy was never in question, and the problem only became visible once someone looked at performance by group, not overall.</p>
+<p>A useful habit is to ask, at every stage of a project, not only “does this work?” but also “for whom does this work, and for whom might it not?”</p>
+<p>This is not a claim that every model is unfair, or that every data science project needs a formal fairness audit. It is a claim that fairness is part of the same evaluation discipline you already use, applied to a question that an overall metric cannot answer by itself: whether the model’s benefits and errors are distributed in a way you can defend.</p>
+</section>
+<section id="where-bias-enters-the-data-science-pipeline">
+<h2>12.2 Where Bias Enters the Data Science Pipeline<a class="headerlink" href="#where-bias-enters-the-data-science-pipeline" title="Permalink to this heading">#</a></h2>
+<p>The data science pipeline is the organizing idea for this entire chapter, not just an opening diagram. Each stage below is revisited later in the chapter, and the pipeline is the lens the applied case study in §12.8 returns to.</p>
+<figure class="align-default" id="bias-pipeline-audit">
+<img alt="../_images/bias_pipeline_audit.svg" src="../_images/bias_pipeline_audit.svg" /><figcaption>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Bias can enter at every stage of the data science pipeline, and each stage offers its own opportunity to investigate and respond.</span><a class="headerlink" href="#bias-pipeline-audit" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>1. Problem formulation and target definition.</strong> How “needs support” is defined shapes everything downstream. If the target is based on which students were previously referred to an advisor, rather than a more direct measure of academic difficulty, the target may already encode who historically had access to advising, not who actually needed it.</p>
+<p><strong>2. Data collection and sampling.</strong> If some groups of students are underrepresented in the historical data (for example, part-time or transfer students), the model has less evidence to learn from for those students, and its predictions for them are less reliable.</p>
+<p><strong>3. Data labeling and measurement.</strong> Labels are rarely neutral facts. “Needs support” recorded by one advisor may reflect that advisor’s judgment, workload, or awareness of resources, not a consistent standard applied to every student.</p>
+<p><strong>4. Data cleaning and preprocessing.</strong> Missing values are rarely missing at random. If students who are harder to reach (because of work schedules, housing instability, or limited contact information) also have more missing data, dropping incomplete records can quietly remove the students most likely to need support.</p>
+<p><strong>5. Exploratory data analysis.</strong> Summary statistics and visualizations computed across the whole dataset can look unremarkable while hiding a real difference between groups. A single histogram of GPA, for example, will not show whether missing data or enrollment patterns differ by student group.</p>
+<p><strong>6. Feature selection and modeling.</strong> A feature such as zip code, major, or enrollment status can act as a <strong>proxy</strong> for something else, such as income or first-generation status, even when that attribute is never used directly.</p>
+<p><strong>7. Model evaluation and validation.</strong> This is where the student-support example’s problem became visible: overall accuracy looked fine, but it did not show that one group’s errors were concentrated in missed support flags. §12.5 returns to this in detail.</p>
+<p><strong>8. Deployment, monitoring, and feedback loops.</strong> Once a model is in use, its own outputs can shape future data. If flagged students receive outreach and unflagged students do not, next year’s “who received support” data will reflect the model’s past decisions, not just original student need. That changes what the next version of the model learns from.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pipeline stage</p></th>
+<th class="head"><p>Potential bias</p></th>
+<th class="head"><p>How to investigate</p></th>
+<th class="head"><p>Possible response</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Problem formulation / target definition</p></td>
+<td><p>Target reflects historical access, not true need</p></td>
+<td><p>Ask how the label was originally generated and by whom</p></td>
+<td><p>Revisit the target definition; consider a more direct, consistently applied measure</p></td>
+</tr>
+<tr class="row-odd"><td><p>Data collection / sampling</p></td>
+<td><p>Some student groups underrepresented</p></td>
+<td><p>Compare sample composition to the full student population</p></td>
+<td><p>Collect more data for underrepresented groups, or report the limitation clearly</p></td>
+</tr>
+<tr class="row-even"><td><p>Data labeling / measurement</p></td>
+<td><p>Inconsistent judgment across labelers</p></td>
+<td><p>Check label agreement across advisors, terms, or sites</p></td>
+<td><p>Clarify labeling criteria; document known inconsistency</p></td>
+</tr>
+<tr class="row-odd"><td><p>Data cleaning / preprocessing</p></td>
+<td><p>Missingness concentrated in one group</p></td>
+<td><p>Compare missing-data rates across groups</p></td>
+<td><p>Investigate the cause before dropping rows; consider targeted follow-up</p></td>
+</tr>
+<tr class="row-even"><td><p>Exploratory data analysis</p></td>
+<td><p>Aggregate summaries hide subgroup patterns</p></td>
+<td><p>Disaggregate key summaries by group</p></td>
+<td><p>Report subgroup-level EDA alongside overall summaries</p></td>
+</tr>
+<tr class="row-odd"><td><p>Feature selection / modeling</p></td>
+<td><p>A feature acts as a proxy for a sensitive attribute</p></td>
+<td><p>Test model behavior with and without the suspected proxy</p></td>
+<td><p>Document the trade-off; consider removing or replacing the feature</p></td>
+</tr>
+<tr class="row-even"><td><p>Model evaluation / validation</p></td>
+<td><p>Overall accuracy hides unequal error rates</p></td>
+<td><p>Compute performance metrics by group, not only overall</p></td>
+<td><p>Report subgroup metrics alongside the overall metric</p></td>
+</tr>
+<tr class="row-odd"><td><p>Deployment / monitoring / feedback loops</p></td>
+<td><p>Model outputs shape future training data</p></td>
+<td><p>Track whether outcomes diverge from original definitions over time</p></td>
+<td><p>Monitor subgroup performance after deployment, not only at launch</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Bias is not something to check for only after the model exists. Every row of this table is a place to look before, during, and after modeling.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+Checkpoint 1: Where would you look first?<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text"><strong>Question.</strong> The student-support model above has strong overall accuracy. Name two pipeline stages, other than model evaluation, where bias could plausibly have entered, and give one concrete warning sign for each.</p>
+<p class="sd-card-text"><strong>One reasonable answer.</strong> Data collection and sampling: a warning sign would be that part-time or transfer students make up a much smaller share of the training data than of the overall student population. Data labeling and measurement: a warning sign would be that the “needs support” label came from past advisor referrals, which may reflect uneven awareness of or access to advising rather than a consistent measure of actual need. Other reasonable answers (preprocessing, feature selection) are acceptable if the warning sign is concrete and tied to the stage.</p>
+</div>
+</details></section>
+<section id="types-and-sources-of-bias">
+<h2>12.3 Types and Sources of Bias<a class="headerlink" href="#types-and-sources-of-bias" title="Permalink to this heading">#</a></h2>
+<p>A few recurring terms are worth defining clearly, since the same underlying idea sometimes goes by different names in different fields.</p>
+<ul class="simple">
+<li><p><strong>Selection and sampling bias.</strong> The data collected does not represent the population the model will be used on.</p></li>
+<li><p><strong>Representation imbalance.</strong> Some groups appear far less often in the data than others, so the model has less evidence to learn patterns for them.</p></li>
+<li><p><strong>Measurement bias.</strong> The way a variable is measured or recorded differs systematically across groups (for example, different data-collection methods at different campus sites).</p></li>
+<li><p><strong>Label bias.</strong> The target variable itself reflects human judgment, historical practice, or unequal access, rather than a consistent, objective standard.</p></li>
+<li><p><strong>Historical bias.</strong> Even perfectly measured, accurately labeled data can reflect a past pattern of unequal treatment, and a model trained on it can reproduce that pattern going forward.</p></li>
+<li><p><strong>Missing-data mechanisms.</strong> As covered earlier in this course, data can be missing completely at random, missing at random given other variables, or missing in a way related to the unobserved value itself. That last case is the one most likely to introduce bias.</p></li>
+<li><p><strong>Proxy variables.</strong> A feature that is statistically associated with a sensitive attribute (such as race, income, or disability status) even though that attribute is not used directly.</p></li>
+<li><p><strong>Evaluation bias.</strong> Using an evaluation approach, metric, or benchmark that does not reflect how the model will actually be used or who it will affect.</p></li>
+<li><p><strong>Feedback loops.</strong> A model’s own past decisions influence the data used to train or evaluate its future versions, as described in §12.2.</p></li>
+</ul>
+<p>These ideas connect directly to concepts from earlier in the course: missing-data mechanisms, train/test splits, data leakage, and distribution shift. A proxy variable, for example, is a feature-selection problem with a fairness consequence. A feedback loop is a distribution-shift problem that a model itself can help cause.</p>
+<p>Different fields (statistics, machine learning, law, sociology) sometimes use these terms slightly differently. When reading outside sources, check how a term is being used in context rather than assuming it matches the definition above exactly.</p>
+</section>
+<section id="representational-bias-and-exnomination">
+<h2>12.4 Representational Bias and Exnomination<a class="headerlink" href="#representational-bias-and-exnomination" title="Permalink to this heading">#</a></h2>
+<p>Two related ideas are useful for thinking about how people and groups are portrayed in data, not just how a model performs on them.</p>
+<p><strong>Representational bias</strong> refers to how people, groups, or perspectives may be underrepresented, stereotyped, or portrayed in a limited range of ways in a dataset or in generated content.</p>
+<p><strong>Exnomination</strong> refers to how one identity, group, or cultural position can be treated as an unmarked, unstated default, while other identities are explicitly named or labeled as different. Exnomination is not the same as a simple statistical majority. A majority is a fact about counts; exnomination is about which identity gets treated as “just normal” and goes unnamed, while others are marked as a variation from that norm, often regardless of the actual numbers involved.</p>
+<p>A useful, accessible way to think about both ideas is an AI image-generation system. Suppose a system is given a neutral prompt that does not specify demographic details, such as “a scientist at work,” “a CEO presenting at a meeting,” or “a family having dinner.” The system still has to generate specific choices about age, gender, setting, and other details that the prompt left unspecified. If the same kind of choice is made by default across many generations, that default reflects patterns in the system’s training data and design, not a neutral or inevitable outcome. This is a hypothetical description of the kind of pattern such systems can produce, not a report of a specific generated image. You will investigate this directly, with your own prompts and your own evidence, in this week’s Canvas discussion, “AI Bias Detective: What Does AI Assume?” This chapter explains the underlying concepts; the discussion is where you run the experiment.</p>
+<p>Why this matters for data science specifically, not just for image generation:</p>
+<ul class="simple">
+<li><p>Image and caption datasets used to train models can reflect unequal representation.</p></li>
+<li><p>Captions and labels attached to images can encode assumptions about who belongs in a role or setting.</p></li>
+<li><p>A model trained on this data can learn and reproduce those patterns.</p></li>
+<li><p>Content generated by one system can later be collected and used as training data for another system, carrying the pattern forward.</p></li>
+</ul>
+<p>A small number of generated examples does not prove that a system is systematically biased. It is a starting point for a more careful, evidence-based investigation, the same way a handful of unusual rows in a dataset would prompt further checking rather than an immediate conclusion.</p>
+<p><strong>Representational harm vs. allocative harm.</strong> A representational harm affects how a group is portrayed, perceived, or rendered visible or invisible, for example, through stereotyped or narrow representations in training data or generated content. An <strong>allocative harm</strong> affects what a group actually receives: access to a job interview, a loan, a service, or, in the running example of this chapter, proactive academic outreach. The two are related: biased representations can shape the data that later feeds an allocative decision, but they are not the same thing, and a chapter or a model audit should be clear about which one it is addressing.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+Checkpoint 2: Representational or allocative?<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text"><strong>Question.</strong> A university’s promotional photos mostly show one kind of student as “a typical computer science major.” Separately, a different automated system uses features correlated with demographic group to help decide which students receive priority advising appointments. Which example is a representational harm, and which is an allocative harm? Explain the difference.</p>
+<p class="sd-card-text"><strong>One reasonable answer.</strong> The promotional photos are a representational harm: they shape who is visible and how students are portrayed, without directly changing what any individual student receives. The priority-advising system is an allocative harm: it directly changes who gets a resource (a priority appointment). Representational harms shape perception and the data that gets collected and reused later. Allocative harms directly change outcomes for individuals.</p>
+</div>
+</details></section>
+<section id="fairness-and-model-evaluation">
+<h2>12.5 Fairness and Model Evaluation<a class="headerlink" href="#fairness-and-model-evaluation" title="Permalink to this heading">#</a></h2>
+<p>The student-support model’s overall accuracy was 83%, calculated across both groups combined. On its own, that number looks reasonable. Looking at performance separately for two groups of students tells a different story.</p>
+<p><strong>Illustrative example, not measured experimental results.</strong> The table below uses hypothetical but internally consistent counts for 200 students per group, each with a base rate of 40 students who actually need support and 50 students flagged as needing support by the model.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Group</p></th>
+<th class="head"><p>TP</p></th>
+<th class="head"><p>FP</p></th>
+<th class="head"><p>FN</p></th>
+<th class="head"><p>TN</p></th>
+<th class="head"><p>Accuracy</p></th>
+<th class="head"><p>False-negative rate</p></th>
+<th class="head"><p>False-positive rate</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Group A</p></td>
+<td><p>32</p></td>
+<td><p>18</p></td>
+<td><p>8</p></td>
+<td><p>142</p></td>
+<td><p>87%</p></td>
+<td><p>20%</p></td>
+<td><p>11%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Group B</p></td>
+<td><p>24</p></td>
+<td><p>26</p></td>
+<td><p>16</p></td>
+<td><p>134</p></td>
+<td><p>79%</p></td>
+<td><p>40%</p></td>
+<td><p>16%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="align-default" id="aggregate-vs-subgroup">
+<img alt="../_images/aggregate_vs_subgroup_performance.svg" src="../_images/aggregate_vs_subgroup_performance.svg" /><figcaption>
+<p><span class="caption-number">Fig. 22 </span><span class="caption-text">An overall accuracy of 83% looks strong, but it hides a false-negative rate that is twice as high for Group B as for Group A (illustrative numbers).</span><a class="headerlink" href="#aggregate-vs-subgroup" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Two ways to read this table:</p>
+<ul class="simple">
+<li><p><strong>False negatives</strong> are students who actually need support but are not flagged. Group B’s false-negative rate (40%) is double Group A’s (20%): students in Group B who need support are roughly twice as likely to be missed. For this model, a false negative means a student who could benefit from outreach does not receive it.</p></li>
+<li><p><strong>False positives</strong> are students flagged as needing support who did not. Group B’s false-positive rate is also somewhat higher. A false positive here is a lower-stakes error than a false negative (an advisor check-in that was not strictly necessary), but it still has a cost: advisor time is limited, and a higher false-positive rate for one group uses up more of that limited time.</p></li>
+</ul>
+<p>Three points matter when interpreting a table like this one:</p>
+<ol class="arabic simple">
+<li><p><strong>Class imbalance and base rates matter.</strong> Both groups were given the same base rate (40 out of 200 students actually need support) specifically so the comparison is not confounded by a difference in how common the outcome is. Comparing groups with very different base rates requires extra care, since differences in raw counts can reflect the base rate rather than the model’s behavior.</p></li>
+<li><p><strong>A single fairness metric is rarely sufficient.</strong> This table reports accuracy, false-negative rate, and false-positive rate separately because they can tell different stories. A model can have very similar accuracy across groups while having a large gap in false-negative rate, exactly as shown here. Different fairness definitions (equal accuracy, equal false-negative rates, equal false-positive rates) can also conflict with each other mathematically; satisfying one does not guarantee the others.</p></li>
+<li><p><strong>A statistical disparity is not, by itself, evidence of unlawful discrimination or a specific cause.</strong> The table shows a gap worth investigating. It does not by itself tell you <em>why</em> the gap exists (a labeling issue, a sampling issue, a genuinely harder prediction problem for that group, or something else), and it does not establish intent or a legal finding. Those require further investigation, not just a metric.</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+Checkpoint 3: Interpreting a subgroup gap<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text"><strong>Question.</strong> Using the table above, Group B’s false-negative rate is double Group A’s. What does this mean for individual students, and what can you <em>not</em> conclude from this number alone?</p>
+<p class="sd-card-text"><strong>One reasonable answer.</strong> It means that Group B students who actually need academic support are being missed by the model about twice as often as Group A students who need support, so they are less likely to receive proactive outreach. On its own, the number does not tell you <em>why</em> the gap exists (it could trace back to labeling, sampling, missing data, or something else), and it does not establish intentional discrimination or a legal violation. It is evidence that further investigation is needed, not a finished conclusion.</p>
+</div>
+</details></section>
+<section id="identifying-and-mitigating-bias">
+<h2>12.6 Identifying and Mitigating Bias<a class="headerlink" href="#identifying-and-mitigating-bias" title="Permalink to this heading">#</a></h2>
+<p>Responses to bias are organized here by when, in the pipeline, they happen. None of these is a one-time fix; all involve trade-offs, and a technical change alone does not always resolve the underlying problem.</p>
+<p><strong>Before modeling:</strong></p>
+<ul class="simple">
+<li><p>Examine how the training sample compares to the full population the model will be used on.</p></li>
+<li><p>Review how the data was collected and how labels (such as “needs support”) were originally generated.</p></li>
+<li><p>Investigate whether missingness is related to the outcome itself, not just how much data is missing.</p></li>
+<li><p>Document known limitations of the dataset, rather than treating them as settled.</p></li>
+</ul>
+<p><strong>During modeling:</strong></p>
+<ul class="simple">
+<li><p>Evaluate whether a feature is acting as a proxy for a sensitive attribute, and what happens to performance and fairness if it is removed.</p></li>
+<li><p>Compare against a simple baseline, the same way you would for any other model.</p></li>
+<li><p>Consider group-specific performance during model selection and tuning, not only after a final model is chosen.</p></li>
+<li><p>Review whether a “shortcut” the model has learned (a strong predictor that is easy to use but hard to justify) might be a proxy rather than a meaningful signal.</p></li>
+</ul>
+<p><strong>After modeling:</strong></p>
+<ul class="simple">
+<li><p>Conduct subgroup error analysis as a standard part of evaluation, not an optional extra step.</p></li>
+<li><p>Compare multiple fairness measures, since (as shown in §12.5) they can tell different stories.</p></li>
+<li><p>Document the model’s known limitations and the populations it was and was not evaluated on.</p></li>
+<li><p>Monitor performance after deployment, since a model’s inputs, population, or feedback loops can all shift over time.</p></li>
+</ul>
+<p>For the student-support model, this might mean: revisiting how the “needs support” label was generated before trusting it as a target; checking whether features like zip code or housing status are acting as proxies; reporting both overall and subgroup error rates before any deployment decision; and continuing to monitor subgroup false-negative rates after launch, not just overall accuracy.</p>
+</section>
+<section id="beyond-model-fairness-responsible-data-science">
+<h2>12.7 Beyond Model Fairness: Responsible Data Science<a class="headerlink" href="#beyond-model-fairness-responsible-data-science" title="Permalink to this heading">#</a></h2>
+<p>Fairness is one part of a broader set of responsibilities that show up in everyday data science work, not only in formal ethics reviews.</p>
+<ul class="simple">
+<li><p><strong>Privacy and consent.</strong> Was the data collected with appropriate awareness and consent, and is it being used in a way consistent with that original purpose?</p></li>
+<li><p><strong>Transparency and explainability.</strong> Can the model’s behavior be explained to the people affected by it and the people responsible for it, building on the explanation methods covered in Module 10?</p></li>
+<li><p><strong>Accountability.</strong> Is it clear who is responsible for a model’s decisions, and who is responsible for checking them?</p></li>
+<li><p><strong>Reproducibility.</strong> Could someone else repeat your analysis and get the same result, using your documentation?</p></li>
+<li><p><strong>Appropriate use of AI-generated data.</strong> If generated text, images, or synthetic data are used in a project, is that clearly documented, and has the risk of propagating bias (as discussed in §12.4) been considered?</p></li>
+<li><p><strong>Human oversight and documentation.</strong> Is there a clear process for a human to review, override, or escalate a model’s output, rather than treating it as final?</p></li>
+<li><p><strong>Limitations of automated decisions.</strong> Does everyone using the model’s output understand what it does and does not establish, as discussed throughout this chapter?</p></li>
+</ul>
+<p>These are not abstract principles. They are decisions a working data scientist makes while preparing data, evaluating a model, and communicating results, including decisions about what to report, what to flag as uncertain, and what to recommend.</p>
+</section>
+<section id="applied-case-study-should-the-support-model-be-deployed">
+<h2>12.8 Applied Case Study: Should the Support Model Be Deployed?<a class="headerlink" href="#applied-case-study-should-the-support-model-be-deployed" title="Permalink to this heading">#</a></h2>
+<p>Return to the student-support model one more time, now with the full pipeline in view.</p>
+<p><strong>Who is represented in the data?</strong> The training data comes from three years of academic records at one college. Part-time and transfer students make up a smaller share of the training data than of the current student population, because the historical data-collection process relied partly on advisor referrals, which were less consistent for those groups.</p>
+<p><strong>How is the target defined?</strong> “Needs support” was defined using past advisor referrals, not a more direct, consistently applied measure such as academic standing combined with a standardized check-in.</p>
+<p><strong>What could be wrong with the labels?</strong> Referral patterns likely reflect which students had an assigned advisor who was aware of support resources and had time to make a referral, not only which students needed support. This is a plausible source of label bias.</p>
+<p><strong>What do aggregate metrics hide?</strong> Overall accuracy (83%) looked acceptable. The subgroup breakdown in §12.5 showed a false-negative rate twice as high for one group, meaning students in that group who need support are substantially more likely to be missed.</p>
+<p><strong>What further checks are needed?</strong> Before trusting this model: compare the referral-based label against an independent measure of academic difficulty where available; check whether the false-negative gap narrows or persists when the suspected proxy features are removed; and confirm whether missingness in the data is related to the student groups showing the largest error-rate gap.</p>
+<p><strong>Should the model be deployed?</strong> Not yet, and not without safeguards. A reasonable interim recommendation: do not deploy the model as the sole basis for outreach decisions. Instead, use it as one input alongside a baseline, human-reviewed process, specifically for the group with the higher false-negative rate, since that is where missed cases carry the most risk. Any deployment should include ongoing monitoring of subgroup false-negative rates, not just overall accuracy, and a documented plan for revisiting the label definition.</p>
+<p>This worked interpretation illustrates the chapter’s practical mental model: trace the data back to its source, check who might be missing or mislabeled, look at who experiences the model’s errors, and decide what you would need to see before recommending its use.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+Checkpoint 4: Recommend an investigation and a safeguard<div class="sd-summary-down docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg></div>
+<div class="sd-summary-up docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg></div>
+</summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text"><strong>Question.</strong> Before this model is used to prioritize advisor outreach, propose one specific investigation and one specific safeguard the team could put in place. Explain what each would tell them or protect against.</p>
+<p class="sd-card-text"><strong>One reasonable answer.</strong> Investigation: audit how the “needs support” label was generated, comparing referral-based records against an independent measure of academic difficulty, to check whether the label itself is biased toward students who already had advisor access. Safeguard: require human review for students the model does not flag but who show other risk indicators (such as a sharp drop in credits attempted), so the model’s false negatives are not the only check in the process, and monitor the false-negative rate by group after deployment rather than relying on overall accuracy alone.</p>
+</div>
+</details></section>
+<section id="practical-checklist-before-you-trust-or-deploy-a-model">
+<h2>12.9 Practical Checklist: Before You Trust or Deploy a Model<a class="headerlink" href="#practical-checklist-before-you-trust-or-deploy-a-model" title="Permalink to this heading">#</a></h2>
+<p>Use this checklist when evaluating a model for your final project, or in future professional work.</p>
+<p><strong>Before you trust or deploy a model, ask:</strong></p>
+<ul class="simple">
+<li><p><strong>Data provenance.</strong> Where did this data come from, and who collected it?</p></li>
+<li><p><strong>Population representation.</strong> Who is well represented in the data, and who might be missing or underrepresented?</p></li>
+<li><p><strong>Measurement and labels.</strong> How was the target variable defined and labeled, and by whom?</p></li>
+<li><p><strong>Missingness.</strong> Is missing data related to the outcome itself, or to group membership?</p></li>
+<li><p><strong>Group performance.</strong> Have you checked performance separately by relevant groups, not only overall?</p></li>
+<li><p><strong>Model limitations.</strong> What has the model not been evaluated on, and where should it not be trusted yet?</p></li>
+<li><p><strong>Potential harms.</strong> If the model is wrong for one person, what is the real-world consequence, and does that consequence fall unevenly on any group?</p></li>
+<li><p><strong>Documentation and monitoring.</strong> Is the model’s scope, known limitations, and intended use documented, and is there a plan to monitor it after deployment?</p></li>
+</ul>
+</section>
+<section id="companion-activity">
+<h2>Companion Activity<a class="headerlink" href="#companion-activity" title="Permalink to this heading">#</a></h2>
+<p>This chapter is a reading-only task. The week’s hands-on practice is the existing <strong>Google Fairness programming exercise</strong> (ungraded): <a class="reference external" href="https://developers.google.com/machine-learning/crash-course/fairness/programming-exercise">Open the exercise in Google Colab</a>. It walks through auditing a dataset for bias and evaluating the effect of a mitigation step. No notebook is created or required in this book for Module 12.</p>
+</section>
+<section id="key-takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>A model can perform well overall while producing substantially worse outcomes for a particular group. Overall accuracy alone cannot rule this out.</p></li>
+<li><p>Bias can enter at every pipeline stage, from how the problem and target are defined through deployment and monitoring, not only at model evaluation.</p></li>
+<li><p>Selection bias, label bias, historical bias, proxy variables, and feedback loops are related but distinct ideas, each connected to concepts already covered in this course (missing data, leakage, distribution shift).</p></li>
+<li><p>Representational harm (how people are portrayed in data or content) is different from allocative harm (what people actually receive). Exnomination describes an unmarked default, not simply a statistical majority.</p></li>
+<li><p>Comparing group-level metrics such as false-negative and false-positive rates can reveal disparities that an overall metric hides. A single fairness metric is rarely sufficient on its own, and a disparity is a reason to investigate further, not proof of a specific cause.</p></li>
+<li><p>Mitigation strategies exist before, during, and after modeling, and involve trade-offs rather than one-time fixes.</p></li>
+<li><p>Responsible data science includes privacy, transparency, accountability, reproducibility, and human oversight, as practical decisions made throughout a project, not only as a final review.</p></li>
+<li><p>A useful habit for any model you build or use: ask where the data came from, who might be missing, what the model learned, who experiences its errors, and what you should check before recommending its use.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Google. “Machine Learning Crash Course: Fairness.” <a class="reference external" href="https://developers.google.com/machine-learning/crash-course/fairness">https://developers.google.com/machine-learning/crash-course/fairness</a></p></li>
+<li><p>Google. “Fairness: Programming Exercise.” <a class="reference external" href="https://developers.google.com/machine-learning/crash-course/fairness/programming-exercise">https://developers.google.com/machine-learning/crash-course/fairness/programming-exercise</a></p></li>
+<li><p>Barocas, S., Hardt, M., and Narayanan, A. <em>Fairness and Machine Learning: Limitations and Opportunities</em>. <a class="reference external" href="https://fairmlbook.org/">https://fairmlbook.org/</a></p></li>
+<li><p>Buolamwini, J., and Gebru, T. (2018). “Gender Shades: Intersectional Accuracy Disparities in Commercial Gender Classification.” <em>Proceedings of Machine Learning Research</em>, 81. <a class="reference external" href="https://proceedings.mlr.press/v81/buolamwini18a.html">https://proceedings.mlr.press/v81/buolamwini18a.html</a></p></li>
+<li><p>Crawford, K. (2017). “The Trouble with Bias.” Keynote address, NeurIPS 2017. <a class="reference external" href="https://www.youtube.com/watch?v=fMym_BKWQzk">https://www.youtube.com/watch?v=fMym_BKWQzk</a></p></li>
+<li><p>Obermeyer, Z., Powers, B., Vogeli, C., and Mullainathan, S. (2019). “Dissecting Racial Bias in an Algorithm Used to Manage the Health of Populations.” <em>Science</em>, 366(6464). <a class="reference external" href="https://www.science.org/doi/10.1126/science.aax2342">https://www.science.org/doi/10.1126/science.aax2342</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./module12"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../module11/week11_neural_network_practice_solution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 11 Coding Practice: Does the Neural Network Earn Its Complexity?</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-idea">Big Idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-ethics-matters-in-applied-data-science">12.1 Why Ethics Matters in Applied Data Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-bias-enters-the-data-science-pipeline">12.2 Where Bias Enters the Data Science Pipeline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-and-sources-of-bias">12.3 Types and Sources of Bias</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representational-bias-and-exnomination">12.4 Representational Bias and Exnomination</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fairness-and-model-evaluation">12.5 Fairness and Model Evaluation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifying-and-mitigating-bias">12.6 Identifying and Mitigating Bias</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-model-fairness-responsible-data-science">12.7 Beyond Model Fairness: Responsible Data Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-case-study-should-the-support-model-be-deployed">12.8 Applied Case Study: Should the Support Model Be Deployed?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-checklist-before-you-trust-or-deploy-a-model">12.9 Practical Checklist: Before You Trust or Deploy a Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#companion-activity">Companion Activity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Olga Scrivner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, Olga Scrivner.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
