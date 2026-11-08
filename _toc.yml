@@ -56,3 +56,5 @@ chapters:
   sections:
     - file: module11/week11_neural_network_practice
     - file: module11/week11_neural_network_practice_solution
+
+- file: module12/ethics_bias
